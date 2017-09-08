@@ -1,0 +1,12 @@
+{
+  "name": "otherdave",
+  "version": "0.0.1",
+  "description": "OtherDave is not David",
+  "main": "otherdave.js",
+  "author": "Issac",
+  "dependencies": {
+    "winston": "~2.3.1",
+    "discord.io": "~2.5.2",
+    "moment": "~2.18.1"
+  }
+}
