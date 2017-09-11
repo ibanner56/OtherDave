@@ -4,8 +4,9 @@ var Discord = require("discord.io");
 var logger = require("winston");
 
 var drunkdraw = require("./lib/drunkdraw.js");
+var respect = require("./lib/respect.js");
 
-var auth = require("./auth.json");
+var auth = require("./data/auth.json");
 // Configure logger settings
 logger.remove(logger.transports.Console);
 logger.add(logger.transports.Console, {
@@ -43,6 +44,12 @@ bot.on("message", function (user, userID, channelID, message, evt) {
                     message: drunkdraw(logger, user, message)
                 });
                 break;
+			case "respect":
+				bot.sendMessage({
+					to: channelID,
+					message: respect(logger, user, message)
+				});
+				break;
             // Just add any case commands if you want to..
          }
     }
