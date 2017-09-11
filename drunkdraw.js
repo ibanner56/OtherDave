@@ -1,6 +1,7 @@
 "use strict";
 
 var moment = require("moment");
+var fs = require("fs");
 
 function drunkdraw(logger, user, message) {
     logger.info("DrunkDraw - user: " + user + ", message: " + message);
@@ -13,8 +14,9 @@ function drunkdraw(logger, user, message) {
 		}
     }
     else {
-    	var draw = require("./drunkdraw.json");
-	  	var base = "The next drunkdraw is ";
+	  	var drawfile = fs.readFileSync("./drunkdraw.json", "utf8");
+		var draw = JSON.parse(drawfile);
+		var base = "The next drunkdraw is ";
 
     	if (draw.date) {
             base += draw.date;
@@ -22,7 +24,7 @@ function drunkdraw(logger, user, message) {
             var today = moment();
             var drawdate = moment({year: today.year(), month: today.month()});
         
-			if(drawdate.date() == 0) {
+			if(drawdate.day() == 0) {
 	    		drawdate.date(8);
 			} else {
 			    drawdate.date(drawdate.date() + 14 - drawdate.day() % 7);
@@ -30,7 +32,13 @@ function drunkdraw(logger, user, message) {
 
         	if (today.date() > drawdate.date()) {
            	 	drawdate.month(drawdate.month() + 1);
-            	drawdate.date(drawdate.date() + 14 - drawdate.day() % 7);
+				drawdate.date(1)
+
+				if(drawdate.day() == 0) {
+					drawdate.date(8);
+				} else {
+            		drawdate.date(drawdate.date() + 14 - drawdate.day() % 7);
+				}
         	}
 
         	base += drawdate.format("dddd[,] MMMM Do ");
