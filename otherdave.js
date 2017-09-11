@@ -3,7 +3,7 @@
 var Discord = require("discord.io");
 var logger = require("winston");
 
-var drunkdraw = require("./otherdave/drunkdraw.js");
+var drunkdraw = require("./lib/drunkdraw.js");
 
 var auth = require("./auth.json");
 // Configure logger settings

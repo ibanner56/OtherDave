@@ -2,7 +2,7 @@
   "name": "otherdave",
   "version": "0.0.5",
   "description": "OtherDave is not David",
-  "main": "./lib/otherdave.js",
+  "main": "./otherdave.js",
   "author": "Issac",
   "dependencies": {
     "winston": "~2.3.1",
