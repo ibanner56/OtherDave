@@ -3,8 +3,11 @@
 var Discord = require("discord.io");
 var logger = require("winston");
 
-var drunkdraw = require("./lib/drunkdraw.js");
-var respect = require("./lib/respect.js");
+var lib = {};
+
+lib.dave = function() { return "OtherDave is not David."; };
+lib.drunkdraw = require("./lib/drunkdraw.js");
+lib.respect = require("./lib/respect.js");
 
 var auth = require("./data/auth.json");
 // Configure logger settings
@@ -27,30 +30,21 @@ bot.on("message", function (user, userID, channelID, message, evt) {
     // Our bot needs to know if it will execute a command
     // It will listen for messages that will start with `!`
     if (message.substring(0, 1) == "!") {
-        var args = message.substring(1).split(" ");
+        var args = message.trim().substring(1).split(" ");
         var cmd = args[0];
 
         args = args.splice(1);
-        switch (cmd) {
-            case "dave":
-                bot.sendMessage({
-                    to: channelID,
-                    message: "OtherDave is not David"
-                });
-                break;
-            case "drunkdraw":
-                bot.sendMessage({
-                    to: channelID,
-                    message: drunkdraw(logger, user, message)
-                });
-                break;
-			case "respect":
-				bot.sendMessage({
-					to: channelID,
-					message: respect(logger, user, message)
-				});
-				break;
-            // Just add any case commands if you want to..
-         }
+
+		if(cmd in lib) {
+			bot.sendMessage({
+				to: channelID,
+				message: lib[cmd](logger, user, args)
+			});
+		} else {
+			bot.sendMessage({
+				to: channelID,
+				message: "I'm sorry Dave, I'm afraid I can't do that."
+			});
+		}	
     }
 });
