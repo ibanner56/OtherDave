@@ -1,16 +1,19 @@
 {
   "name": "otherdave",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "OtherDave is not David",
   "main": "./otherdave.js",
   "author": "Issac",
   "dependencies": {
     "articles": "^0.2.1",
     "discord.io": "~2.5.2",
+    "jsdom": "^11.2.0",
     "lodash": "^4.17.4",
+    "merge-img": "^2.1.0",
     "moment": "~2.18.1",
     "natural": "^0.5.4",
     "randy": "^1.5.1",
+    "request": "^2.81.0",
     "winston": "~2.3.1"
   }
 }
