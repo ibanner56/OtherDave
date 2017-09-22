@@ -14,6 +14,7 @@ lib.dave = function(logger, client, user, userID, channelID, args) {
 				}); 
 		   };
 lib.drunkdraw = require("./lib/drunkdraw.js");
+lib.haiku = require("./lib/haiku.js");
 lib.mimic = require("./lib/mimic.js");
 lib.pedant = require("./lib/pedant.js");
 lib.respect = require("./lib/respect.js");
@@ -36,9 +37,12 @@ client.on("ready", function (evt) {
     logger.info(client.username + " - (" + client.id + ")");
 });
 client.on("message", function (user, userID, channelID, message, evt) {
+	// OtherDave shouldn't talk to himself.
+	if(userID == client.id) {
+		return;
+	}
+	
 	if (message.substring(0, 1) == "!") {
-		client.simulateTyping(channelID);
-
 		var args = message.trim().substring(1).split(" ");
         var cmd = args[0];
 
@@ -52,11 +56,17 @@ client.on("message", function (user, userID, channelID, message, evt) {
 				message: "I'm sorry Dave, I'm afraid I can't do that."
 			});
 		}	
-    } else {
+    } else if(message.indexOf("<@" + client.id + ">") == 0) {
+		client.sendMessage({
+			to: channelID,
+			message: "Hey, you talkin to me?"
+		});
+	}
+	else {
 		lib.pedant(logger, client, user, userID, channelID, message);
+		lib.haiku(logger, client, user, userID, channelID, message);
 
 		// OtherDave is always listening...
-		logger.info(userID);
 		fs.appendFile("./data/markov/" + userID + ".txt", message + "\n", function(error) {
 			if(error) {
 				logger.error(error);
