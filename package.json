@@ -13,9 +13,9 @@
     "merge-img": "^2.1.0",
     "moment": "~2.18.1",
     "natural": "^0.5.4",
-    "nlp-syllables": "0.0.5",
     "randy": "^1.5.1",
     "request": "^2.81.0",
+    "syllable": "^2.2.0",
     "winston": "~2.3.1",
     "xkcd-37": "^1.1.0"
   }
