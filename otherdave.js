@@ -1,10 +1,12 @@
 "use strict";
 
 var Discord = require("discord.io");
+var fs = require('fs');
 var logger = require("winston");
 
 var lib = {};
 
+lib.comic = require("./lib/comic.js");
 lib.dave = function(logger, client, user, userID, channelID, args) { 
 				client.sendMessage({
 					to: channelID,
@@ -12,8 +14,9 @@ lib.dave = function(logger, client, user, userID, channelID, args) {
 				}); 
 		   };
 lib.drunkdraw = require("./lib/drunkdraw.js");
+lib.mimic = require("./lib/mimic.js");
+lib.pedant = require("./lib/pedant.js");
 lib.respect = require("./lib/respect.js");
-lib.comic = require("./lib/comic.js");
 
 var auth = require("./data/auth.json");
 // Configure logger settings
@@ -49,5 +52,15 @@ client.on("message", function (user, userID, channelID, message, evt) {
 				message: "I'm sorry Dave, I'm afraid I can't do that."
 			});
 		}	
-    }
+    } else {
+		lib.pedant(logger, client, user, userID, channelID, message);
+
+		// OtherDave is always listening...
+		logger.info(userID);
+		fs.appendFile("./data/markov/" + userID + ".txt", message + "\n", function(error) {
+			if(error) {
+				logger.error(error);
+			}
+		});
+	}
 });
