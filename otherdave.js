@@ -7,7 +7,7 @@ var logger = require("winston");
 var lib = {};
 
 lib.comic = require("./lib/comic.js");
-lib.dave = function(logger, client, user, userID, channelID, args) { 
+lib.dave = async function(logger, client, user, userID, channelID, args) { 
 				client.sendMessage({
 					to: channelID,
 					message: "OtherDave is not David."
@@ -49,7 +49,8 @@ client.on("message", function (user, userID, channelID, message, evt) {
         args = args.splice(1);
 
 		if(cmd in lib) {
-			lib[cmd](logger, client, user, userID, channelID, args);
+			lib[cmd](logger, client, user, userID, channelID, args)
+				.catch(function() { });
 		} else {
 			client.sendMessage({
 				to: channelID,
@@ -63,8 +64,10 @@ client.on("message", function (user, userID, channelID, message, evt) {
 		});
 	}
 	else {
-		lib.pedant(logger, client, user, userID, channelID, message);
-		lib.haiku(logger, client, user, userID, channelID, message);
+		lib.pedant(logger, client, user, userID, channelID, message)
+			.catch(function() {});
+		lib.haiku(logger, client, user, userID, channelID, message)
+			.catch(function() {});
 
 		// OtherDave is always listening...
 		fs.appendFile("./data/markov/" + userID + ".txt", message + "\n", function(error) {
