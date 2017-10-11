@@ -17,6 +17,7 @@ lib.drunkdraw = require("./lib/drunkdraw.js");
 lib.haiku = require("./lib/haiku.js");
 lib.mimic = require("./lib/mimic.js");
 lib.pedant = require("./lib/pedant.js");
+lib.prompt = require("./lib/prompt.js");
 lib.respect = require("./lib/respect.js");
 
 var auth = require("./data/auth.json");
@@ -47,8 +48,11 @@ client.on("message", function (user, userID, channelID, message, evt) {
         var cmd = args[0];
 
         args = args.splice(1);
-
-		if(cmd in lib) {
+		
+		if(cmd == "haiku") {
+			lib.haiku(logger, client, user, userID, 
+				channelID, args.join(" "), true)
+		} else if(cmd in lib) {
 			lib[cmd](logger, client, user, userID, channelID, args)
 				.catch(function() { });
 		} else {
@@ -66,7 +70,7 @@ client.on("message", function (user, userID, channelID, message, evt) {
 	else {
 		lib.pedant(logger, client, user, userID, channelID, message)
 			.catch(function() {});
-		lib.haiku(logger, client, user, userID, channelID, message)
+		lib.haiku(logger, client, user, userID, channelID, message, false)
 			.catch(function() {});
 
 		// OtherDave is always listening...
