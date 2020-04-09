@@ -3,6 +3,7 @@
 var Discord = require("discord.io");
 var fs = require('fs');
 var logger = require("winston");
+var dlog = require("./lib/dlog.js");
 
 var lib = {};
 
@@ -55,7 +56,7 @@ client.on("message", function (user, userID, channelID, message, evt) {
 				channelID, args.join(" "), true)
 		} else if(cmd in lib) {
 			lib[cmd](logger, client, user, userID, channelID, args)
-				.catch(function() { });
+				.catch(function(error) { dlog(client, error) });
 		} else {
 			client.sendMessage({
 				to: channelID,
