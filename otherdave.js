@@ -53,8 +53,7 @@ client.on("message", function (user, userID, channelID, message, evt) {
 		if(cmd == "haiku") {
 			lib.haiku(logger, client, user, userID, 
 				channelID, args.join(" "), true)
-		} else if(cmd == "quack")
-		{
+		} else if(cmd == "quack") {
 			client.sendMessage({
 				to: channelID,
 				message: "quack"
