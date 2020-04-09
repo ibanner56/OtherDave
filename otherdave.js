@@ -19,6 +19,7 @@ lib.mimic = require("./lib/mimic.js");
 lib.pedant = require("./lib/pedant.js");
 lib.prompt = require("./lib/prompt.js");
 lib.respect = require("./lib/respect.js");
+lib.update = require("./lib/update.js");
 
 var auth = require("./data/auth.json");
 // Configure logger settings
