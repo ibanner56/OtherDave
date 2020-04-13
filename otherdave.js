@@ -3,7 +3,7 @@
 var Discord = require("discord.io");
 var fs = require('fs');
 var logger = require("winston");
-var dlog = require("./lib/dlog.js");
+var dlog = require("./dlog.js");
 
 var lib = {};
 
