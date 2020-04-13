@@ -34,11 +34,12 @@ var client = new Discord.Client({
     token: auth.token,
     autorun: true
 });
+dlog(client, "Hi, I'm OtherDave and I'm BACK FOR BUSINESS.");
+
 client.on("ready", function (evt) {
     logger.info("Connected");
     logger.info("Logged in as: ");
 	logger.info(client.username + " - (" + client.id + ")");
-	dlog(client, "Hi, I'm OtherDave and I'm BACK FOR BUSINESS.");
 });
 client.on("message", function (user, userID, channelID, message, evt) {
 	// OtherDave shouldn't talk to himself.
