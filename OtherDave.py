@@ -4,12 +4,17 @@ from lib import dlog
 from lib import update
 
 # Configure client
-version = "2.0.0, now proudly on python :snake:"
+ver = "2.0.0, now proudly on python :snake:"
 client = discord.Client()
+async def ping(client, message, args):
+    await message.channel.send("pong")
+async def version(client, message, args):
+    await message.channel.send("OtherDave is running version " + ver)
+
 functions = {
-    "ping": lambda client, message, args: message.channel.send("pong"),
+    "ping": ping,
     "update": update.do,
-    "version": lambda client, message, args: message.channel.send("OtherDave is running version " + version)
+    "version": version
 }
 
 # Set up logging
@@ -23,7 +28,7 @@ logger.addHandler(handler)
 @client.event
 async def on_ready():
     logger.debug("Logged in as {0.user}".format(client))
-    dlog.log(client, "Hi, I'm OtherDave and I'm BACK FOR BUSINESS.")
+    await dlog.log(client, "Hi, I'm OtherDave and I'm BACK FOR BUSINESS.")
 
 @client.event
 async def on_message(message):
@@ -32,12 +37,12 @@ async def on_message(message):
     
     content = message.content
     if content.startswith("!"):
-        command, args = content.lstrip("!").split(" ", 1)
-        logger.info(command + " - user: " + message.author)
+        command, *args = content.lstrip("!").split(" ", 1)
+        logger.info(command + " - user: " + message.author.name)
         if command in functions:
-            functions[command](client, message, args)
+            await functions[command](client, message, args)
         else:
-            message.channel.send("I'm sorry Dave, I'm afraid I can't do that.")
+            await message.channel.send("I'm sorry Dave, I'm afraid I can't do that.")
 
 if __name__ == "__main__":
     tokenFile = open("bot.tkn", "r")
