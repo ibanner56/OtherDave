@@ -6,4 +6,3 @@ node_modules/
 data/markov
 logs/
 __pycache__
-.tkn
