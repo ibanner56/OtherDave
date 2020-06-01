@@ -3,7 +3,7 @@ from setuptools import setup
 requirements = [
     "discord.py>=1.3.3",
     "textstat>=0.6.2",
-    "recognizers-text-number>=1.0.2a2"
+    "inflect>=4.1"
 ]
 
 setup(
