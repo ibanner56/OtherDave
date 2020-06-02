@@ -1,9 +1,13 @@
 import unittest
-from commands import haiku
+from otherdave.commands import haiku
 
-class test_haiku(unittest.TestCase):
+class HaikuTestCase(unittest.TestCase):
     
     def test_ishaiku(self):
         text = "This one is a test. This poem is a haiku. Refridgerator."
         print(haiku.parseHaiku(text, True))
         self.assertIsNotNone(haiku.parseHaiku(text, False))
+
+    def test_isnothaiku(self):
+        text = "This one isn't a haiku, stupid."
+        self.assertIsNone(haiku.parseHaiku(text, False))

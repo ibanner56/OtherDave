@@ -3,7 +3,7 @@
 import sys
 import unittest
 
-sys.path.append("../commands")
+sys.path.append("../otherdave")
 
 loader = unittest.TestLoader()
 testSuite = loader.discover("test")
