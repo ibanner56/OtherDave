@@ -1,7 +1,7 @@
 import discord
 import logging
-from lib import dlog
-from lib import update
+from commands import dlog
+from commands import update
 
 # Configure client
 ver = "2.0.0, now proudly on python :snake:"

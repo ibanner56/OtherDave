@@ -7,8 +7,8 @@ sylf = open("./data/syllables.json")
 masterSyllables = json.load(sylf)
 infl = inflect.engine()
 
-async def detect(message, **kwargs):
-    words = re.split("\s", message.content)
+def parseHaiku(text, debug):
+    words = re.split("\s", text)
     count = 0
     lines = [False, False, False]
     result = "*"
@@ -54,10 +54,16 @@ async def detect(message, **kwargs):
         elif(count != 17):
             result += " "
 
-        if(kwargs.get("debug", False)):
-            await message.channel.send(debugResult)
+        if(debug):
+            return debugResult
         elif(count == 17):
             result += "*"
-            await message.channel.send(result)
+            return result
+        else:
+            return None
 
-print(infl.number_to_words("200s"))
+async def detect(message, **kwargs):
+    debug = kwargs.get("debug", False)
+    haiku = parseHaiku(message.content, debug)
+    if(haiku != None):
+        message.channel.send(haiku)
