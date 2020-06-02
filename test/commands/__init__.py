@@ -1,1 +1,1 @@
-# otherdave/test/commands/__init__.py
+# OtherDave/test/commands/__init__.py

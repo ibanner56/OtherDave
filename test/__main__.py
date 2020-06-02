@@ -1,4 +1,4 @@
-# otherdave/test/__main__.py
+# OtherDave/test/__main__.py
 
 import sys
 import unittest

@@ -1,3 +1,3 @@
-# /otherdave/otherdave/util/__init__.py
+# OtherDave/otherdave/util/__init__.py
 
 from .dlog import *
