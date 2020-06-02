@@ -37,7 +37,7 @@ def parseHaiku(text, debug):
             count += textstat.syllable_count(word)
 
         result += word
-        debugResult += word + " - " + count + "\n"
+        debugResult += word + " - " + str(count) + "\n"
 
         if(count == 5):
             lines[0] = True
