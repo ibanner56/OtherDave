@@ -11,3 +11,10 @@ class HaikuTestCase(unittest.TestCase):
     def test_isnothaiku(self):
         text = "This one isn't a haiku, stupid."
         self.assertIsNone(haiku.parseHaiku(text, False))
+
+    def test_isempty(self):
+        self.assertIsNone(haiku.parseHaiku("", False))
+    
+    def test_istoolong(self):
+        text = "This one is a test. This poem is just too long - it has too many words."
+        self.assertIsNone(haiku.parseHaiku(text, False))
