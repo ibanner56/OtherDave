@@ -18,3 +18,7 @@ class HaikuTestCase(unittest.TestCase):
     def test_istoolong(self):
         text = "This one is a test. This poem is just too long - it has too many words."
         self.assertIsNone(haiku.parseHaiku(text, False))
+
+    def test_withnumbers(self):
+        text = "This line has 5 words, but this next line has 7 - 1005"
+        self.assertIsNotNone(haiku.parseHaiku(text, False))

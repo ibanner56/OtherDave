@@ -15,17 +15,26 @@ def parseHaiku(text, debug):
     debugResult = ""
 
     for word in words:
+        # Strip punctuation and make sure we don't then have an empty token
         depunct = re.sub("[^\w\d]", "", word)
+        if(not depunct):
+            continue
 
         # Check for digits and properly split them out, 
 		# then convert from digit to text.
         if(re.match("\d+", word)):
-            splitDigits = re.match("[a-zA-Z]+|[0-9]+", word)
+            splitDigits = re.findall("[a-zA-Z]+|[0-9]+", word)
             stringifiedDigits = ""
 
             for i in range(0, len(splitDigits)):
-                # Do the whole digit thing here
-                print("")
+                # Assume a trailing s means that the digits before it 
+				# are pluralized, but only if it's the only other token
+                if(len(splitDigits) == 2 and i == 1 and splitDigits[i].lower() == "s"):
+                    stringifiedDigits += splitDigits[i]
+                elif(re.match("\d+", splitDigits[i])):
+                    stringifiedDigits += infl.number_to_words(splitDigits[i])
+                else:
+                    stringifiedDigits += " " + splitDigits[i]
         
             count += textstat.syllable_count(stringifiedDigits)
             
