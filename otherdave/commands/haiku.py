@@ -15,6 +15,8 @@ def parseHaiku(text, debug):
     debugResult = ""
 
     for word in words:
+        depunct = re.sub("[^\w\d]", "", word)
+
         # Check for digits and properly split them out, 
 		# then convert from digit to text.
         if(re.match("\d+", word)):
@@ -29,12 +31,12 @@ def parseHaiku(text, debug):
             
         # Check the Moby project first because robots are bad at english.
 		# If it's not in the dictionary, ask Zoltar.
-        elif(word in masterSyllables):
-            count += masterSyllables[word]
-        elif(word.lower() in masterSyllables):
-            count += masterSyllables[word.lower()]
+        elif(depunct in masterSyllables):
+            count += masterSyllables[depunct]
+        elif(depunct.lower() in masterSyllables):
+            count += masterSyllables[depunct.lower()]
         else:
-            count += textstat.syllable_count(word)
+            count += textstat.syllable_count(depunct)
 
         result += word
         debugResult += word + " - " + str(count) + "\n"
@@ -54,13 +56,13 @@ def parseHaiku(text, debug):
         elif(count != 17):
             result += " "
 
-        if(debug):
-            return debugResult
-        elif(count == 17):
-            result += "*"
-            return result
-        else:
-            return None
+    if(debug):
+        return debugResult
+    elif(count == 17):
+        result += "*"
+        return result
+    else:
+        return None
 
 async def detect(message, **kwargs):
     debug = kwargs.get("debug", False)

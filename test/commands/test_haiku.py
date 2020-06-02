@@ -4,7 +4,7 @@ from otherdave.commands import haiku
 class HaikuTestCase(unittest.TestCase):
     
     def test_ishaiku(self):
-        text = "This one is a test. This poem is a haiku. Refridgerator."
+        text = "This one is a test. This poem is a haiku. Refrigerator."
         print(haiku.parseHaiku(text, True))
         self.assertIsNotNone(haiku.parseHaiku(text, False))
 
