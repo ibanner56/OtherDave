@@ -1,5 +1,5 @@
 import subprocess
-from lib import dlog
+from commands import dlog
 
 def do(client, message, args):
     dlog.log(client, "Updating to latest OtherDave...")

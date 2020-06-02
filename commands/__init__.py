@@ -1,1 +1,1 @@
-# Stub for lib package
+# Stub for commands package
