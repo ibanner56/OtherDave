@@ -101,5 +101,6 @@ async def critique(client, message, args):
         with open("./data/saved/haikus.txt", "a") as hfile:
             hfile.write(last + "\n")
         memories.append(last)
+        await message.channel.send("*Alright then, sounds good,*\n*I'll keep that one for later.*\n*Refrigerator.*")
     else:
         await message.channel.send("*What you're asking for -*\n*I don't know how to do it.*\n*So piss off, nerd! Yeah!*")
