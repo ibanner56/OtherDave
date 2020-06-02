@@ -1,7 +1,8 @@
 import discord
 import logging
-from otherdave.util import dlog
+from otherdave.commands import haiku
 from otherdave.commands import update
+from otherdave.util import dlog
 
 # Configure client
 ver = "2.0.0, now proudly on python :snake:"
@@ -13,6 +14,7 @@ async def version(client, message, args):
 
 functions = {
     "ping": ping,
+    "haiku": haiku.critique,
     "update": update.do,
     "version": version
 }
@@ -37,12 +39,19 @@ async def on_message(message):
     
     content = message.content
     if content.startswith("!"):
-        command, *args = content.lstrip("!").split(" ", 1)
+        command, *args = content.lstrip("!").split(" ")
         logger.info(command + " - user: " + message.author.name)
         if command in functions:
             await functions[command](client, message, args)
         else:
             await message.channel.send("I'm sorry Dave, I'm afraid I can't do that.")
+
+    else:
+        await haiku.detect(message)
+
+        # otherdave is always listening...
+        with open("./data/markov/" + str(message.author.id) + ".txt", "a") as mfile:
+            mfile.write(message.content + "\n")
 
 if __name__ == "__main__":
     tokenFile = open("bot.tkn", "r")

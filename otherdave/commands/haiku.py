@@ -1,12 +1,16 @@
 import inflect
 import json
 import math
+import random
 import re
 import textstat
 
 sylf = open("./data/syllables.json")
 masterSyllables = json.load(sylf)
 infl = inflect.engine()
+last = None
+with open("./data/saved/haikus.txt", "r") as hfile:
+    memories = [line.rstrip("\n") for line in hfile]
 
 def parseHaiku(text, debug):
     words = re.split("\s", text)
@@ -74,12 +78,28 @@ def parseHaiku(text, debug):
         return debugResult
     elif(count == 17):
         result += "*"
+        last = result.replace("\\", "\\\\")
         return result
     else:
         return None
 
-async def detect(message, **kwargs):
-    debug = kwargs.get("debug", False)
-    haiku = parseHaiku(message.content, debug)
+async def detect(message):
+    haiku = parseHaiku(message.content, False)
     if(haiku != None):
-        message.channel.send(haiku)
+        await message.channel.send(haiku)
+
+async def debug(message, args):
+    haiku = parseHaiku(args, True)
+    await message.channel.send(haiku)
+
+async def critique(client, message, args):
+    if(len(args) == 0):
+        await message.channel.send(random.choice(memories))
+    elif(args[0] == "-debug"):
+        await debug(message, " ".join(args[1:]))
+    elif(args[0] == "-save" and last):
+        with open("./data/saved/haikus.txt", "a") as hfile:
+            hfile.write(last + "\n")
+        memories.append(last)
+    else:
+        await message.channel.send("*What you're asking for -*\n*I don't know how to do it.*\n*So piss off, nerd! Yeah!*")
