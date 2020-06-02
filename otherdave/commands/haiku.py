@@ -1,5 +1,6 @@
 import inflect
 import json
+import math
 import re
 import textstat
 
@@ -22,8 +23,8 @@ def parseHaiku(text, debug):
 
         # Check for digits and properly split them out, 
 		# then convert from digit to text.
-        if(re.match("\d+", word)):
-            splitDigits = re.findall("[a-zA-Z]+|[0-9]+", word)
+        if(re.match("\d+", depunct)):
+            splitDigits = re.findall("[a-zA-Z]+|[0-9]+", depunct)
             stringifiedDigits = ""
 
             for i in range(0, len(splitDigits)):
@@ -31,6 +32,10 @@ def parseHaiku(text, debug):
 				# are pluralized, but only if it's the only other token
                 if(len(splitDigits) == 2 and i == 1 and splitDigits[i].lower() == "s"):
                     stringifiedDigits += splitDigits[i]
+
+                    # Sneaky order-of-magnitudes
+                    if(re.match("^10*s$", depunct)):
+                        stringifiedDigits = stringifiedDigits.lstrip("one ")
                 elif(re.match("\d+", splitDigits[i])):
                     stringifiedDigits += infl.number_to_words(splitDigits[i])
                 else:

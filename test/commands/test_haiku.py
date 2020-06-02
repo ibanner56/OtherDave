@@ -22,3 +22,7 @@ class HaikuTestCase(unittest.TestCase):
     def test_withnumbers(self):
         text = "This line has 5 words, but this next line has 7 - 1005"
         self.assertIsNotNone(haiku.parseHaiku(text, False))
+
+    def test_fermiproblem(self):
+        text = "They come by the 10s... then the 100s, then more, and soon there's just 1000s"
+        self.assertIsNotNone(haiku.parseHaiku(text, False))
