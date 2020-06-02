@@ -10,7 +10,7 @@ masterSyllables = json.load(sylf)
 infl = inflect.engine()
 last = None
 with open("./data/saved/haikus.txt", "r") as hfile:
-    memories = [line.rstrip("\n") for line in hfile]
+    memories = [line.rstrip("\n").replace("\\n", "\n") for line in hfile]
 
 def parseHaiku(text, debug):
     words = re.split("\s", text)
@@ -78,7 +78,8 @@ def parseHaiku(text, debug):
         return debugResult
     elif(count == 17):
         result += "*"
-        last = result.replace("\\", "\\\\")
+        global last
+        last = result
         return result
     else:
         return None
@@ -99,7 +100,7 @@ async def critique(client, message, args):
         await debug(message, " ".join(args[1:]))
     elif(args[0] == "-save" and last):
         with open("./data/saved/haikus.txt", "a") as hfile:
-            hfile.write(last + "\n")
+            hfile.write(last.replace("\n", "\\n") + "\n")
         memories.append(last)
         await message.channel.send("*Alright then, sounds good,*\n*I'll keep that one for later.*\n*Refrigerator.*")
     else:
