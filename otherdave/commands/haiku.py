@@ -4,17 +4,27 @@ import math
 import random
 import re
 import textstat
+import uuid
 
+_badKeywords = "*The words that you seek,*\n*I simply don't remember.*\n*Did you spell them right?*"
 _correctionSuccess = "*I've taken your word*\n*that this word was not quite right,*\n*but now it should be.*"
 _correctionFailed = "*Corrections require*\n*a word and a whole number*\n*What'chu doin', fool?*"
+_emptyBuffer = "*I don't understand -*\n*we haven't said anything.*\n*Try again later.*"
+_emptyMemory = "*I don't remember*\n*any of your rad poems.*\n*Make one up instead.*"
+_forgetSuccess = "*Like fading sunset,*\n*those tired words now fade away.*\n*Eh...they weren't great.*"
 _savedHaiku = "*Alright then, sounds good,*\n*I'll keep that one for later.*\n*Refrigerator.*"
-_badSaveKeywords = "*The words that you seek,*\n*I simply don't remember.*\n*Did you spell them right?*"
 _unknownCritique = "*What you're asking for -*\n*I don't know how to do it.*\n*So piss off, nerd! Yeah!*"
 
+infl = inflect.engine()
 masterSyllables = pickledb.load("./data/syllables.db", True)
 memories = pickledb.load("./data/saved/haikus.db", True)
-infl = inflect.engine()
+
 lastCache = []
+memCache = []
+
+def flushCache():
+    lastCache.clear()
+    memCache.clear()
 
 def parseHaiku(text, debug):
     words = re.split("\s", text)
@@ -98,16 +108,47 @@ def correct(word, syllables):
         return False
 
 def save(keywords):
+    if(len(lastCache) == 0):
+        return _emptyBuffer
     if(keywords):
-        poem = next((last for last in lastCache.reverse if keywords in last), None)
+        poem = next((last for last in lastCache[::-1] if keywords in last), None)
         if(poem):
-            memories.set(len(memories.getall()), poem)
+            lastCache.remove(poem)
+            memories.set(str(uuid.uuid1()), poem)
         else:
-            return _badSaveKeywords
+            return _badKeywords
     else:
-        memories.set(len(memories.getall()), lastCache[-1])
+        memories.set(str(uuid.uuid1()), lastCache.pop())
     
     return _savedHaiku
+
+def recall():
+    memkeys = list(memories.getall())
+    if(len(memkeys) == 0):
+        return _emptyMemory
+    rkey = random.choice(memkeys)
+    rmem = memories.get(rkey)
+
+    while(len(memCache) > 10):
+        memCache.popleft()
+    memCache.append((rkey, rmem))
+
+    return rmem
+
+def forget(keywords):
+    if(len(memCache) == 0):
+        return _emptyBuffer
+    if(keywords):
+        memory = next((mem for mem in memCache[::-1] if keywords in mem[1]), None)
+        if(memory):
+            memCache.remove(memory)
+            memories.rem(memory[0])
+        else:
+            return _badKeywords
+    else:
+        memories.rem(memCache.pop()[0])
+    
+    return _forgetSuccess
 
 async def detect(message):
     haiku = parseHaiku(message.content, False)
@@ -116,7 +157,7 @@ async def detect(message):
 
 async def critique(client, message, args):
     if(len(args) == 0):
-        await message.channel.send(random.choice(memories))
+        await message.channel.send(recall())
     elif(args[0] == "-debug"):
         await message.channel.send(parseHaiku(" ".join(args[1:]), True))
     elif(args[0] == "-correct" and len(args) == 3):
@@ -126,5 +167,7 @@ async def critique(client, message, args):
             message.channel.send(_correctionFailed)
     elif(args[0] == "-save"):
         await message.channel.send(save(" ".join(args[1:])))
+    elif(args[0] == "-forget"):
+        await message.channel.send(forget(" ".join(args[1:])))
     else:
         await message.channel.send(_unknownCritique)
