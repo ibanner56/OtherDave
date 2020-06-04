@@ -15,7 +15,7 @@ with open("./data/saved/haikus.txt", "r") as hfile:
 def parseHaiku(text, debug):
     words = re.split("\s", text)
     count = 0
-    lines = [False, False, False]
+    lines = [False, False]
     result = "*"
     debugResult = ""
 
@@ -76,7 +76,7 @@ def parseHaiku(text, debug):
 
     if(debug):
         return debugResult
-    elif(count == 17):
+    elif(count == 17 and lines[0] and lines[1]):
         result += "*"
         global last
         last = result
