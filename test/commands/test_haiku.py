@@ -2,7 +2,6 @@ import unittest
 from otherdave.commands import haiku
 
 class HaikuTestCase(unittest.TestCase):
-    
     def test_ishaiku(self):
         text = "This one is a test. This poem is a haiku. Refrigerator."
         expected = "*This one is a test.*\n*This poem is a haiku.*\n*Refrigerator.*"
@@ -26,3 +25,12 @@ class HaikuTestCase(unittest.TestCase):
     def test_fermiproblem(self):
         text = "They come by the 10s... then the 100s, then more, and soon there's just 1000s"
         self.assertIsNotNone(haiku.parseHaiku(text, False))
+
+class CorrectHaikuTestCase(unittest.TestCase):
+    def test_correct(self):
+        self.assertTrue(haiku.correct("spork", "5"))
+        self.assertIsNotNone(haiku.parseHaiku("spork test spork test spork", False))
+        self.assertTrue(haiku.correct("spork", "1"))
+    
+    def test_badcorrect(self):
+        self.assertFalse(haiku.correct("spoon", "fork"))

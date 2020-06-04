@@ -1,16 +1,20 @@
 import inflect
-import json
+import pickledb
 import math
 import random
 import re
 import textstat
 
-sylf = open("./data/syllables.json")
-masterSyllables = json.load(sylf)
+_correctionSuccess = "*I've taken your word*\n*that this word was not quite right,*\n*but now it should be.*"
+_correctionFailed = "*Corrections require*\n*a word and a whole number*\n*What'chu doin', fool?*"
+_savedHaiku = "*Alright then, sounds good,*\n*I'll keep that one for later.*\n*Refrigerator.*"
+_badSaveKeywords = "*The words that you seek,*\n*I simply don't remember.*\n*Did you spell them right?*"
+_unknownCritique = "*What you're asking for -*\n*I don't know how to do it.*\n*So piss off, nerd! Yeah!*"
+
+masterSyllables = pickledb.load("./data/syllables.db", True)
+memories = pickledb.load("./data/saved/haikus.db", True)
 infl = inflect.engine()
-last = None
-with open("./data/saved/haikus.txt", "r") as hfile:
-    memories = [line.rstrip("\n").replace("\\n", "\n") for line in hfile]
+lastCache = []
 
 def parseHaiku(text, debug):
     words = re.split("\s", text)
@@ -49,10 +53,10 @@ def parseHaiku(text, debug):
             
         # Check the Moby project first because robots are bad at english.
 		# If it's not in the dictionary, ask Zoltar.
-        elif(depunct in masterSyllables):
-            count += masterSyllables[depunct]
-        elif(depunct.lower() in masterSyllables):
-            count += masterSyllables[depunct.lower()]
+        elif(masterSyllables.get(depunct)):
+            count += masterSyllables.get(depunct)
+        elif(masterSyllables.get(depunct.lower())):
+            count += masterSyllables.get(depunct.lower())
         else:
             count += textstat.syllable_count(depunct)
 
@@ -78,30 +82,49 @@ def parseHaiku(text, debug):
         return debugResult
     elif(count == 17 and lines[0] and lines[1]):
         result += "*"
-        global last
-        last = result
+        while(len(lastCache) > 10):
+            lastCache.popleft()
+        lastCache.append(result)
         return result
     else:
         return None
+
+def correct(word, syllables):
+    try:
+        syllables = int(syllables)
+        masterSyllables.set(word, syllables)
+        return True
+    except ValueError:
+        return False
+
+def save(keywords):
+    if(keywords):
+        poem = next((last for last in lastCache.reverse if keywords in last), None)
+        if(poem):
+            memories.set(len(memories.getall()), poem)
+        else:
+            return _badSaveKeywords
+    else:
+        memories.set(len(memories.getall()), lastCache[-1])
+    
+    return _savedHaiku
 
 async def detect(message):
     haiku = parseHaiku(message.content, False)
     if(haiku != None):
         await message.channel.send(haiku)
 
-async def debug(message, args):
-    haiku = parseHaiku(args, True)
-    await message.channel.send(haiku)
-
 async def critique(client, message, args):
     if(len(args) == 0):
         await message.channel.send(random.choice(memories))
     elif(args[0] == "-debug"):
-        await debug(message, " ".join(args[1:]))
-    elif(args[0] == "-save" and last):
-        with open("./data/saved/haikus.txt", "a") as hfile:
-            hfile.write(last.replace("\n", "\\n") + "\n")
-        memories.append(last)
-        await message.channel.send("*Alright then, sounds good,*\n*I'll keep that one for later.*\n*Refrigerator.*")
+        await message.channel.send(parseHaiku(" ".join(args[1:]), True))
+    elif(args[0] == "-correct" and len(args) == 3):
+        if(correct(args[1], args[2])):
+            message.channel.send(_correctionSuccess)
+        else:
+            message.channel.send(_correctionFailed)
+    elif(args[0] == "-save"):
+        await message.channel.send(save(" ".join(args[1:])))
     else:
-        await message.channel.send("*What you're asking for -*\n*I don't know how to do it.*\n*So piss off, nerd! Yeah!*")
+        await message.channel.send(_unknownCritique)
