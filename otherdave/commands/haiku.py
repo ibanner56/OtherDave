@@ -150,6 +150,13 @@ def forget(keywords):
     
     return _forgetSuccess
 
+def debug(poem):
+    if(poem):
+        return parseHaiku(poem, True)
+    else:
+        last = lastCache[-1].replace("*", "").replace("\n", " ")
+        return parseHaiku(last, True)
+
 async def detect(message):
     haiku = parseHaiku(message.content, False)
     if(haiku != None):

@@ -30,6 +30,19 @@ class HaikuTestCase(unittest.TestCase):
         text = "They come by the 10s... then the 100s, then more, and soon there's just 1000s"
         self.assertIsNotNone(haiku.parseHaiku(text, False))
 
+class DebugHaikuTestCase(unittest.TestCase):
+    def tearDown(self):
+        haiku.flushCache()
+        haiku.memories.deldb()
+
+    def test_debug(self):
+        self.assertEqual(haiku.debug("Spork test"), "Spork - 1\ntest - 2\n")
+
+    def test_debuglast(self):
+        text = "This one is a test. This poem is a haiku. Refrigerator."
+        expected = "This - 1\none - 2\nis - 3\na - 4\ntest. - 5\nThis - 6\npoem - 8\nis - 9\na - 10\nhaiku. - 12\nRefrigerator. - 17\n"
+        self.assertIsNotNone(haiku.parseHaiku(text, False))
+        self.assertEqual(haiku.debug(""), expected)
 
 class CorrectHaikuTestCase(unittest.TestCase):
     def tearDown(self):
