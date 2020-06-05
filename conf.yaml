@@ -1,0 +1,12 @@
+version: "2.0.0, now proudly on python :snake:"
+
+emotions:
+  lol: clown~1
+  mario: hop_happy
+  satan: devil
+
+drunkdraw:
+  date: null,
+  time: null,
+  theme: null,
+  references: false

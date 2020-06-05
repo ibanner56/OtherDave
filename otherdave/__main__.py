@@ -1,16 +1,19 @@
 import discord
 import logging
+import yaml
 from otherdave.commands import haiku
 from otherdave.commands import update
 from otherdave.util import dlog
+from otherdave.util import triggers
 
 # Configure client
-ver = "2.0.0, now proudly on python :snake:"
+with open("./conf.yaml") as conf:
+    config = yaml.load(conf, Loader=yaml.BaseLoader)
 client = discord.Client()
 async def ping(client, message, args):
     await message.channel.send("pong")
 async def version(client, message, args):
-    await message.channel.send("OtherDave is running version " + ver)
+    await message.channel.send("OtherDave is running version " + str(config["version"]))
 
 functions = {
     "ping": ping,
@@ -48,6 +51,8 @@ async def on_message(message):
 
     else:
         await haiku.detect(message)
+        await triggers.react(message)
+        await triggers.pedant(message)
 
         # otherdave is always listening...
         with open("./data/markov/" + str(message.author.id) + ".txt", "a") as mfile:

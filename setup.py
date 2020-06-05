@@ -2,9 +2,10 @@ from setuptools import setup
 
 requirements = [
     "discord.py>=1.3.3",
-    "textstat>=0.6.2",
     "inflect>=4.1",
-    "pickleDB>=0.9.2"
+    "pickleDB>=0.9.2",
+    "PyYAML>=5.3.1",
+    "textstat>=0.6.2"
 ]
 
 setup(
