@@ -1,12 +1,13 @@
+version: '2.0.0, now proudly on python :snake:'
 drunkdraw:
   date: null
   locales:
+    Pacific: America/Los_Angeles
+    Mountain: America/Denver
     Central: America/Chicago
     Eastern: America/New_York
     Grenich: UTC
     London: Europe/London
-    Mountain: America/Denver
-    Pacific: America/Los_Angeles
   references: false
   theme: null
   time: null
@@ -14,4 +15,3 @@ emotions:
   lol: clown
   mario: hop_happy
   satan: devil
-version: '2.0.0, now proudly on python :snake:'

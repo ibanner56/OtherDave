@@ -42,7 +42,7 @@ def updateDraw(author, args):
 
     config["drunkdraw"] = draw
     with open("./conf.yaml", "w") as conf:
-        yaml.dump(config, conf)
+        yaml.dump(config, conf, sort_keys=False)
 
     return "Got it, thanks " + author + "!"
 
