@@ -6,7 +6,7 @@ with open("./conf.yaml") as conf:
 
 async def react(message):
     for emotion in config["emotions"]:
-        if(emotion in message):
+        if(emotion in message.content):
             emoji = discord.utils.get(message.guild.emojis, name=emotion)
             if emoji:
                 message.add_reaction(emoji)
