@@ -1,6 +1,7 @@
 import discord
 import logging
 import yaml
+from otherdave.commands import drunkdraw
 from otherdave.commands import haiku
 from otherdave.commands import update
 from otherdave.util import dlog
@@ -16,8 +17,9 @@ async def version(client, message, args):
     await message.channel.send("OtherDave is running version " + str(config["version"]))
 
 functions = {
-    "ping": ping,
+    "drunkdraw": drunkdraw.doodle,
     "haiku": haiku.critique,
+    "ping": ping,
     "update": update.do,
     "version": version
 }

@@ -1,6 +1,7 @@
 from setuptools import setup
 
 requirements = [
+    "python-dateutil>=2.8.1",
     "discord.py>=1.3.3",
     "inflect>=4.1",
     "pickleDB>=0.9.2",
