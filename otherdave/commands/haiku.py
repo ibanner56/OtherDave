@@ -166,7 +166,7 @@ async def critique(client, message, args):
     if(len(args) == 0):
         await message.channel.send(recall())
     elif(args[0] == "-debug"):
-        await message.channel.send(parseHaiku(" ".join(args[1:]), True))
+        await message.channel.send(debug(" ".join(args[1:])))
     elif(args[0] == "-correct" and len(args) == 3):
         if(correct(args[1], args[2])):
             message.channel.send(_correctionSuccess)
