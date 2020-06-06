@@ -1,10 +1,9 @@
 import discord
 import logging
 import yaml
-from otherdave.commands import drunkdraw
 from otherdave.commands import haiku
+from otherdave.commands.drunkdraw import drunkdraw
 from otherdave.commands.respect import respect
-from otherdave.commands import update
 from otherdave.util import dlog
 from otherdave.util import triggers
 
@@ -18,11 +17,10 @@ async def version(client, message, args):
     await message.channel.send("OtherDave is running version " + str(config["version"]))
 
 functions = {
-    "drunkdraw": drunkdraw.doodle,
+    "drunkdraw": drunkdraw,
     "haiku": haiku.critique,
     "ping": ping,
     "respect": respect,
-    "update": update.do,
     "version": version
 }
 

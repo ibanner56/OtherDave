@@ -99,7 +99,7 @@ def getTimeZones(value):
 
     return timeString
 
-async def doodle(client, message, args):
+async def drunkdraw(client, message, args):
     if(len(args) == 0):
         await message.channel.send(getDraw())
     else:
