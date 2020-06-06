@@ -1,4 +1,4 @@
-from otherdave.util.complimenter import Complimenter
+from otherdave.util.madlib import Complimenter
 
 OtherDavesGraphicRespect = Complimenter()
 

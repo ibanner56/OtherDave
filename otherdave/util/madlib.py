@@ -5,7 +5,27 @@ import re
 
 infl = inflect.engine()
 
-class Complimenter():
+class MadLibber():
+    def make(self):
+        template = self.actions["template"]()
+        tokens = template.split(" ")
+        result = ""
+
+        for token in tokens:
+            action = re.match("\{\{(.+?)\}\}", token)
+            if(action):
+                if(action[1] in self.actions):
+                    result += self.actions[action[1]]()
+                else:
+                    result += action[0]
+            else:
+                result += token
+
+            result += " "
+
+        return result.strip()
+
+class Complimenter(MadLibber):
     def __init__(self):
         with open("./data/respect/adjectives.json") as adf:
             self.adjectives = json.load(adf)
@@ -30,22 +50,3 @@ class Complimenter():
             "thing" : lambda : random.choice(self.things),
             "template" : lambda : random.choice(self.templates)
         }
-    
-    def make(self):
-        template = self.actions["template"]()
-        tokens = template.split(" ")
-        result = ""
-
-        for token in tokens:
-            action = re.match("\{\{(.+?)\}\}", token)
-            if(action):
-                if(action in self.actions):
-                    result += self.actions[action[1]]()
-                else:
-                    result += action[0]
-            else:
-                result += token
-
-            result += " "
-
-        return result.strip()
