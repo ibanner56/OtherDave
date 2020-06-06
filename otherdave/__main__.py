@@ -57,7 +57,7 @@ async def on_message(message):
         await triggers.pedant(message)
 
         # otherdave is always listening...
-        with open("./data/markov/" + str(message.author.id) + ".txt", "a") as mfile:
+        with open("./data/markov/" + str(message.author.id) + ".txt", "a", encoding="utf-8") as mfile:
             mfile.write(message.content + "\n")
 
 if __name__ == "__main__":
