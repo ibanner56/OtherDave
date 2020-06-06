@@ -3,6 +3,7 @@ import logging
 import yaml
 from otherdave.commands import drunkdraw
 from otherdave.commands import haiku
+from otherdave.commands.respect import respect
 from otherdave.commands import update
 from otherdave.util import dlog
 from otherdave.util import triggers
@@ -20,6 +21,7 @@ functions = {
     "drunkdraw": drunkdraw.doodle,
     "haiku": haiku.critique,
     "ping": ping,
+    "respect": respect,
     "update": update.do,
     "version": version
 }
