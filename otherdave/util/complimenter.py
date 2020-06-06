@@ -37,7 +37,7 @@ class Complimenter():
         result = ""
 
         for token in tokens:
-            action = re.match("\{\{ (.+?) \}\}", token)
+            action = re.match("\{\{(.+?)\}\}", token)
             if(action):
                 if(action in self.actions):
                     result += self.actions[action[1]]()
