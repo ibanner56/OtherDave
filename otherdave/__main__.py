@@ -5,7 +5,7 @@ from otherdave.commands import haiku
 from otherdave.commands.drunkdraw import drunkdraw
 from otherdave.commands.prompt import prompt
 from otherdave.commands.respect import respect
-from otherdave.util import dlog
+from otherdave.util.dlog import dlog
 from otherdave.util import triggers
 
 # Configure client
@@ -37,7 +37,7 @@ logger.addHandler(handler)
 @client.event
 async def on_ready():
     logger.debug("Logged in as {0.user}".format(client))
-    await dlog.log(client, "Hi, I'm OtherDave and I'm BACK FOR BUSINESS.")
+    await dlog(client, "Hi, I'm OtherDave and I'm BACK FOR BUSINESS.")
 
 @client.event
 async def on_message(message):
