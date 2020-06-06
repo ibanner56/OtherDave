@@ -6,7 +6,7 @@ from otherdave.commands.drunkdraw import drunkdraw
 from otherdave.commands.prompt import prompt
 from otherdave.commands.respect import respect
 from otherdave.util.dlog import dlog
-from otherdave.util import triggers
+from otherdave.util.triggers import *
 
 # Configure client
 with open("./conf.yaml") as conf:
@@ -55,8 +55,8 @@ async def on_message(message):
 
     else:
         await haiku.detect(message)
-        await triggers.react(message)
-        await triggers.pedant(message)
+        await react(message)
+        await pedant(message)
 
         # otherdave is always listening...
         with open("./data/markov/" + str(message.author.id) + ".txt", "a", encoding="utf-8") as mfile:
