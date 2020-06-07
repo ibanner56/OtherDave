@@ -4,8 +4,10 @@ import re
 loads = {}
 
 def listen(message):
-    user = message.author.id
+    if(len(message.split(" ")) < 4):
+        return
 
+    user = message.author.id
     if(user in loads):
         loads[user].append(message.content)
 
@@ -25,9 +27,10 @@ async def mimic(client, message, args):
             with open(filename, "r", encoding="utf-8") as mfile:
                 loads[user] = mfile.read()
 
-        model = markovify.Text(loads[user], state_size=3, well_formed=True)
+        model = markovify.Text(loads[user], well_formed=True)
 
         for i in range(3):
-            await message.channel.send()
+            sentence = model.make_sentence(tries=1000000)
+            await message.channel.send(sentence)
     
         
