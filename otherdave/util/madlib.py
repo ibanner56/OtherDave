@@ -80,7 +80,7 @@ class Prompter(MadLibber):
         with open("./data/prompt/adjectives.json", "w") as adf:
             json.dump(adf)
 
-    def remNoun(self, adjective):
+    def remAdjective(self, adjective):
         if(adjective in self.adjectives):
             self.adjectives.remove(adjective)
             with open("./data/prompt/adjectives.json", "w") as adf:
