@@ -1,4 +1,5 @@
 import markovify
+import re
 
 loads = {}
 
@@ -15,7 +16,7 @@ def listen(message):
 async def mimic(client, message, args):
     async with message.channel.typing():
         if(args):
-            user = args[0]
+            user = re.sub("<@!*|>", "", args[0])
         else:
             user = message.author.id
 
