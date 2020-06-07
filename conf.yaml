@@ -1,0 +1,22 @@
+version: '2.0.0, now proudly on python :snake:'
+drunkdraw:
+  date: null
+  locales:
+    Pacific: America/Los_Angeles
+    Mountain: America/Denver
+    Central: America/Chicago
+    Eastern: America/New_York
+    Grenich: UTC
+    London: Europe/London
+  references: false
+  theme: null
+  time: null
+emotions:
+  but: \U0001F351
+  cool: \U0001F952
+  lol: clown
+  love: feel_heart
+  garbage: obj_fish
+  mario: hop_happy
+  satan: devil
+  yay: \U0001F389
