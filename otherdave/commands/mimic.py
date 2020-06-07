@@ -9,7 +9,7 @@ def listen(message):
 
     user = message.author.id
     if(user in loads):
-        loads[user].append(message.content)
+        loads[user] += "\n" + message.content
 
     filename = "./data/markov/" + str(message.author.id) + ".txt"
     with open(filename, "a", encoding="utf-8") as mfile:
