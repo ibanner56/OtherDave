@@ -1,14 +1,8 @@
+import json
 from setuptools import setup
 
-requirements = [
-    "discord.py>=1.3.3",
-    "inflect>=4.1",
-    "markovify>=0.8.0",
-    "pickleDB>=0.9.2",
-    "python-dateutil>=2.8.1",
-    "PyYAML>=5.3.1",
-    "textstat>=0.6.2"
-]
+with open("./requirements.txt") as rf:
+    requirements = json.load(rf)
 
 setup(
     author="ibanner56",
