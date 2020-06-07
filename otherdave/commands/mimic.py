@@ -4,7 +4,7 @@ import re
 loads = {}
 
 def listen(message):
-    if(len(message.split(" ")) < 4):
+    if(len(message.content.split(" ")) < 4):
         return
 
     user = message.author.id
