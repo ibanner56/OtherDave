@@ -3,6 +3,7 @@ import logging
 import yaml
 from otherdave.commands import haiku
 from otherdave.commands.drunkdraw import drunkdraw
+from otherdave.commands.mimic import *
 from otherdave.commands.prompt import prompt
 from otherdave.commands.respect import respect
 from otherdave.util.dlog import dlog
@@ -20,6 +21,7 @@ async def version(client, message, args):
 functions = {
     "drunkdraw": drunkdraw,
     "haiku": haiku.critique,
+    "mimic": mimic,
     "ping": ping,
     "prompt": prompt,
     "respect": respect,
@@ -59,8 +61,7 @@ async def on_message(message):
         await pedant(message)
 
         # otherdave is always listening...
-        with open("./data/markov/" + str(message.author.id) + ".txt", "a", encoding="utf-8") as mfile:
-            mfile.write(message.content + "\n")
+        listen(message)
 
 if __name__ == "__main__":
     tokenFile = open("bot.tkn", "r")
