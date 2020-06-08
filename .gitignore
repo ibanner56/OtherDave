@@ -6,4 +6,5 @@
 data/markov
 logs/
 __pycache__
+*.pyc
 *.tkn
