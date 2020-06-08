@@ -78,9 +78,9 @@ def getDraw():
     if(draw["theme"]):
         base += "The theme is " + draw["theme"] + ".\n"
         if(draw["references"]):
-            base += "Just this once, references ARE allowed."
+            base += "Just this once, references ARE allowed.\n"
         else:
-            base += "As always, references are NOT allowed"
+            base += "As always, references are NOT allowed.\n"
     else:
         base += "The theme is still tbd.\n"
 

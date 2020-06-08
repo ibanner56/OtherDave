@@ -1,8 +1,9 @@
 import json
 from setuptools import setup
 
-with open("./requirements.txt") as rf:
-    requirements = json.load(rf)
+requirements = []
+with open('requirements.txt') as rf:
+  requirements = rf.read().splitlines()
 
 setup(
     author="ibanner56",
