@@ -12,7 +12,7 @@ drunkdraw:
   theme: null
   time: null
 emotions:
-  but: "\U0001F351"
+  butt: "\U0001F351"
   cool: "\U0001F952"
   lol: clown
   love: feel_heart
