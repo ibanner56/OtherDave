@@ -28,4 +28,4 @@ jobs:
           username: ${{ secrets.REMOTE_USER }}
           password: ${{ secrets.REMOTE_PASSWD }}
           port: ${{ secrets.REMOTE_PORT }}
-          script: systemctl restart otherdave
+          script: sudo systemctl restart otherdave
