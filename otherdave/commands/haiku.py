@@ -169,9 +169,9 @@ async def critique(client, message, args):
         await message.channel.send(debug(" ".join(args[1:])))
     elif(args[0] == "-correct" and len(args) == 3):
         if(correct(args[1], args[2])):
-            message.channel.send(_correctionSuccess)
+            await message.channel.send(_correctionSuccess)
         else:
-            message.channel.send(_correctionFailed)
+            await message.channel.send(_correctionFailed)
     elif(args[0] == "-save"):
         await message.channel.send(save(" ".join(args[1:])))
     elif(args[0] == "-forget"):

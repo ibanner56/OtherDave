@@ -12,11 +12,13 @@ drunkdraw:
   theme: null
   time: null
 emotions:
-  but: \U0001F351
-  cool: \U0001F952
+  burrito: "\U0001F32F"
+  butt: "\U0001F351"
+  cool: "\U0001F952"
+  garbage: obj_fish
   lol: clown
   love: feel_heart
-  garbage: obj_fish
   mario: hop_happy
   satan: devil
-  yay: \U0001F389
+  spicy: "\U0001F336"
+  yay: "\U0001F389"
