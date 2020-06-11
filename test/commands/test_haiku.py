@@ -2,6 +2,10 @@ import unittest
 from otherdave.commands import haiku
 
 class HaikuTestCase(unittest.TestCase):
+    def setUp(self):
+        haiku.masterSyllables.set("haiku", 2)
+        haiku.masterSyllables.set("many", 2)
+
     def tearDown(self):
         haiku.flushCache()
         haiku.memories.deldb()
@@ -31,6 +35,9 @@ class HaikuTestCase(unittest.TestCase):
         self.assertIsNotNone(haiku.parseHaiku(text, False))
 
 class DebugHaikuTestCase(unittest.TestCase):
+    def setUp(self):
+        haiku.masterSyllables.set("haiku", 2)
+
     def tearDown(self):
         haiku.flushCache()
         haiku.memories.deldb()
@@ -45,6 +52,9 @@ class DebugHaikuTestCase(unittest.TestCase):
         self.assertEqual(haiku.debug(""), expected)
 
 class CorrectHaikuTestCase(unittest.TestCase):
+    def setUp(self):
+        haiku.masterSyllables.set("haiku", 2)
+
     def tearDown(self):
         haiku.flushCache()
         haiku.memories.deldb()
@@ -59,6 +69,9 @@ class CorrectHaikuTestCase(unittest.TestCase):
 
 
 class SaveHaikuTestCase(unittest.TestCase):
+    def setUp(self):
+        haiku.masterSyllables.set("haiku", 2)
+
     def tearDown(self):
         haiku.flushCache()
         haiku.memories.deldb()
@@ -91,6 +104,9 @@ class SaveHaikuTestCase(unittest.TestCase):
         self.assertEqual(haiku.save(""), haiku._emptyBuffer)
 
 class ForgetHaikuTestCase(unittest.TestCase):
+    def setUp(self):
+        haiku.masterSyllables.set("haiku", 2)
+
     def tearDown(self):
         haiku.flushCache()
         haiku.memories.deldb()
