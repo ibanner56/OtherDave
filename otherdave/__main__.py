@@ -20,6 +20,7 @@ async def ping(client, message, args):
     await message.channel.send("pong")
 
 async def quiet(client, message, args):
+    global quietTime
     try:
         min = 5
         if(len(args)):
