@@ -1,6 +1,7 @@
 import discord
 import logging
 import yaml
+from datetime import *
 from otherdave.commands import haiku
 from otherdave.commands.drunkdraw import drunkdraw
 from otherdave.commands.mimic import *
@@ -13,8 +14,23 @@ from otherdave.util.triggers import *
 with open("./conf.yaml") as conf:
     config = yaml.load(conf, Loader=yaml.BaseLoader)
 client = discord.Client()
+quietTime = None
+
 async def ping(client, message, args):
     await message.channel.send("pong")
+
+async def quiet(client, message, args):
+    try:
+        min = 5
+        if(len(args)):
+            min = int(args[0])
+
+        quietTime = datetime.now() + timedelta(minutes=min)
+        await message.channel.send("Got it, I'll keep quiet for " + min + " minutes.")
+    except:
+        await message.channel.send("Sorry, not sure how long that is...defaulting to 5 min")
+        quietTime = datetime.now() + timedelta(minutes=5)
+
 async def version(client, message, args):
     await message.channel.send("OtherDave is running version " + str(config["version"]))
 
@@ -24,6 +40,7 @@ functions = {
     "mimic": mimic,
     "ping": ping,
     "prompt": prompt,
+    "quiet": quiet,
     "respect": respect,
     "version": version
 }
@@ -56,9 +73,14 @@ async def on_message(message):
             await message.channel.send("I'm sorry Dave, I'm afraid I can't do that.")
 
     else:
-        await haiku.detect(message)
-        await react(message)
-        await pedant(message)
+        global quietTime
+        if(datetime.now() > quietTime):
+            quietTime = None
+
+        if(not quietTime):
+            await haiku.detect(message)
+            await react(message)
+            await pedant(message)
 
         # otherdave is always listening...
         listen(message)
