@@ -1,6 +1,5 @@
-version: '2.0.0, now proudly on python :snake:'
+version: '2.0.1, now proudly on python :snake:'
 drunkdraw:
-  date: null
   locales:
     Pacific: America/Los_Angeles
     Mountain: America/Denver
@@ -8,17 +7,14 @@ drunkdraw:
     Eastern: America/New_York
     Grenich: UTC
     London: Europe/London
-  references: false
-  theme: null
-  time: null
 emotions:
-  burrito: "\U0001F32F"
   butt: "\U0001F351"
   cool: "\U0001F952"
   garbage: obj_fish
   lol: clown
   love: feel_heart
   mario: hop_happy
+  neato: "\U0001F32F"
   satan: devil
   spicy: "\U0001F336"
   yay: "\U0001F389"
