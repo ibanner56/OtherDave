@@ -17,7 +17,7 @@ _unknownCritique = "*What you're asking for -*\n*I don't know how to do it.*\n*S
 
 infl = inflect.engine()
 masterSyllables = pickledb.load("./data/syllables.db", True)
-memories = pickledb.load("./data/saved/haikus.db", True)
+memories = pickledb.load("./data/haikus.db", True)
 
 lastCache = []
 memCache = []
