@@ -26,7 +26,7 @@ async def quiet(client, message, args):
             min = int(args[0])
 
         quietTime = datetime.now() + timedelta(minutes=min)
-        await message.channel.send("Got it, I'll keep quiet for " + min + " minutes.")
+        await message.channel.send("Got it, I'll keep quiet for " + args[0] + " minutes.")
     except:
         await message.channel.send("Sorry, not sure how long that is...defaulting to 5 min")
         quietTime = datetime.now() + timedelta(minutes=5)
