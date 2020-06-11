@@ -74,7 +74,7 @@ async def on_message(message):
 
     else:
         global quietTime
-        if(not quietTime and datetime.now() > quietTime):
+        if(quietTime and datetime.now() > quietTime):
             quietTime = None
 
         if(not quietTime):
