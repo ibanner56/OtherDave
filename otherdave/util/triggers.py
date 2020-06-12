@@ -1,4 +1,5 @@
 import discord
+import random
 import yaml
 
 with open("./conf.yaml") as conf:
@@ -12,6 +13,9 @@ async def react(message):
                 emoji = discord.utils.get(message.guild.emojis, name=config["emotions"][emotion])
             if emoji:
                 await message.add_reaction(emoji)
+            elif(random.randrange(100) > 99):
+                # Deploy random banjo
+                await message.add_reaction("\U0001FA95")
 
 async def pedant(message):
     content = message.content.lower()
