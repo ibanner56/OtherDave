@@ -1,4 +1,5 @@
 import markovify
+import random
 import re
 
 loads = {}
@@ -30,7 +31,7 @@ async def mimic(client, message, args):
         model = markovify.Text(loads[user], well_formed=True)
 
         for i in range(3):
-            sentence = model.make_sentence(tries=1000000)
+            sentence = model.make_sentence(tries=1000000, max_words=random.randint(4, 40))
             await message.channel.send(sentence)
     
         

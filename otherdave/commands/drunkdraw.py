@@ -1,3 +1,4 @@
+import pickledb
 import yaml
 from datetime import *
 from dateutil.parser import *
@@ -9,9 +10,10 @@ pttzinfo = {
     "PST": gettz("America/Los_Angeles")
 }
 default_date = datetime.combine(datetime.now(), time(0, tzinfo=gettz("America/Los_Angeles")))
+drawDB = pickledb.load("./data/dd.db", True)
 with open("./conf.yaml") as conf:
     config = yaml.load(conf, Loader=yaml.FullLoader)
-    draw = config["drunkdraw"]
+    drawConf = config["drunkdraw"]
 
 def updateDraw(author, args):
     if(author != "Isaac" and author != "Mercworks"):
@@ -31,24 +33,20 @@ def updateDraw(author, args):
         param = param.strip()
 
         if(flag == "-date"):
-            draw["date"] = param
+            drawDB.set("date", param)
         elif(flag == "-time"):
-            draw["time"] = param
+            drawDB.set("time", param)
         elif(flag == "-theme"):
-            draw["theme"] = param
+            drawDB.set("theme", param)
         elif(flag == "-references"):
-            draw["references"] = param == "true"
+            drawDB.set("references", param == "true")
         elif(flag == "-reset"):
-            draw["date"] = None
-            draw["time"] = None
-            draw["theme"] = None
-            draw["references"] = False
+            drawDB.set("date", None)
+            drawDB.set("time", None)
+            drawDB.set("theme", None)
+            drawDB.set("references", False)
         else:
             return "Sorry, I don't understand."
-
-    config["drunkdraw"] = draw
-    with open("./conf.yaml", "w") as conf:
-        yaml.dump(config, conf, sort_keys=False)
 
     return "Got it, thanks " + author + "!"
 
@@ -56,9 +54,9 @@ def getDraw():
     base = "The next drunkdraw is "
     drawdate = None
 
-    if(draw["date"]):
-        base += draw["date"] + " "
-        drawdate = parse(draw["date"])
+    if(drawDB.get("date")):
+        base += drawDB.get("date") + " "
+        drawdate = parse(drawDB.get("date"))
     else:
         today = datetime.today()
         drawdate = date(today.year, today.month, 1)
@@ -74,16 +72,16 @@ def getDraw():
     base += "at "
 
     timeValue = None
-    if(draw["time"]):
-        timeValue = draw["time"]
+    if(drawDB.get("time")):
+        timeValue = drawDB.get("time")
     else:
         timeValue = "3:00 pm PT"
 
     base += timeValue + ". "
 
-    if(draw["theme"]):
-        base += "The theme is " + draw["theme"] + ".\n"
-        if(draw["references"]):
+    if(drawDB.get("theme")):
+        base += "The theme is " + drawDB.get("theme") + ".\n"
+        if(drawDB.get("references")):
             base += "Just this once, references ARE allowed.\n"
         else:
             base += "As always, references are NOT allowed.\n"
@@ -99,9 +97,9 @@ def getTimeZones(value):
     timeString = "Adjusted times:"
     parsedTime = parse(value, tzinfos=pttzinfo)
 
-    for locale in draw["locales"]:
+    for locale in drawConf["locales"]:
         timeString += "\n" + locale + " - " 
-        timeString += parsedTime.astimezone(gettz(draw["locales"][locale])).strftime("%I:%M %p %Z")
+        timeString += parsedTime.astimezone(gettz(drawConf["locales"][locale])).strftime("%I:%M %p %Z")
 
     return timeString
 
