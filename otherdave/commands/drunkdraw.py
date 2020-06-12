@@ -4,6 +4,12 @@ from datetime import *
 from dateutil.parser import *
 from dateutil.tz import *
 
+pttzinfo = {
+    "PT": gettz("America/Los_Angeles"),
+    "PDT": gettz("America/Los_Angeles"), 
+    "PST": gettz("America/Los_Angeles")
+}
+default_date = datetime.combine(datetime.now(), time(0, tzinfo=gettz("America/Los_Angeles")))
 drawDB = pickledb.load("./data/dd.db", True)
 with open("./conf.yaml") as conf:
     config = yaml.load(conf, Loader=yaml.FullLoader)
@@ -69,7 +75,7 @@ def getDraw():
     if(drawDB.get("time")):
         timeValue = drawDB.get("time")
     else:
-        timeValue = "3:00 pm"
+        timeValue = "3:00 pm PT"
 
     base += timeValue + ". "
 
@@ -83,13 +89,13 @@ def getDraw():
         base += "The theme is still tbd.\n"
 
     base += "We are currently indulging in the velvet caress of Satan here: https://whereby.com/mercworks"
-    base += "\n\n" + getTimeZones(drawdate.strftime("%Y-%m-%d") + " " + parse(timeValue, tzinfos=[gettz("America/Los_Angeles")]).strftime("%H:%M %Z"))
+    base += "\n\n" + getTimeZones(drawdate.strftime("%Y-%m-%d") + " " + parse(timeValue, tzinfos=pttzinfo, default=default_date).strftime("%H:%M %Z"))
 
     return base    
 
 def getTimeZones(value):
     timeString = "Adjusted times:"
-    parsedTime = parse(value, tzinfos=[gettz("America/Los_Angeles")])
+    parsedTime = parse(value, tzinfos=pttzinfo)
 
     for locale in drawConf["locales"]:
         timeString += "\n" + locale + " - " 
