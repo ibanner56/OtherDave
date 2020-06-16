@@ -7,7 +7,6 @@ import textstat
 import uuid
 import yaml
 from collections import deque
-from itertools import islice
 
 _badKeywords = "*The words that you seek,*\n*I simply don't remember.*\n*Did you spell them right?*"
 _correctionSuccess = "*I've taken your word*\n*that this word was not quite right,*\n*but now it should be.*"
