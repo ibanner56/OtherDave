@@ -5,6 +5,8 @@ import random
 import re
 import textstat
 import uuid
+from collections import deque
+from itertools import islice
 
 _badKeywords = "*The words that you seek,*\n*I simply don't remember.*\n*Did you spell them right?*"
 _correctionSuccess = "*I've taken your word*\n*that this word was not quite right,*\n*but now it should be.*"
@@ -19,8 +21,8 @@ infl = inflect.engine()
 masterSyllables = pickledb.load("./data/syllables.db", True)
 memories = pickledb.load("./data/haikus.db", True)
 
-lastCache = []
-memCache = []
+lastCache = deque(maxlen=10)
+memCache = deque(maxlen=10)
 
 def flushCache():
     lastCache.clear()
@@ -92,8 +94,6 @@ def parseHaiku(text, debug):
         return debugResult
     elif(count == 17 and lines[0] and lines[1]):
         result += "*"
-        while(len(lastCache) > 10):
-            lastCache.popleft()
         lastCache.append(result)
         return result
     else:
@@ -111,7 +111,7 @@ def save(keywords):
     if(len(lastCache) == 0):
         return _emptyBuffer
     if(keywords):
-        poem = next((last for last in lastCache[::-1] if keywords in last), None)
+        poem = next((last for last in reversed(lastCache) if keywords in last), None)
         if(poem):
             lastCache.remove(poem)
             memories.set(str(uuid.uuid1()), poem)
@@ -128,9 +128,6 @@ def recall():
         return _emptyMemory
     rkey = random.choice(memkeys)
     rmem = memories.get(rkey)
-
-    while(len(memCache) > 10):
-        memCache.popleft()
     memCache.append((rkey, rmem))
 
     return rmem
@@ -139,7 +136,7 @@ def forget(keywords):
     if(len(memCache) == 0):
         return _emptyBuffer
     if(keywords):
-        memory = next((mem for mem in memCache[::-1] if keywords in mem[1]), None)
+        memory = next((mem for mem in reversed(memCache) if keywords in mem[1]), None)
         if(memory):
             memCache.remove(memory)
             memories.rem(memory[0])
