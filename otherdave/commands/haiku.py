@@ -5,6 +5,7 @@ import random
 import re
 import textstat
 import uuid
+import yaml
 from collections import deque
 from itertools import islice
 
@@ -20,9 +21,11 @@ _unknownCritique = "*What you're asking for -*\n*I don't know how to do it.*\n*S
 infl = inflect.engine()
 masterSyllables = pickledb.load("./data/syllables.db", True)
 memories = pickledb.load("./data/haikus.db", True)
+with open("./conf.yaml", encoding="utf-8") as conf:
+    config = yaml.load(conf, Loader=yaml.FullLoader)
 
-lastCache = deque(maxlen=10)
-memCache = deque(maxlen=10)
+lastCache = deque(maxlen=config["cache_length"])
+memCache = deque(maxlen=config["cache_length"])
 
 def flushCache():
     lastCache.clear()
