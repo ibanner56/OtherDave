@@ -63,7 +63,7 @@ async def parrot(client, message, args):
 
 async def toucan():
     macaw = parrot_internal(parrotChan, [])
-    if(parrot_internal == _emptyMemory):
+    if(macaw == _emptyMemory):
         return None
     parrotChan = await client.fetch_channel(config["parrot_channel"])
     return await parrotChan.send(macaw)
