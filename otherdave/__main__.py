@@ -86,6 +86,13 @@ async def on_message(message):
         # otherdave is always listening...
         listen(message)
 
+@client.event
+async def on_reaction_add(reaction, user):
+    if(reaction.message.author != client.user):
+        return
+    if(reaction.count == 1 and reaction.emoji in config["rereactions"]):
+        await reaction.message.channel.send(config["rereactions"][reaction.emoji])
+
 if __name__ == "__main__":
     tokenFile = open("bot.tkn", "r")
     token = tokenFile.read()
