@@ -43,8 +43,11 @@ async def squawk():
     while(not client.is_closed()):
         await asyncio.sleep(int(config["parrot_interval"]))
 
-        global parakeet
-        if(parakeet):
+        global parakeet, quietTime
+        if(quietTime and datetime.now() > quietTime):
+            quietTime = None
+            
+        if(parakeet and not quietTime):
             await toucan(client)
         else:
             parakeet = True
