@@ -4,7 +4,7 @@ import yaml
 from datetime import *
 from otherdave.commands import haiku
 from otherdave.commands.drunkdraw import drunkdraw
-from otherdave.commands.memory import remember, forget
+from otherdave.commands.memory import *
 from otherdave.commands.mimic import *
 from otherdave.commands.prompt import prompt
 from otherdave.commands.respect import respect
@@ -41,6 +41,7 @@ functions = {
     "haiku": haiku.critique,
     "forget": forget,
     "mimic": mimic,
+    "parrot": parrot,
     "ping": ping,
     "prompt": prompt,
     "quiet": quiet,

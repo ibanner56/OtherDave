@@ -1,31 +1,85 @@
 import pickledb
+import random
 import yaml
 from collections import deque
 
+_badKeywords = "I don't remember saying that."
+_emptyBuffer = "I haven't said anything yet."
+_emptyMemory = "Do I even know you people?"
+_forgetSuccess = "Got it, I'll forget you said that."
 _invalidArgs = "I need a user and some keywords to do that."
+_notFound = "I don't remember anything they've said!"
 _saveSuccess = "Got it, I'll save that one for later."
 _saveFailed = "Sorry, I don't remember that."
 
-memories = pickledb.load("./data/quotes.db", True)
-memCache = deque(maxlen=config["cache_length"])
 with open("./conf.yaml", encoding="utf-8") as conf:
     config = yaml.load(conf, Loader=yaml.FullLoader)
 
+memories = pickledb.load("./data/quotes.db", True)
+memCache = deque(maxlen=config["cache_length"])
+
 async def remember(client, message, args):
-    nick = args[0]
-    snippet = " ".join(args[1:])
+    if(len(args) < 2):
+        return await message.channel.send(_invalidArgs)
+    else:
+        nick = args[0]
+        snippet = " ".join(args[1:])
 
-    if(not nick or not snippet):
-        await message.channel.send(_invalidArgs)
+        async with message.channel.typing():
+            async for msg in message.channel.history(limit=config["max_lookback"]):
+                # Ignore commands
+                if(msg.content.startswith("!")):
+                    continue
 
-    async with message.channel.typing():
-        async for msg in message.channel.history(limit=config["max_lookback"]):
-            if(msg.author == nick and snippet in msg.content):
-                memories.append(nick, msg.content)
-                await message.channel.send(_saveSuccess)
-                return
+                if(msg.author.mention == nick and snippet in msg.content):
+                    if(memories.get(nick)):
+                        memories.append(nick, [msg.content])
+                    else:
+                        memories.set(nick, [msg.content])
+                    return await message.channel.send(_saveSuccess)
+                    
+            return await message.channel.send(_saveFailed)
 
-        await message.channel.send(_saveFailed)
+async def parrot_internal(parrotChan, args):
+    if(args):
+        if(not memories.get(args[0])):
+            return await parrotChan.send(_notFound)
+        rmem = random.choice(memories.get(args[0]))
+        memCache.append((args[0], rmem))
+        return await parrotChan.send(rmem)
+    else:
+        memkeys = list(memories.getall())
+        if(len(memkeys) == 0):
+            return await parrotChan.send(_emptyMemory)
+        rkey = random.choice(memkeys)
+        if(len(memories.get(rkey)) == 0):
+            return await parrotChan.send(_emptyMemory)
+        rmem = random.choice(memories.get(rkey))
+        memCache.append((rkey, rmem))
+        return await parrotChan.send(rmem)
+
+async def parrot(client, message, args):
+    return await parrot_internal(message.channel, args)
+
+async def toucan():
+    parrotChan = await client.fetch_channel(config["parrot_channel"])
+    return await parrot_internal(parrotChan, [])
 
 async def forget(client, message, args):
-    return
+    if(len(memCache) == 0):
+        return await message.channel.send(_emptyBuffer)
+    if(args):
+        keywords = " ".join(args)
+        memory = next((mem for mem in reversed(memCache) if keywords in mem[1]), None)
+        if(memory):
+            memCache.remove(memory)
+            memories.get(memory[0]).remove(memory[1])
+        else:
+            return await message.channel.send(_badKeywords)
+    else:
+        memory = memCache.pop()
+        memories.get(memory[0]).remove(memory[1])
+    
+    # Because pickleDB doesn't support list element removal properly, dump manually
+    memories.dump()
+    return await message.channel.send(_forgetSuccess)
