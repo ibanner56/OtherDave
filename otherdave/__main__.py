@@ -1,3 +1,4 @@
+import asyncio
 import discord
 import logging
 import yaml
@@ -16,6 +17,7 @@ with open("./conf.yaml") as conf:
     config = yaml.load(conf, Loader=yaml.BaseLoader)
 client = discord.Client()
 quietTime = None
+parakeet = True
 
 async def ping(client, message, args):
     await message.channel.send("pong")
@@ -35,6 +37,17 @@ async def quiet(client, message, args):
 
 async def version(client, message, args):
     await message.channel.send("OtherDave is running version " + str(config["version"]))
+
+async def squawk():
+    await client.wait_until_ready()
+    while(not client.is_closed()):
+        await asyncio.sleep(int(config["parrot_interval"]))
+
+        global parakeet
+        if(parakeet):
+            await toucan(client)
+        else:
+            parakeet = True
 
 functions = {
     "drunkdraw": drunkdraw,
@@ -68,6 +81,8 @@ async def on_message(message):
     if message.author == client.user:
         return
     
+    global parakeet
+    parakeet = False
     content = message.content
     if content.startswith("!"):
         command, *args = content.lstrip("!").split(" ")
@@ -100,4 +115,5 @@ async def on_reaction_add(reaction, user):
 if __name__ == "__main__":
     tokenFile = open("bot.tkn", "r")
     token = tokenFile.read()
+    client.loop.create_task(squawk())
     client.run(token)

@@ -40,7 +40,7 @@ async def remember(client, message, args):
                     
             return await message.channel.send(_saveFailed)
 
-async def parrot_internal(args):
+def parrot_internal(args):
     if(args):
         if(not memories.get(args[0])):
             return _notFound
@@ -61,8 +61,8 @@ async def parrot_internal(args):
 async def parrot(client, message, args):
     return await message.channel.send(parrot_internal(args))
 
-async def toucan():
-    macaw = parrot_internal(parrotChan, [])
+async def toucan(client):
+    macaw = parrot_internal([])
     if(macaw == _emptyMemory):
         return None
     parrotChan = await client.fetch_channel(config["parrot_channel"])
