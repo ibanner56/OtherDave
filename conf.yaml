@@ -2,6 +2,7 @@ version: '2.0.3, now proudly on python :snake:'
 cache_length: 10
 max_lookback: 100
 parrot_channel: 328946766747533314
+parrot_interval: 900
 drunkdraw:
   locales:
     Pacific: America/Los_Angeles
