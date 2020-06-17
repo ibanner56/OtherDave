@@ -40,30 +40,33 @@ async def remember(client, message, args):
                     
             return await message.channel.send(_saveFailed)
 
-async def parrot_internal(parrotChan, args):
+async def parrot_internal(args):
     if(args):
         if(not memories.get(args[0])):
-            return await parrotChan.send(_notFound)
+            return _notFound
         rmem = random.choice(memories.get(args[0]))
         memCache.append((args[0], rmem))
-        return await parrotChan.send(rmem)
+        return rmem
     else:
         memkeys = list(memories.getall())
         if(len(memkeys) == 0):
-            return await parrotChan.send(_emptyMemory)
+            return _emptyMemory
         rkey = random.choice(memkeys)
         if(len(memories.get(rkey)) == 0):
-            return await parrotChan.send(_emptyMemory)
+            return _emptyMemory
         rmem = random.choice(memories.get(rkey))
         memCache.append((rkey, rmem))
-        return await parrotChan.send(rmem)
+        return rmem
 
 async def parrot(client, message, args):
-    return await parrot_internal(message.channel, args)
+    return await message.channel.send(parrot_internal(args))
 
 async def toucan():
+    macaw = parrot_internal(parrotChan, [])
+    if(parrot_internal == _emptyMemory):
+        return None
     parrotChan = await client.fetch_channel(config["parrot_channel"])
-    return await parrot_internal(parrotChan, [])
+    return await parrotChan.send(macaw)
 
 async def forget(client, message, args):
     if(len(memCache) == 0):
