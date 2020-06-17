@@ -10,14 +10,15 @@ drunkdraw:
     London: Europe/London
 emotions:
   butt: "\U0001F351"
+  cannae: "\U0001F340"
   cool: "\U0001F952"
   garbage: obj_fish
   lol: clown
   love: feel_heart
   mario: hop_happy
   neato: "\U0001F32F"
+  racism: "U0001F9A8"
   satan: devil
   spicy: "\U0001F336"
   yay: "\U0001F389"
-  cannae: "\U0001F340"
   y'all: "\U0001F920"
