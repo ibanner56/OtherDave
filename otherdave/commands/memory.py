@@ -1,5 +1,6 @@
 import pickledb
 import random
+import re
 import yaml
 from collections import deque
 
@@ -22,7 +23,7 @@ async def remember(client, message, args):
     if(len(args) < 2):
         return await message.channel.send(_invalidArgs)
     else:
-        nick = args[0]
+        nick = re.sub("<@!*|>", "", args[0])
         snippet = " ".join(args[1:])
 
         async with message.channel.typing():
@@ -31,7 +32,7 @@ async def remember(client, message, args):
                 if(msg.content.startswith("!")):
                     continue
 
-                if(msg.author.mention == nick and snippet in msg.content):
+                if(str(msg.author.id) == nick and snippet in msg.content):
                     if(memories.get(nick)):
                         memories.append(nick, [msg.content])
                     else:
@@ -42,10 +43,11 @@ async def remember(client, message, args):
 
 def parrot_internal(args):
     if(args):
-        if(not memories.get(args[0])):
+        nick = re.sub("<@!*|>", "", args[0])
+        if(not memories.get(nick)):
             return _notFound
-        rmem = random.choice(memories.get(args[0]))
-        memCache.append((args[0], rmem))
+        rmem = random.choice(memories.get(nick))
+        memCache.append((nick, rmem))
         return rmem
     else:
         memkeys = list(memories.getall())
