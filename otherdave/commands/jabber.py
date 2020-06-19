@@ -3,6 +3,7 @@ import yaml
 with open("./conf.yaml") as conf:
     config = yaml.load(conf, Loader=yaml.BaseLoader)
 
+_notFound = "Buddy, I think you need !help."
 _version = "OtherDave is running version " + str(config["version"])
 _usage = {
     "drunkdraw": """!drunkdraw [[-date date] [-time time] [-theme theme] [-references references] | -reset]
@@ -14,7 +15,7 @@ _usage = {
         *Can be used to debug them,* 
         *fix, save, or forget.*""",
     "help": """!help [command]
-        Prints this message, or just the snippet for a single command."""
+        Prints this message, or just the snippet for a single command.""",
     "mimic": """!mimic [<@user>]
         Tries to talk like you or another user.""",
     "parrot": """!parrot [<@user>]
@@ -37,10 +38,11 @@ async def botHelp(client, message, args):
     helpMsg = ""
     if(len(args) > 1):
         helpMsg += _version + "\n\n"
-    helpMsg += "Usage:\n"
     for func in args:
         if(func.startswith("!")):
             func = func.lstrip("!")
+        if(not func in _usage):
+            return await message.channel.send(_notFound)
         helpMsg += _usage[func] + "\n"
     return await message.channel.send(helpMsg)
 
