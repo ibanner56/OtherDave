@@ -5,6 +5,7 @@ import yaml
 from datetime import *
 from otherdave.commands import haiku
 from otherdave.commands.drunkdraw import drunkdraw
+from otherdave.commands.jabber import *
 from otherdave.commands.memory import *
 from otherdave.commands.mimic import *
 from otherdave.commands.prompt import prompt
@@ -19,9 +20,6 @@ client = discord.Client()
 quietTime = None
 parakeet = True
 
-async def ping(client, message, args):
-    await message.channel.send("pong")
-
 async def quiet(client, message, args):
     global quietTime
     try:
@@ -34,9 +32,6 @@ async def quiet(client, message, args):
     except:
         await message.channel.send("Sorry, not sure how long that is...defaulting to 5 min")
         quietTime = datetime.now() + timedelta(minutes=5)
-
-async def version(client, message, args):
-    await message.channel.send("OtherDave is running version " + str(config["version"]))
 
 async def squawk():
     await client.wait_until_ready()
@@ -54,8 +49,8 @@ async def squawk():
 
 functions = {
     "drunkdraw": drunkdraw,
-    "haiku": haiku.critique,
     "forget": forget,
+    "haiku": haiku.critique,
     "mimic": mimic,
     "parrot": parrot,
     "ping": ping,
@@ -90,7 +85,9 @@ async def on_message(message):
     if content.startswith("!"):
         command, *args = content.lstrip("!").split(" ")
         logger.info(command + " - user: " + message.author.name)
-        if command in functions:
+        if command.lower() == "help":
+            await botHelp(client, message, args if args else [*functions.keys()])
+        elif command in functions:
             await functions[command](client, message, args)
         else:
             await message.channel.send("I'm sorry Dave, I'm afraid I can't do that.")
