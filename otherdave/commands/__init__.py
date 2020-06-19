@@ -2,6 +2,7 @@
 
 from .drunkdraw import *
 from .haiku import *
+from .jabber import *
 from .memory import *
 from .mimic import *
 from .prompt import *
