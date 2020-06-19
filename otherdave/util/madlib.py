@@ -60,7 +60,7 @@ class Prompter(MadLibber):
 
         self.actions = {
             "adjective" : lambda : random.choice(self.adjectives),
-            "noun" : lambda : random.choice(self.noun),
+            "noun" : lambda : random.choice(self.nouns),
             "template" : lambda : r"{{adjective}} {{noun}}"
         }
 
