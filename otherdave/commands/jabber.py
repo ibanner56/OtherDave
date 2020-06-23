@@ -17,7 +17,8 @@ _usage = {
     "help": """!help [command]
         Prints this message, or just the snippet for a single command.""",
     "mimic": """!mimic [<@user>]
-        Tries to talk like you or another user.""",
+        Tries to talk like you or another user. 
+        Try adams, austen, carroll, doyle, hemingway, melville, obama, plato, or thoreau for some fun.""",
     "parrot": """!parrot [<@user>]
         Repeats a saved quote at random or for a specific user.""",
     "ping": """!ping
