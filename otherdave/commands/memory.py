@@ -3,6 +3,8 @@ import random
 import re
 import yaml
 from collections import deque
+from datetime import *
+from math import pow
 
 _badKeywords = "I don't remember saying that."
 _emptyBuffer = "I haven't said anything yet."
@@ -17,6 +19,15 @@ with open("./conf.yaml", encoding="utf-8") as conf:
 
 memories = pickledb.load("./data/quotes.db", True)
 memCache = deque(maxlen=config["cache_length"])
+
+#    Cubic Regression to match:
+#        00 sec ->   0% chance
+#        60 sec ->   1% chance
+#      1800 sec ->  25% chance  
+#      3600 sec ->  45% chance
+#      7200 sec ->  75% chance
+#     14400 sec -> 100% chance   
+squawkProb = lambda x : 0.00000000001*pow(x, 3) + 0.0000007*pow(x, 2) + 0.015*x + 0.085
 
 async def remember(client, message, args):
     if(len(args) < 2):
@@ -61,12 +72,18 @@ def parrot_internal(args):
 async def parrot(client, message, args):
     return await message.channel.send(parrot_internal(args))
 
-async def toucan(client):
-    macaw = parrot_internal([])
-    if(macaw == _emptyMemory):
-        return None
-    parrotChan = await client.fetch_channel(config["parrot_channel"])
-    return await parrotChan.send(macaw)
+async def toucan(client, lastMsgTime, quietTime):
+    now = datetime.now()
+    delta = (now - lastMsgTime).total_seconds()
+    if(quietTime and now < quietTime):
+        return
+
+    if(random.randint(0, 100) <= squawkProb(delta)):
+        macaw = parrot_internal([])
+        if(macaw == _emptyMemory):
+            return None
+        parrotChan = await client.fetch_channel(config["parrot_channel"])
+        return await parrotChan.send(macaw)
 
 async def forget(client, message, args):
     if(len(memCache) == 0):

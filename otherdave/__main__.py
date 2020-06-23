@@ -18,7 +18,7 @@ with open("./conf.yaml") as conf:
     config = yaml.load(conf, Loader=yaml.BaseLoader)
 client = discord.Client()
 quietTime = None
-parakeet = True
+lastMsgTime = None
 
 async def quiet(client, message, args):
     global quietTime
@@ -37,15 +37,7 @@ async def squawk():
     await client.wait_until_ready()
     while(not client.is_closed()):
         await asyncio.sleep(int(config["parrot_interval"]))
-
-        global parakeet, quietTime
-        if(quietTime and datetime.now() > quietTime):
-            quietTime = None
-            
-        if(parakeet and not quietTime):
-            await toucan(client)
-        else:
-            parakeet = True
+        await toucan(client, lastMsgTime, quietTime)
 
 functions = {
     "drunkdraw": drunkdraw,
@@ -76,11 +68,11 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
+    global lastMsgTime
+    lastMsgTime = datetime.now()
     if message.author == client.user:
         return
     
-    global parakeet
-    parakeet = False
     content = message.content
     if content.startswith("!"):
         command, *args = content.lstrip("!").split(" ")
@@ -91,7 +83,6 @@ async def on_message(message):
             await functions[command](client, message, args)
         else:
             await message.channel.send("I'm sorry Dave, I'm afraid I can't do that.")
-
     else:
         global quietTime
         if(quietTime and datetime.now() > quietTime):

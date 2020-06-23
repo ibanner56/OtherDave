@@ -1,10 +1,11 @@
-version: '2.0.5, now proudly on python :snake:'
+version: '2.0.6, now proudly on python :snake:'
+
 banjo: "\U0001FA95"
 cache_length: 10
 max_lookback: 100
 memorymoji: "\U0001F9E0"
 parrot_channel: 328946766747533314
-parrot_interval: 3600
+parrot_interval: 60
 
 drunkdraw:
   locales:
