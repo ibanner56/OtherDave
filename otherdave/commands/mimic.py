@@ -19,7 +19,7 @@ def listen(message):
 async def mimic(client, message, args):
     async with message.channel.typing():
         if(args):
-            user = re.sub("<@!*|>", "", args[0])
+            user = re.sub("<@!*|>", "", args[0]).lower()
         else:
             user = message.author.id
 
