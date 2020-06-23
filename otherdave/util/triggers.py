@@ -15,7 +15,7 @@ async def react(message):
                 await message.add_reaction(emoji)
             elif(random.randrange(100) > 99):
                 # Deploy random banjo
-                await message.add_reaction("\U0001FA95")
+                await message.add_reaction(config["banjo"])
 
 async def pedant(message):
     content = message.content.lower()
