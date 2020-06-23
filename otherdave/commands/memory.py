@@ -10,7 +10,6 @@ _emptyMemory = "Do I even know you people?"
 _forgetSuccess = "Got it, I'll forget you said that."
 _invalidArgs = "I need a user and some keywords to do that."
 _notFound = "I don't remember anything they've said!"
-_saveSuccess = "Got it, I'll save that one for later."
 _saveFailed = "Sorry, I don't remember that."
 
 with open("./conf.yaml", encoding="utf-8") as conf:
@@ -37,7 +36,7 @@ async def remember(client, message, args):
                         memories.append(nick, [msg.content])
                     else:
                         memories.set(nick, [msg.content])
-                    return await message.channel.send(_saveSuccess)
+                    return await message.add_reaction(config["memorymoji"])
                     
             return await message.channel.send(_saveFailed)
 
