@@ -36,20 +36,19 @@ async def remember(client, message, args):
         nick = re.sub("<@!*|>", "", args[0])
         snippet = " ".join(args[1:])
 
-        async with message.channel.typing():
-            async for msg in message.channel.history(limit=config["max_lookback"]):
-                # Ignore commands
-                if(msg.content.startswith("!")):
-                    continue
+        async for msg in message.channel.history(limit=config["max_lookback"]):
+            # Ignore commands
+            if(msg.content.startswith("!")):
+                continue
 
-                if(str(msg.author.id) == nick and snippet in msg.content):
-                    if(memories.get(nick)):
-                        memories.append(nick, [msg.content])
-                    else:
-                        memories.set(nick, [msg.content])
-                    return await message.add_reaction(config["memorymoji"])
-                    
-            return await message.channel.send(_saveFailed)
+            if(str(msg.author.id) == nick and snippet in msg.content):
+                if(memories.get(nick)):
+                    memories.append(nick, [msg.content])
+                else:
+                    memories.set(nick, [msg.content])
+                return await message.add_reaction(config["memorymoji"])
+
+        return await message.channel.send(_saveFailed)
 
 def parrot_internal(args):
     if(args):
