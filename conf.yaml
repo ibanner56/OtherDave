@@ -5,7 +5,7 @@ cache_length: 10
 max_lookback: 100
 memorymoji: "\U0001F9E0"
 parrot_channel: 328946766747533314
-parrot_interval: 60
+parrot_interval: 900
 
 drunkdraw:
   locales:
