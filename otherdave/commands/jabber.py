@@ -43,7 +43,7 @@ _usage = {
 async def beach(client, message, args):
     sand = random.randint(2, maxsize)
     joy = random.choice(_joy)
-    return await message.channel.send("Today I'm on a beach with {sand} grains of sand, {joy}!")
+    return await message.channel.send("Today I'm on a beach with {} grains of sand, {}!".format(sand, joy))
 
 async def botHelp(client, message, args):
     helpMsg = ""
