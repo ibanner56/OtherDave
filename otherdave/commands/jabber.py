@@ -10,7 +10,7 @@ _joy = ["va-va-voom", "whee", "whoopee", "woohoo", "yay", "yippee", "yowza"]
 _version = "OtherDave is running version " + str(config["version"])
 _usage = {
     "beach": """!beach
-        Fine, you wanted a beach - I made him a beach. Happy? Sheesh."""
+        Fine, you wanted a beach - I made him a beach. Happy? Sheesh.""",
     "drunkdraw": """!drunkdraw [[-date date] [-time time] [-theme theme] [-references references] | -reset]
         Announces the next drunkdraw. Dave and Isaac can configure the draw as well.""",
     "forget": """!forget [keywords]
