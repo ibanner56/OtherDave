@@ -45,7 +45,7 @@ async def mimic(client, message, args):
                 result += sentence + "\n"
 
         if(result):
-            return await message.channel.send(sentence)
+            return await message.channel.send(result)
         else:
             return await message.channel.send(_makeFailed)    
         
