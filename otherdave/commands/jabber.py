@@ -6,7 +6,7 @@ with open("./conf.yaml") as conf:
     config = yaml.load(conf, Loader=yaml.BaseLoader)
 
 _notFound = "Buddy, I think you need !help."
-_joy = ["va-va-voom", "whee", "whoopee", "woohoo", "yay", "yippee", "yowza"]
+_joy = ["va-va-voom", "wheee", "whoopee", "woohoo", "yay", "yippee", "yowza"]
 _version = "OtherDave is running version " + str(config["version"])
 _usage = {
     "beach": """!beach
