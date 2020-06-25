@@ -40,6 +40,7 @@ async def squawk():
         await toucan(client, lastMsgTime, quietTime)
 
 functions = {
+    "beach": beach,
     "drunkdraw": drunkdraw,
     "forget": forget,
     "haiku": haiku.critique,

@@ -1,11 +1,16 @@
+import random
 import yaml
+from sys import maxsize
 
 with open("./conf.yaml") as conf:
     config = yaml.load(conf, Loader=yaml.BaseLoader)
 
 _notFound = "Buddy, I think you need !help."
+_joy = ["va-va-voom", "whee", "whoopee", "woohoo", "yay", "yippee", "yowza"]
 _version = "OtherDave is running version " + str(config["version"])
 _usage = {
+    "beach": """!beach
+        Fine, you wanted a beach - I made him a beach. Happy? Sheesh."""
     "drunkdraw": """!drunkdraw [[-date date] [-time time] [-theme theme] [-references references] | -reset]
         Announces the next drunkdraw. Dave and Isaac can configure the draw as well.""",
     "forget": """!forget [keywords]
@@ -34,6 +39,11 @@ _usage = {
     "version": """!version
         Prints the current version of OtherDave."""
 }
+
+async def beach(client, message, args):
+    sand = random.randint(2, maxsize)
+    joy = random.choice(_joy)
+    return await message.channel.send("Today I'm on a beach with {sand} grains of sand, {joy}!")
 
 async def botHelp(client, message, args):
     helpMsg = ""
