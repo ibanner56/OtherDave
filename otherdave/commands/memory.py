@@ -22,11 +22,18 @@ memCache = deque(maxlen=config["cache_length"])
 
 # Cubic Regression to match:
 #     00 sec ->   0% chance
-#   1800 sec ->  25% chance  
-#   3600 sec ->  35% chance
+#   1800 sec ->  10% chance  
+#   3600 sec ->  20% chance
+#   5400 sec ->  35% chance
 #   7200 sec ->  50% chance
+#  10800 sec ->  80% chance
 #  14400 sec -> 100% chance
-squawkProb = lambda x : 0.00000000004*pow(x, 3) - 0.00000077*pow(x, 2) + 0.0088*x + 11.42857
+squawkProb = lambda x : (
+    -0.00000000003264*pow(x, 3) + 
+    0.00000070566321*pow(x, 2) + 
+    0.00352638263119*x + 
+    0.43326434481060
+)
 
 async def remember(client, message, args):
     if(len(args) < 2):
