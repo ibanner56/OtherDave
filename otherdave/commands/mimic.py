@@ -39,7 +39,7 @@ async def mimic(client, message, args):
         model = markovify.Text(loads[user], well_formed=True)
 
         for _ in range(3):
-            sentence = model.make_sentence(tries=1000000, max_words=random.randint(8, 40))
+            sentence = model.make_sentence(tries=100, max_words=random.randint(8, 40))
             if(sentence):
                 await message.channel.send(sentence)
             else:
