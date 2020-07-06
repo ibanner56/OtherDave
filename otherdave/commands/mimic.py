@@ -11,6 +11,9 @@ def listen(message):
 
     user = message.author.id
     content = re.sub("<@\d+>", "<@USER>", message.content)
+    if(not content.endswith(".")):
+        # Markovify doesn't treat \n as punctuation...
+        content = content + "."
 
     filename = "./data/markov/" + str(message.author.id) + ".txt"
     with open(filename, "a", encoding="utf-8") as mfile:
@@ -33,7 +36,7 @@ async def mimic(client, message, args):
             except OSError:
                 return await message.channel.send(_makeFailed) 
 
-        model = markovify.NewlineText(loads[user], well_formed=True)
+        model = markovify.Text(loads[user], well_formed=True)
 
         for _ in range(3):
             sentence = model.make_sentence(tries=100, max_words=random.randint(8, 40))
