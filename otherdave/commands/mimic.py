@@ -10,7 +10,7 @@ def listen(message):
         return
 
     user = message.author.id
-    content = message.content
+    content = re.sub("<@\d+>", "<@USER>", message.content)
     if(not content.endswith(".")):
         # Markovify doesn't treat \n as punctuation...
         content = content + "."
@@ -38,14 +38,9 @@ async def mimic(client, message, args):
 
         model = markovify.Text(loads[user], well_formed=True)
 
-        result = ""
         for _ in range(3):
             sentence = model.make_sentence(tries=1000000, max_words=random.randint(8, 40))
             if(sentence):
-                result += sentence + "\n"
-
-        if(result):
-            return await message.channel.send(result)
-        else:
-            return await message.channel.send(_makeFailed)    
-        
+                await message.channel.send(sentence)
+            else:
+                return await message.channel.send(_makeFailed)
