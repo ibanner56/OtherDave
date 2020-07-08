@@ -16,7 +16,7 @@ with open("./conf.yaml") as conf:
     drawConf = config["drunkdraw"]
 
 def updateDraw(author, args):
-    if(author != "Isaac" and author != "Mercworks"):
+    if(author != "Isaac" and author != "MercWorks"):
         return "Mama Mia! Only Dave can do that!"
 
     i = 0
