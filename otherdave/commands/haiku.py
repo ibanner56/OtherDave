@@ -30,6 +30,16 @@ def flushCache():
     lastCache.clear()
     memCache.clear()
 
+def syllableCount(word):
+    # Check the Moby project first because robots are bad at english.
+	# If it's not in the dictionary, ask Zoltar.
+    if(masterSyllables.get(word)):
+        return masterSyllables.get(word)
+    elif(masterSyllables.get(word.lower())):
+        return masterSyllables.get(word.lower())
+    else:
+        return textstat.syllable_count(word)
+
 def parseHaiku(text, debug):
     words = re.split("\s", text)
     count = 0
@@ -63,16 +73,11 @@ def parseHaiku(text, debug):
                 else:
                     stringifiedDigits += " " + splitDigits[i]
         
-            count += textstat.syllable_count(stringifiedDigits)
-            
-        # Check the Moby project first because robots are bad at english.
-		# If it's not in the dictionary, ask Zoltar.
-        elif(masterSyllables.get(depunct)):
-            count += masterSyllables.get(depunct)
-        elif(masterSyllables.get(depunct.lower())):
-            count += masterSyllables.get(depunct.lower())
+            for digit in stringifiedDigits.split(" "):
+                count += syllableCount(digit)
+       
         else:
-            count += textstat.syllable_count(depunct)
+            count += syllableCount(depunct)
 
         result += word
         debugResult += word + " - " + str(count) + "\n"
