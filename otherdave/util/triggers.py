@@ -28,3 +28,6 @@ async def pedant(message):
     
     if("lol" in content or "ioi" in content):
         await message.channel.send("lol")
+
+    if("classic" in content):
+        await message.channel.send("*classic*")
