@@ -88,7 +88,7 @@ def getDraw():
     else:
         base += "The theme is still tbd.\n"
 
-    base += "We are currently indulging in the velvet caress of Satan here: https://whereby.com/mercworks"
+    base += "We are currently indulging in the velvet caress of Satan here: https://meet.jit.si/MercworksDrunkdraw"
     base += "\n\n" + getTimeZones(drawdate.strftime("%Y-%m-%d") + " " + parse(timeValue, tzinfos=pttzinfo, default=default_date).strftime("%H:%M %Z"))
 
     return base    
