@@ -3,6 +3,7 @@ import discord
 import logging
 import yaml
 from datetime import *
+from discord.ext import tasks
 from otherdave.commands import haiku
 from otherdave.commands.drunkdraw import drunkdraw
 from otherdave.commands.jabber import *
@@ -33,12 +34,6 @@ async def quiet(client, message, args):
         await message.channel.send("Sorry, not sure how long that is...defaulting to 5 min")
         quietTime = datetime.now() + timedelta(minutes=5)
 
-async def squawk():
-    await client.wait_until_ready()
-    while(not client.is_closed()):
-        await asyncio.sleep(int(config["parrot_interval"]))
-        await toucan(client, lastMsgTime, quietTime)
-
 functions = {
     "beach": beach,
     "drunkdraw": drunkdraw,
@@ -61,11 +56,17 @@ handler = logging.FileHandler(filename="./logs/otherdave.log", encoding="utf-8",
 handler.setFormatter(logging.Formatter("%(asctime)s:%(levelname)s:%(name)s: %(message)s"))
 logger.addHandler(handler)
 
+# Configure tasks
+@tasks.loop(seconds=int(config["parrot_interval"]))
+async def squawk():
+    await toucan(client, lastMsgTime, quietTime)
+    
 # Configure events
 @client.event
 async def on_ready():
     logger.debug("Logged in as {0.user}".format(client))
     await dlog(client, "Hi, I'm OtherDave and I'm BACK FOR BUSINESS.")
+    await squawk.start()
 
 @client.event
 async def on_message(message):
@@ -107,5 +108,4 @@ async def on_reaction_add(reaction, user):
 if __name__ == "__main__":
     tokenFile = open("bot.tkn", "r")
     token = tokenFile.read()
-    client.loop.create_task(squawk())
     client.run(token)
