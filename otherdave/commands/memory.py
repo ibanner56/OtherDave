@@ -52,7 +52,7 @@ async def remember(client, message, args):
                     memories.append(nick, [msg.content])
                 else:
                     memories.set(nick, [msg.content])
-                return await message.add_reaction(config["memorymoji"])
+                return await message.add_reaction(config["emotions"]["_memorymoji"])
 
         return await message.channel.send(_saveFailed)
 
