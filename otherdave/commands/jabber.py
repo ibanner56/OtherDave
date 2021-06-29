@@ -26,6 +26,8 @@ _usage = {
         Try adams, austen, carroll, doyle, hemingway, melville, obama, plato, or thoreau for some fun.""",
     "parrot": """!parrot [<@user>]
         Repeats a saved quote at random or for a specific user.""",
+    "pedant": """!pedant -me | -stop
+        Enables or disables auto-responses from OtherDave, if you're a grump and want him to leave you alone.""",
     "ping": """!ping
         pong""",
     "prompt": """!prompt [-add {noun|adjective} word | -forget word]

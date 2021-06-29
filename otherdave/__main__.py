@@ -41,6 +41,7 @@ functions = {
     "haiku": haiku.critique,
     "mimic": mimic,
     "parrot": parrot,
+    "pedant": grump,
     "ping": ping,
     "prompt": prompt,
     "quiet": quiet,

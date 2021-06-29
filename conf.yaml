@@ -1,9 +1,7 @@
 version: '2.0.9, now proudly on python :snake:'
 
-banjo: "\U0001FA95"
 cache_length: 10
 max_lookback: 100
-memorymoji: "\U0001F9E0"
 parrot_channel: 328946766747533314
 parrot_interval: 1800
 
@@ -31,6 +29,10 @@ emotions:
   spicy: "\U0001F336"
   yay: "\U0001F389"
   y'all: "\U0001F920"
+  _banjo: "\U0001FA95"
+  _memorymoji: "\U0001F9E0"
+  _teacher: "\U0001F469\U0000200D\U0001F3EB"
+  _zipit: "\U0001F910"
 rereactions:
   "\U0001F4AF": Look at that, I'm learning!
   "\U0001F525": Heck yeah that shit was fire
