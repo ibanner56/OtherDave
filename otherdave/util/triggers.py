@@ -10,7 +10,6 @@ with open("./conf.yaml") as conf:
 
 grumps = pickledb.load("./data/grumps.db", True)
 
-
 async def react(message):
     for emotion in config["emotions"]:
         if(emotion in message.content.lower()):
