@@ -21,8 +21,8 @@ _usage = {
         *fix, save, or forget.*""",
     "help": """!help [command]
         Prints this message, or just the snippet for a single command.""",
-    "mimic": """!mimic [<@user>]
-        Tries to talk like you or another user. 
+    "mimic": """!mimic [<@user> | -combo <@user> <@user> | -chat <@user> <@user> | -haiku <@user>]
+        Tries to talk like you or another user. Can mash two users together or fake a conversation. Sometimes produces coherent poetry.
         Try adams, austen, carroll, doyle, hemingway, melville, obama, plato, or thoreau for some fun.""",
     "parrot": """!parrot [<@user>]
         Repeats a saved quote at random or for a specific user.""",
