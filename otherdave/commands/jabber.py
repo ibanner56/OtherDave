@@ -21,6 +21,9 @@ _usage = {
         *fix, save, or forget.*""",
     "help": """!help [command]
         Prints this message, or just the snippet for a single command.""",
+    "lwys": """!lwys [character1 character2 ...
+        Creates a fake LWYS script, always beginning with stage direction. If no characters are provided, two are chosen at random.
+        The full cast includes Fixit, Hattie, Oldie, Sophie, Todd, and Tomo.]""",
     "mimic": """!mimic [<@user> | -combo <@user> <@user> | -chat <@user> <@user> | -haiku <@user>]
         Tries to talk like you or another user. Can mash two users together or fake a conversation. Sometimes produces coherent poetry.
         Try adams, austen, carroll, doyle, hemingway, melville, obama, plato, or thoreau for some fun.""",

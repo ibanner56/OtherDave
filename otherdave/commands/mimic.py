@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 import markovify
 import random
 import re
@@ -5,7 +6,9 @@ from .haiku import parseHaiku
 
 _haikuMakeFailed = "*It seems that today*\n*this request that you have made*\n*is simply too hard.*"
 _incorrectArgs = "The haha to arguments sorry, for correct not are command that <@ACCIDENTAL_USER_TAG>."
+_lwysFailed = "Stage: Everyone stares at you, wondering what you're trying to do."
 _makeFailed = "hahaha Oof owie Heck, guess I don't know you well enough to do that."
+_lwysCast = ["fixit", "hattie", "oldie", "sophie", "todd", "tomo"]
 
 loads = {}
 
@@ -24,6 +27,32 @@ def listen(message):
             mfile.write("\n" + content)
     if(user in loads):
         loads[user] += "\n" + content
+
+async def lwys(client, message, args):
+    cast = ["Stage"]
+    async with message.channel.typing():
+        if (args):
+            for castMember in args:
+                if (not castMember.lower() in _lwysCast):
+                    return await message.channel.send(_lwysFailed)
+                cast += [castMember]            
+        else:
+            cast += [random.choice(_lwysCast)] + [random.choice(_lwysCast)]
+
+        lines = []
+        for castMember in cast:
+            if (not castMember in loads):
+                filename = "./data/markov/lwys/" + castMember + ".txt"
+                try:
+                    with open(filename, "r", encoding="utf-8") as cfile:
+                        loads[castMember] = cfile.read()
+                except OSError:
+                    return await message.channel.send(_lwysFailed)
+            
+            model = markovify.Text(loads[castMember], well_formed=True)
+            lines += [castMember + ": " + model.make_sentence(tries=100, max_words=random.randint(8, 40))]
+
+        return await message.channel.send('\n'.join(lines))
 
 async def mimic(client, message, args):
     chat = False
