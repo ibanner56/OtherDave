@@ -8,7 +8,7 @@ with open('requirements.txt') as rf:
 setup(
     author="ibanner56",
     url="https://github.com/ibanner56/OtherDave",
-    version="2.0.0",
+    version="2.0.9",
     packages=["otherdave", "otherdave.commands", "otherdave.util"],
     test_suite="test",
     license="MIT",
