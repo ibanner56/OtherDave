@@ -84,7 +84,7 @@ async def toucan(client, lastMsgTime, quietTime):
     if(quietTime and now < quietTime):
         return
 
-    if(random.randint(0, 100) <= squawkProb(delta)):
+    if(delta >= 14400 or random.randint(0, 100) <= squawkProb(delta)):
         macaw = parrot_internal([])
         if(macaw == _emptyMemory):
             return None
