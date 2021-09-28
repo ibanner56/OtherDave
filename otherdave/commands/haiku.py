@@ -166,19 +166,19 @@ async def detect(message):
     if(haiku != None):
         await message.channel.send(haiku)
 
-async def critique(client, message, args):
+def critique(args):
     if(len(args) == 0):
-        await message.channel.send(recall())
+        return recall()
     elif(args[0] == "-debug"):
-        await message.channel.send(debug(" ".join(args[1:])))
+        return debug(" ".join(args[1:]))
     elif(args[0] == "-correct" and len(args) == 3):
         if(correct(args[1], args[2])):
-            await message.channel.send(_correctionSuccess)
+            return _correctionSuccess
         else:
-            await message.channel.send(_correctionFailed)
+            return _correctionFailed
     elif(args[0] == "-save"):
-        await message.channel.send(save(" ".join(args[1:])))
+        return save(" ".join(args[1:]))
     elif(args[0] == "-forget"):
-        await message.channel.send(forget(" ".join(args[1:])))
+        return forget(" ".join(args[1:]))
     else:
-        await message.channel.send(_unknownCritique)
+        return _unknownCritique
