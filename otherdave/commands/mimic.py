@@ -28,7 +28,7 @@ def listen(message):
         loads[user] += "\n" + content
 
 async def lwys(client, message, args):
-    cast = ["Stage"]
+    cast = ["stage"]
     async with message.channel.typing():
         if (args):
             for castMember in args:
