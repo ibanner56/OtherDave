@@ -103,8 +103,8 @@ def getTimeZones(value):
 
     return timeString
 
-async def drunkdraw(client, message, args):
+def drunkdraw(ctx, args):
     if(len(args) == 0):
-        await message.channel.send(getDraw())
+        return getDraw()
     else:
-        await message.channel.send(updateDraw(message.author.name, args))
+        return updateDraw(ctx.message.author.name, args)

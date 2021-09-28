@@ -22,20 +22,21 @@ async def react(message):
                 # Deploy random banjo
                 await message.add_reaction(config["emotions"]["_banjo"])
 
-async def grump(client, message, args):
+async def grump(ctx, args):
     if (len(args) != 1):
-        await message.channel.send(_pedantUsage)
+        return _pedantUsage
     
     if (args[0] == "-me"):
-        grumps.set(str(message.author.id), False)
-        await message.add_reaction(config["emotions"]["_teacher"])
+        grumps.set(str(ctx.author.id), False)
+        await ctx.message.add_reaction(config["emotions"]["_teacher"])
     elif (args[0] == "-stop"):
-        grumps.set(str(message.author.id), True)
-        await message.add_reaction(config["emotions"]["_zipit"])
+        grumps.set(str(ctx.author.id), True)
+        await ctx.message.add_reaction(config["emotions"]["_zipit"])
     else:
-        await message.channel.send(_pedantUsage)
-    
+        return _pedantUsage
 
+    return None
+    
 async def pedant(message):
     if (grumps.get(str(message.author.id))):
         return

@@ -35,14 +35,14 @@ squawkProb = lambda x : (
     0.43326434481060
 )
 
-async def remember(client, message, args):
+async def remember(ctx, args):
     if(len(args) < 2):
-        return await message.channel.send(_invalidArgs)
+        return _invalidArgs
     else:
         nick = re.sub("<@!*|>", "", args[0])
         snippet = " ".join(args[1:])
 
-        async for msg in message.channel.history(limit=config["max_lookback"]):
+        async for msg in ctx.channel.history(limit=config["max_lookback"]):
             # Ignore commands
             if(msg.content.startswith("!")):
                 continue
@@ -52,11 +52,12 @@ async def remember(client, message, args):
                     memories.append(nick, [msg.content])
                 else:
                     memories.set(nick, [msg.content])
-                return await message.add_reaction(config["emotions"]["_memorymoji"])
+                await ctx.message.add_reaction(config["emotions"]["_memorymoji"])
+                return None
 
-        return await message.channel.send(_saveFailed)
+        return _saveFailed
 
-def parrot_internal(args):
+def parrot(args):
     if(args):
         nick = re.sub("<@!*|>", "", args[0])
         if(not memories.get(nick)):
@@ -75,9 +76,6 @@ def parrot_internal(args):
         memCache.append((rkey, rmem))
         return rmem
 
-async def parrot(client, message, args):
-    return await message.channel.send(parrot_internal(args))
-
 async def toucan(client, lastMsgTime, quietTime):
     now = datetime.now()
     delta = (now - lastMsgTime).total_seconds()
@@ -85,15 +83,15 @@ async def toucan(client, lastMsgTime, quietTime):
         return
 
     if(delta >= 14400 or random.randint(0, 100) <= squawkProb(delta)):
-        macaw = parrot_internal([])
+        macaw = parrot([])
         if(macaw == _emptyMemory):
             return None
         parrotChan = await client.fetch_channel(config["parrot_channel"])
         return await parrotChan.send(macaw)
 
-async def forget(client, message, args):
+def forget(args):
     if(len(memCache) == 0):
-        return await message.channel.send(_emptyBuffer)
+        return _emptyBuffer
     if(args):
         keywords = " ".join(args)
         memory = next((mem for mem in reversed(memCache) if keywords in mem[1]), None)
@@ -101,11 +99,11 @@ async def forget(client, message, args):
             memCache.remove(memory)
             memories.get(memory[0]).remove(memory[1])
         else:
-            return await message.channel.send(_badKeywords)
+            return _badKeywords
     else:
         memory = memCache.pop()
         memories.get(memory[0]).remove(memory[1])
     
     # Because pickleDB doesn't support list element removal properly, dump manually
     memories.dump()
-    return await message.channel.send(_forgetSuccess)
+    return _forgetSuccess
