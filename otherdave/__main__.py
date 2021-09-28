@@ -205,7 +205,7 @@ async def on_message(message):
     
     content = message.content
     if content.startswith("!"):
-        command, _ = content.lstrip("!").split(" ")
+        command, *_ = content.lstrip("!").split(" ")
         logger.info(command + " - user: " + message.author.name)
         if command in client.all_commands:
             await client.process_commands(message)
