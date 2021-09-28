@@ -48,7 +48,11 @@ def lwys(args):
                 return _lwysFailed
         
         model = markovify.Text(loads[castMember], well_formed=True)
-        lines += [castMember + ": " + model.make_sentence(tries=100, max_words=random.randint(8, 40))]
+
+        if (castMember == "stage"):
+            lines += ["*\*" + model.make_sentence(tries=100, max_words=random.randint(8, 40)) + "\**"]
+        else:
+            lines += [castMember + ": " + model.make_sentence(tries=100, max_words=random.randint(8, 40))]
 
     return '\n'.join(lines)
 
