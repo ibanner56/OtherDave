@@ -39,6 +39,7 @@ functions = {
     "drunkdraw": drunkdraw,
     "forget": forget,
     "haiku": haiku.critique,
+    "lwys": lwys,
     "mimic": mimic,
     "parrot": parrot,
     "pedant": grump,
