@@ -74,7 +74,7 @@ def mimic(ctx, args):
         validTwoArgs = len(args) == 2 and haiku
         validThreeArgs = len(args) == 3 and (combo or chat)
 
-        if (not validNoFlags and not validTwoArgs and not validThreeArgs):
+        if (not validNoFlags and not validOneArg  and not validTwoArgs and not validThreeArgs):
             return [_incorrectArgs]
         elif (validNoFlags):
             user = re.sub("<@!*|>", "", args[0]).lower()
