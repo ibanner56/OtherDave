@@ -37,7 +37,6 @@ async def grump(ctx, args):
 
     return None
     
-
 async def pedant(message):
     if (grumps.get(str(message.author.id))):
         return
