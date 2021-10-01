@@ -2,10 +2,10 @@ import random
 import yaml
 from sys import maxsize
 
-with open("./conf.yaml") as conf:
+with open("./conf.yaml", encoding="utf-8") as conf:
     config = yaml.load(conf, Loader=yaml.BaseLoader)
 
-with open("./data/dad.txt") as dadf:
+with open("./data/dad.txt", encoding="utf-8") as dadf:
     dad = dadf.readlines()
 
 _notFound = "Buddy, I think you need !help."
