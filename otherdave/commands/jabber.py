@@ -6,7 +6,7 @@ with open("./conf.yaml", encoding="utf-8") as conf:
     config = yaml.load(conf, Loader=yaml.BaseLoader)
 
 with open("./data/dad.txt", encoding="utf-8") as dadf:
-    dad = dadf.readlines()
+    dadjokes = dadf.read().splitlines()
 
 _notFound = "Buddy, I think you need !help."
 _joy = ["va-va-voom", "wheee", "whoopee", "woohoo", "yay", "yippee", "yowza"]
@@ -24,4 +24,4 @@ def version():
     return _version
 
 def dad():
-    return random.choice(dad)
+    return random.choice(dadjokes)
