@@ -48,7 +48,7 @@ async def beach(ctx):
     await ctx.send(jabber.beach())
 
 @client.command(
-    name = "dadjoke"
+    name = "dadjoke",
     help = "I tell dad jokes but I'm not a dad. Guess that makes me a faux pa.",
     brief = "I tell dad jokes but I'm not a dad."
 )
