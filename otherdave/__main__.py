@@ -48,6 +48,14 @@ async def beach(ctx):
     await ctx.send(jabber.beach())
 
 @client.command(
+    name = "dadjoke",
+    help = "I tell dad jokes but I'm not a dad. Guess that makes me a faux pa.",
+    brief = "I tell dad jokes but I'm not a dad."
+)
+async def dad(ctx):
+    await ctx.send(jabber.dad())
+
+@client.command(
     name = "drunkdraw",
     help = "Announces the next drunkdraw. Dave and Isaac can configure the draw as well.",
     brief = "Announces the next drunkdraw.",
