@@ -5,6 +5,9 @@ from sys import maxsize
 with open("./conf.yaml") as conf:
     config = yaml.load(conf, Loader=yaml.BaseLoader)
 
+with open("./data/dad.txt") as dadf:
+    dad = dadf.readlines()
+
 _notFound = "Buddy, I think you need !help."
 _joy = ["va-va-voom", "wheee", "whoopee", "woohoo", "yay", "yippee", "yowza"]
 _version = "OtherDave is running version " + str(config["version"])
@@ -19,3 +22,6 @@ def helpNotFound():
 
 def version():
     return _version
+
+def dad():
+    return random.choice(dad)
