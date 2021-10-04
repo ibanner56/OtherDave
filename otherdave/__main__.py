@@ -10,6 +10,7 @@ from otherdave.commands.memory import *
 from otherdave.commands.mimic import *
 from otherdave.commands.prompt import prompt
 from otherdave.commands.respect import respect
+from otherdave.commands.haunt import haunt
 from otherdave.util.dlog import dlog
 from otherdave.util.triggers import *
 
@@ -187,7 +188,7 @@ async def cmd_remember(ctx, *args):
     usage = "[<target>]"
 )
 async def cmd_respect(ctx, *args):
-    await ctx.send(respect(args))
+    await ctx.send(respect(ctx, args))
 
 @client.command(
     brief = "Prints the current version of OtherDave.",
@@ -196,6 +197,15 @@ async def cmd_respect(ctx, *args):
 )
 async def cmd_version(ctx):
     await ctx.send(version())
+
+@client.command(
+    brief = "Haunts a user in DMs.",
+    help = "Haunts a <@user> of your choosing, or yourself.",
+    name = "haunt",
+    usage = "[<target>]"
+)
+async def cmd_haunt(ctx, user: discord.Member = None):
+    await haunt(ctx, user)
 
 # Configure events
 @client.event
