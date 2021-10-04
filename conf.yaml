@@ -1,9 +1,14 @@
-version: '2.1.4, now proudly on python :snake:'
+version: '2.1.5, now proudly on python :snake:'
+description: |+ 
+  OtherDave is not David.
+  
+  My blood and guts live here: https://github.com/ibanner56/OtherDave
 
 cache_length: 10
 max_lookback: 100
 parrot_channel: 328946766747533314
 parrot_interval: 1800
+dave_id: 194865073943085056
 
 drunkdraw:
   locales:

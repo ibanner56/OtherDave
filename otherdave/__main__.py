@@ -1,6 +1,7 @@
 import logging
 import yaml
 from datetime import *
+from discord import AllowedMentions
 from discord.ext import tasks, commands
 from otherdave.commands import haiku
 from otherdave.commands import jabber
@@ -20,12 +21,13 @@ with open("./conf.yaml") as conf:
 
 quietTime = None
 lastMsgTime = None
+otherotherdave = None
 help_command = commands.DefaultHelpCommand(
-    no_category = 'Commands',
+    no_category = "Commands",
     command_not_found = helpNotFound)
 client = commands.Bot(
     command_prefix = "!",
-    description = "OtherDave is not David.",
+    description = config["description"],
     help_command = help_command,)
 
 # Set up logging
@@ -42,18 +44,19 @@ async def squawk():
 
 # Configure commands
 @client.command(
+    brief = "Fine, you wanted a beach - I made him a beach. Happy? Sheesh.",
     help = "Fine, you wanted a beach - I made him a beach. Happy? Sheesh.",
-    brief = "Fine, you wanted a beach - I made him a beach. Happy? Sheesh."
+    name="beach"
 )
-async def beach(ctx):
+async def cmd_beach(ctx):
     await ctx.send(jabber.beach())
 
 @client.command(
-    name = "dadjoke",
+    brief = "I tell dad jokes but I'm not a dad.",
     help = "I tell dad jokes but I'm not a dad. Guess that makes me a faux pa.",
-    brief = "I tell dad jokes but I'm not a dad."
+    name = "dadjoke"
 )
-async def dad(ctx):
+async def cmd_dad(ctx):
     await ctx.send(jabber.dad())
 
 @client.command(
@@ -86,6 +89,15 @@ async def cmd_haiku(ctx, *args):
     await ctx.send(haiku.critique(args))
 
 @client.command(
+    brief = "Haunts a user in DMs.",
+    help = "Haunts a <@user> of your choosing, or yourself.",
+    name = "haunt",
+    usage = "[<target>]"
+)
+async def cmd_haunt(ctx, user: discord.Member = None):
+    await haunt(ctx, user)
+
+@client.command(
     brief = "Creates a fake LWYS script.",
     help = """Creates a fake LWYS script, always beginning with stage direction. If no characters are provided, two are chosen at random.
         The full cast includes Fixit, Hattie, Oldie, Sophie, Todd, and Tomo.]""",
@@ -112,7 +124,7 @@ async def cmd_mimic(ctx, *args):
         lines += mimic(ctx, args)
 
     for line in lines:
-        await ctx.send(line)
+        await ctx.send(line, allowed_mentions=AllowedMentions(users=[otherotherdave]))
 
 @client.command(
     brief = "Repeats a saved quote.",
@@ -121,7 +133,7 @@ async def cmd_mimic(ctx, *args):
     usage = "[<@user>]"
 )
 async def cmd_parrot(ctx, *args):
-    await ctx.send(parrot(args))
+    await ctx.send(parrot(args), allowed_mentions=AllowedMentions(users=[otherotherdave]))
 
 @client.command(
     brief = "Enables or disables auto-responses from OtherDave.",
@@ -198,18 +210,12 @@ async def cmd_respect(ctx, *args):
 async def cmd_version(ctx):
     await ctx.send(version())
 
-@client.command(
-    brief = "Haunts a user in DMs.",
-    help = "Haunts a <@user> of your choosing, or yourself.",
-    name = "haunt",
-    usage = "[<target>]"
-)
-async def cmd_haunt(ctx, user: discord.Member = None):
-    await haunt(ctx, user)
-
 # Configure events
 @client.event
 async def on_ready():
+    global otherotherdave
+    otherotherdave = await client.fetch_user(194865073943085056)
+
     logger.debug("Logged in as {0.user}".format(client))
     await dlog(client, "Hi, I'm OtherDave and I'm BACK FOR BUSINESS.")
     await squawk.start()
