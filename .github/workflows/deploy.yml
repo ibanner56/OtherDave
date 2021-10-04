@@ -19,7 +19,7 @@ jobs:
           username: ${{ secrets.REMOTE_USER }}
           password: ${{ secrets.REMOTE_PASSWD }}
           port: ${{ secrets.REMOTE_PORT }}
-          source: "otherdave/*, data/*, conf.yaml, requirements.txt, setup.py"
+          source: "otherdave/*, data/*, images/*, conf.yaml, requirements.txt, setup.py"
           target: "~/OtherDave"
       - name: Restart service
         uses: appleboy/ssh-action@master
