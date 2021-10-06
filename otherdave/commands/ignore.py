@@ -27,7 +27,7 @@ async def ignore(ctx, args):
     ignoreTime = datetime.now() + timedelta(minutes=mins)
 
     if (args[0] == "-me"):
-        ignoreDb.set(ctx.author.id, ignoreTime.isoformat())
+        ignoreDb.set(str(ctx.author.id), ignoreTime.isoformat())
         await ctx.message.add_reaction(config["emotions"]["_zipit"])
         return None
     else:
@@ -40,6 +40,7 @@ async def ignore(ctx, args):
         return f"Got it, I'll ignore {args[0]} for {mins} minutes. They must have been *naughty!*"
 
 def dms(userId, flag):
+    userId = str(userId)
     if (flag == "-enable"):
         if (slideDb.get(userId)):
             slideDb.rem(userId)
@@ -51,9 +52,10 @@ def dms(userId, flag):
         return _dmsUsage
 
 def shouldIgnore(userId):
+    userId = str(userId)
     timeStr = ignoreDb.get(userId)
     if (timeStr):
-        ignoreTime = datetime.strptime(timeStr, "%H:%M:%S.%f")
+        ignoreTime = datetime.fromisoformat(timeStr)
         if (datetime.now() > ignoreTime):
             ignoreDb.rem(userId)
             return False
@@ -61,4 +63,5 @@ def shouldIgnore(userId):
     return False
 
 def canDm(userId):
+    userId = str(userId)
     return slideDb.get(userId) != True
