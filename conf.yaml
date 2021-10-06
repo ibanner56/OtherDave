@@ -1,4 +1,4 @@
-version: '2.1.5, now proudly on python :snake:'
+version: '2.1.6, now proudly on python :snake:'
 description: |+ 
   OtherDave is not David.
   
@@ -37,6 +37,7 @@ emotions:
   _banjo: "\U0001FA95"
   _memorymoji: "\U0001F9E0"
   _hauntmoji: "\U0001F383"
+  _prohibited: "\U0001F6AB"
   _teacher: "\U0001F469\U0000200D\U0001F3EB"
   _zipit: "\U0001F910"
 rereactions:
