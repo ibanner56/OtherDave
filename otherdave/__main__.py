@@ -6,12 +6,13 @@ from discord.ext import tasks, commands
 from otherdave.commands import haiku
 from otherdave.commands import jabber
 from otherdave.commands.drunkdraw import drunkdraw
+from otherdave.commands.haunt import haunt
+from otherdave.commands.ignore import *
 from otherdave.commands.jabber import *
 from otherdave.commands.memory import *
 from otherdave.commands.mimic import *
 from otherdave.commands.prompt import prompt
 from otherdave.commands.respect import respect
-from otherdave.commands.haunt import haunt
 from otherdave.util.dlog import dlog
 from otherdave.util.triggers import *
 
@@ -60,6 +61,15 @@ async def cmd_dad(ctx):
     await ctx.send(jabber.dad())
 
 @client.command(
+    brief = "Disables direct messages.",
+    help = "Disables direct messages from OtherDave, triggered by other users or otherwise.",
+    name = "dms",
+    usage = "<-enable | -disable>"
+)
+async def cmd_dms(ctx, flag):
+    await ctx.send(dms(ctx.author.id, flag))
+
+@client.command(
     name = "drunkdraw",
     help = "Announces the next drunkdraw. Dave and Isaac can configure the draw as well.",
     brief = "Announces the next drunkdraw.",
@@ -96,6 +106,17 @@ async def cmd_haiku(ctx, *args):
 )
 async def cmd_haunt(ctx, user: discord.Member = None):
     await haunt(ctx, user)
+
+@client.command(
+    brief = "Stop listening to a user.",
+    help = "Stops listening to a user for a set time, or 5 minutes. They must have been naughty!",
+    name = "ignore",
+    usage = "<-me | @user> [minutes]"
+)
+async def cmd_ignore(ctx, *args):
+    response = await ignore(ctx, args)
+    if (response):
+        await ctx.send(response)
 
 @client.command(
     brief = "Creates a fake LWYS script.",
@@ -226,7 +247,11 @@ async def on_message(message):
     lastMsgTime = datetime.now()
     if message.author == client.user:
         return
-    
+    elif (shouldIgnore(message.author.id)):
+        # otherdave is always listening...
+        listen(message)
+        return
+
     content = message.content
     if content.startswith("!"):
         command, *_ = content.lstrip("!").split(" ")
