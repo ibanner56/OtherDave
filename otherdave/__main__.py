@@ -66,7 +66,8 @@ async def cmd_dad(ctx):
     name = "dms",
     usage = "<-enable | -disable>"
 )
-async def cmd_dms(ctx, flag):
+async def cmd_dms(ctx, *args):
+    flag = args[0] if len(args) > 0 else None
     await ctx.send(dms(ctx.author.id, flag))
 
 @client.command(
