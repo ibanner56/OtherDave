@@ -9,7 +9,7 @@ with open("./conf.yaml", encoding="utf-8") as conf:
 
 async def haunt(ctx, user):
     target = user or ctx.author
-    if (canDm(target)):
+    if (canDm(target.id)):
         channel = await target.create_dm()
         f = random.choice(["doot_intensifies.png", "skelly_gun.gif", "oh_no.png", "skelly_dance.gif", "skelly_daddy.png", "doot.png", "education.png"])
         m = random.choice(["HAHA get haunted punk", "Someone wanted me to haunt you **real** bad", "Uh oh! Haunting incoming!", "Hi, I brought you this :)", "I'm very lost right now", 
