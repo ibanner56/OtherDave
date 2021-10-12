@@ -18,7 +18,7 @@ async def ignore(ctx, args):
     
     try:
         if (len(args) == 2):
-            mins = int(args[2])
+            mins = int(args[1])
         else:
             mins = 5
     except ValueError:
