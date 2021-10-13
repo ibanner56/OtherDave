@@ -6,6 +6,7 @@ from collections import deque
 from datetime import *
 from math import pow
 
+_allQuotes = "_all"
 _badKeywords = "I don't remember saying that."
 _emptyBuffer = "I haven't said anything yet."
 _emptyMemory = "Do I even know you people?"
@@ -17,8 +18,10 @@ _saveFailed = "Sorry, I don't remember that."
 with open("./conf.yaml", encoding="utf-8") as conf:
     config = yaml.load(conf, Loader=yaml.FullLoader)
 
-memories = pickledb.load("./data/quotes.db", True)
 memCache = deque(maxlen=config["cache_length"])
+memories = pickledb.load("./data/quotes.db", True)
+if (not memories.get(_allQuotes)):
+    memories.set(_allQuotes, [])
 
 # Cubic Regression to match:
 #     00 sec ->   0% chance
@@ -52,6 +55,8 @@ async def remember(ctx, args):
                     memories.append(nick, [msg.content])
                 else:
                     memories.set(nick, [msg.content])
+
+                memories.append(_allQuotes, [[nick, msg.content]])
                 await ctx.message.add_reaction(config["emotions"]["_memorymoji"])
                 return None
 
@@ -63,18 +68,14 @@ def parrot(args):
         if(not memories.get(nick)):
             return _notFound
         rmem = random.choice(memories.get(nick))
-        memCache.append((nick, rmem))
+        memCache.append([nick, rmem])
         return rmem
     else:
-        memkeys = list(memories.getall())
-        if(len(memkeys) == 0):
+        if(len(memories.get(_allQuotes)) == 0):
             return _emptyMemory
-        rkey = random.choice(memkeys)
-        if(len(memories.get(rkey)) == 0):
-            return _emptyMemory
-        rmem = random.choice(memories.get(rkey))
-        memCache.append((rkey, rmem))
-        return rmem
+        rmem = random.choice(memories.get(_allQuotes))
+        memCache.append([rmem[0], rmem[1]])
+        return rmem[1]
 
 async def toucan(client, lastMsgTime, quietTime):
     now = datetime.now()
@@ -92,17 +93,20 @@ async def toucan(client, lastMsgTime, quietTime):
 def forget(args):
     if(len(memCache) == 0):
         return _emptyBuffer
+    
+    memory = None
     if(args):
         keywords = " ".join(args)
         memory = next((mem for mem in reversed(memCache) if keywords in mem[1]), None)
         if(memory):
             memCache.remove(memory)
-            memories.get(memory[0]).remove(memory[1])
         else:
             return _badKeywords
     else:
         memory = memCache.pop()
-        memories.get(memory[0]).remove(memory[1])
+    
+    memories.get(memory[0]).remove(memory[1])
+    memories.get(_allQuotes).remove(memory)
     
     # Because pickleDB doesn't support list element removal properly, dump manually
     memories.dump()
