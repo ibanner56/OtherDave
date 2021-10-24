@@ -7,6 +7,7 @@ from otherdave.commands import haiku
 from otherdave.commands import jabber
 from otherdave.commands.drunkdraw import drunkdraw
 from otherdave.commands.haunt import haunt
+from otherdave.commands.horoscope import horoscope
 from otherdave.commands.ignore import *
 from otherdave.commands.jabber import *
 from otherdave.commands.memory import *
@@ -111,6 +112,15 @@ async def cmd_haunt(ctx, user: discord.Member = None):
 async def cmd_haunt_error(ctx, error):
     if isinstance(error, commands.BadArgument):
         await ctx.send("OOPSIE, looks like that user doesn't exist, sad day for them whoever they are!")
+
+@client.command(
+    brief = "Gives you or another a horoscope.",
+    help = "Gives you or another a horoscope. Can target <@user>s.",
+    name = "horoscope",
+    usage = "[<target>]"
+)
+async def cmd_horoscope(ctx, variant: str = None):
+    await ctx.send(horoscope(variant))
 
 @client.command(
     brief = "Stop listening to a user.",

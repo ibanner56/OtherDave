@@ -1,0 +1,75 @@
+{
+	"respect":[
+		"you are {{adjective}}",
+		"you are {{amount}} {{adjective}}",
+		"you make {{person}} feel {{adjective}}",
+		"you make {{person}} feel {{amount}} {{adjective}}",
+		"you have {{adjective}} {{asset}}",
+		"you have {{amount}} {{adjective}} {{asset}}",
+		"you have {{an_adjective}} {{noun}}",
+		"you have {{an_amount}} {{adjective}} {{noun}}"
+	],
+	"horoscope":{
+		"generic": [
+			"Step into your {{adverb}} zone and {{present_verb}} today, the cards are in your favor. No {{noun}} can stop you this week.",
+			"I'm not gonna lie to you chief, your {{noun}} ain't doin so good. Something about the chakras and the {{noun}}s not lining up this week. May the {{noun}}s be ever in your favour kiddo.",
+			"There's no point in {{ing_verb}} today, unless you know that your inner {{noun}} is totally {{adjective}}.",
+			"Sometimes the best {{noun}}s are the ones you {{present_verb}}, so stay {{adverb}} today and it should be {{adjective}}.",
+			"Today is a day for {{noun}}, so be sure to {{present_verb}} with your best {{noun}} today and bring out your inner {{adjective}} self.",
+			"Today is the perfect day to find with your {{noun}}, as long as you do it in the most {{adjective}} way possible.",
+			"Make room for {{noun}} today because the {{noun}}s are in your favor. The time for {{ing_verb}} is upon you and its your chance to go turbo with your {{adjective}} game.",
+			"Today brings {{adjective}} surprises, so make sure you {{present_verb}} until the {{noun}}s come home.",
+			"OtherDave says: boy oh boy, are your {{asset}} not ready for this week! Brace yourself because the {{adverb}} {{adjective}} {{noun}}s are coming and you better be {{present_verb}}."
+		],
+		"aries": [
+			"Well, {{ing_verb}} may be the last thing on your mind, even if you and your {{noun}} have similar goals. This can be down to {{planet}} being {{adverb}} involved. {{person}} could seem a tad {{adjective}} and not inclined to {{present_verb}}. Don't let it bother you, you have better things to be getting on with. A friend might have a {{adjective}} suggestion, so why not take them up on it?"
+		],
+		"aquarius": [
+			"A {{adjective}} {{noun}} can {{present_verb}} an issue that could soon be {{present_verb}}, if you're {{ing_verb}} to look it in the {{asset}}. If this is something you're {{ing_verb}} with, don't {{present_verb}} any longer, Aquarius. If you try to {{present_verb}} it down and {{present_verb}} about it, it will only {{present_verb}} {{adjective}} and from another {{asset}}. If in need of help, {{ing_verb}} with {{person}} or counsellor may be a {{adjective}} start."
+		],
+		"cancer": [
+			"Find yourself more affected by {{person}} than usual? You may put off {{ing_verb}} something if you feel it will {{present_verb}} the boat. And yet your {{noun}} has power too, and {{ing_verb}} out might be an opportunity to ring in {{noun}}s that are long overdue. Although you could feel {{adjective}} now, this is a good time to get it out in the open. Don't worry about others, do this for yourself, Cancer."
+		],
+		"capricorn": [
+			"Involved in a {{noun}} of {{noun}}s? It's {{adverb}} you both want the same thing, but can't {{present_verb}} this yet. While {{ing_verb}} things over may be a {{adjective}} of time right now, there is potential to {{present_verb}} this. You'll need to put yourself in {{person}}'s {{noun}}s. And if you can, it might be a {{noun}}. Whatever you decide, {{noun}} could make things {{adjective}}, and might help this matter {{present_verb}} {{adverb}}."
+		],
+		"gemini": [
+			"No matter how {{adverb}} you put something across, {{person}} can still take offence. This might not have anything to do with you, and is {{adverb}} linked to a {{noun}} issue. With {{planet}} in your sector of {{ing_verb}}, you could try reaching out, Gemini. Maybe they need to {{present_verb}}, and are {{adjective}} because they've been holding it all in. If you break the ice for a {{noun}}, they might become so much {{adjective}}."
+		],
+		"leo": [
+			"It's just as well to keep an {{adjective}} mind, rather than insist you are {{adjective}}. The current star map could zero in on your {{adjective}} side, and you might choose to {{present_verb}} just because you can, Leo. You may feel {{adjective}}, but this approach could {{present_verb}} friends or {{person}}, and might {{present_verb}} the weekend. Loosen up. Does it really matter in the grand scheme of things?"
+		],
+		"libra": [
+			"Some people are so focused on their own {{noun}}, that they refuse to {{present_verb}} or take on board sane advice. This is something you might need to {{present_verb}}, Libra. You'll soon realize it's a futile {{noun}}. Don't bother even {{ing_verb}}. Instead, just leave it {{adjective}}. This is one of those times when allowing {{person}} to experience their {{noun}} could be the only thing that pushes them to {{present_verb}}."
+		],
+		"pisces": [
+			"It won't {{present_verb}} to get into a {{noun}} with a friend or {{person}}, as no-one will {{present_verb}}, and it could {{present_verb}} a relationship that is otherwise {{adjective}}. The {{present_verb}} to {{present_verb}} a {{noun}} just for the sake of it, might {{present_verb}} you or another to {{present_verb}} things you may {{present_verb}}. Yet within a day or so, you can {{present_verb}} what all the {{noun}} was about, Pisces. In this regard, {{ing_verb}} your {{adjective}} {{asset}} over logic could {{present_verb}} you."
+		],
+		"sagittarius": [
+			"The {{planet}}'s {{adjective}} with {{adjective}} {{planet}}, could be a {{noun}} that {{present_verb}} you to try something {{adjective}}. This should appeal to your {{asset}} and your {{adjective}} to explore the unknown. You may be {{adjective}} by what's going on in your local {{noun}}, Archer. Or be {{ing_verb}} for {{noun}} or {{noun}}. If a new {{noun}} or {{noun}} clicks, why not give it a go. It might be {{adjective}} for you."
+		],
+		"scorpio": [
+			"{{ing_verb}} can be {{adjective}}, and you might {{adverb}} {{present_verb}} of the {{noun}} going around in your {{asset}}. One way to {{present_verb}} this could be to get {{adjective}} and focus on {{ing_verb}} your {{asset}}, as this can help earth {{adjective}} energy and allow your {{asset}} to {{present_verb}}. It helps to avoid {{adjective}} moves, and to {{present_verb}} before any {{adjective}} {{noun}}."
+		],
+		"taurus": [
+			"You might wonder why your thoughts about {{person}} are so {{adjective}}, and what you could do to stop this. It's {{adverb}} because {{planet}} is still linked to {{planet}}, and thankfully this {{adjective}} is {{ing_verb}}. This may not help you now, when you'd like nothing more than to {{present_verb}}. Best to {{present_verb}} and forget about it ol' chap."
+		],
+		"virgo": [
+			"Something you want could be {{ing_verb}} way too much bandwidth, and causing you to {{present_verb}}, Virgo. In a few days, you may not {{present_verb}} the same way and might have little {{noun}} in it. This all or nothing approach is typical of the current {{planets}}/{{planets}} angle, so it's worth {{ing_verb}} about this in advance. If you go all out and {{present_verb}}, you may soon wonder why you bothered."
+		],
+		"al": [
+			"Aries: The look on your face will be priceless when you find that 40lb watermelon in your colon. Trade toothbrushes with an albino dwarf, then give a hickey to Meryl Streep.",
+			"Aquarius: There's travel in your future when your tongue freezes to the back of a speeding bus. Fill that void in your pathetic life by playing whack-a-mole 17 hours a day.",
+			"Cancer: The position of Jupiter says that you should spend the rest of the week face down in the mud. Try not to shove a roll of duct tape up your nose while taking your driver's test.",
+			"Capricorn: The stars say that you're an exciting and wonderful person. But you know they're lying. If I were you, I'd lock my doors and windows and never, never, never, never, never leave my house again.",
+			"Gemini: Your birthday party will be ruined once again by your explosive flatulence. Your love life will run into trouble when your fiancé hurls a javelin through your chest.",
+			"Leo: Now is not a good time to photocopy your butt and staple it to your bosses face. Eat a bucket of tuna-flavored pudding then wash it down with a gallon of strawberry quik.",
+			"Libra: A big promotion is just around the corner for someone much more talented than you. Laughter is the very best medicine. Remember that when your appendix bursts next week.",
+			"Pisces: Try to avoid any virgos or leos with the ebola virus. You are the true Lord of the dance, no matter what those idiots at work say.",
+			"Sagittarius: All your friends are laughing behind your back (kill them). Take down all those naked pictures of Ernest Borgnine you've got hanging in your den.",
+			"Scorpio: Get ready for an unexpected trip when you fall screaming from an open window. Work a little bit harder on improving your low self-esteem, you stupid freak.",
+			"Taurus: You will never find true happiness. What are you gonna do, cry about it? The stars predict tomorrow you'll wake up, do a bunch of stuff, and then go back to sleep.",
+			"Virgo: All Virgos are extremely friendly and intelligent, except for you. Expect a big surprise today when you wind up with your head impaled upon a stick."
+		]
+	}
+}
