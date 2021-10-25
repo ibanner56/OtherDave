@@ -114,8 +114,8 @@ async def cmd_haunt_error(ctx, error):
         await ctx.send("OOPSIE, looks like that user doesn't exist, sad day for them whoever they are!")
 
 @client.command(
-    brief = "Gives you or another a horoscope.",
-    help = "Gives you or another a horoscope. Can target <@user>s.",
+    brief = "Gives you a damn fine horoscope.",
+    help = "Gives you a horoscope, you can provide a star sign or al.",
     name = "horoscope",
     usage = "[<target>]"
 )

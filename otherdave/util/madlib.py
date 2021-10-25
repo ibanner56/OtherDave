@@ -80,11 +80,11 @@ class Horoscope(MadLibber):
             "adverb" : lambda : random.choice(self.adjectives["adverbs"]),
             "amount" : lambda : random.choice(self.amounts),
             "an_amount" : lambda : infl.an(self.actions["amount"]()),
-            "assets" : lambda : random.choice(self.assets),
+            "asset" : lambda : random.choice(self.assets),
             "person" : lambda : random.choice(self.persons),
-            "present_verbs" : lambda : random.choice(self.present_verbs),
-            "nouns" : lambda : random.choice(self.nouns),
-            "ing_verbs" : lambda : random.choice(self.ing_verbs),
+            "present_verb" : lambda : random.choice(self.present_verbs),
+            "noun" : lambda : random.choice(self.nouns),
+            "ing_verb" : lambda : random.choice(self.ing_verbs),
             "planet" : lambda : random.choice(self.planets)
         }
     
