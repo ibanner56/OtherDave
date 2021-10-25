@@ -107,6 +107,11 @@ async def cmd_haiku(ctx, *args):
 async def cmd_haunt(ctx, user: discord.Member = None):
     await haunt(ctx, user)
 
+@cmd_haunt.error
+async def cmd_haunt_error(ctx, error):
+    if isinstance(error, commands.BadArgument):
+        await ctx.send("OOPSIE, looks like that user doesn't exist, sad day for them whoever they are!")
+
 @client.command(
     brief = "Stop listening to a user.",
     help = "Stops listening to a user for a set time, or 5 minutes. They must have been naughty!",
