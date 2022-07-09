@@ -14,10 +14,10 @@ class MadLibber():
         tokens = template.split(" ")
         result = ""
         for token in tokens:
-            action = re.match("\{\{(.+?)\}\}(.*)", token)
+            action = re.match("\{\{(.+?)\}\}", token)
             if(action):
                 if(action[1] in self.actions):
-                    result += self.actions[action[1]]() + action[2]
+                    result += self.actions[action[1]]()
                 else:
                     result += action[0]
             else:
@@ -33,23 +33,23 @@ class Complimenter(MadLibber):
             self.adjectives = json.load(adf)
         with open("./data/madlib/amounts.json") as amf:
             self.amounts = json.load(amf)
-        with open("./data/madlib/assets.json") as parf:
-            self.assets = json.load(parf)
+        with open("./data/madlib/parts.json") as parf:
+            self.parts = json.load(parf)
         with open("./data/madlib/persons.json") as perf:
             self.persons = json.load(perf)
         with open("./data/madlib/templates.json") as temf:
             self.templates = json.load(temf)
-        with open("./data/madlib/nouns.json") as thinf:
-            self.nouns = json.load(thinf)
+        with open("./data/madlib/things.json") as thinf:
+            self.things = json.load(thinf)
 
         self.actions = {
             "adjective" : lambda : random.choice(self.adjectives["adjectives"]),
             "an_adjective" : lambda : infl.an(self.actions["adjective"]()),
             "amount" : lambda : random.choice(self.amounts),
             "an_amount" : lambda : infl.an(self.actions["amount"]()),
-            "asset" : lambda : random.choice(self.assets),
+            "parts" : lambda : random.choice(self.parts),
             "person" : lambda : random.choice(self.persons),
-            "noun" : lambda : random.choice(self.nouns),
+            "thing" : lambda : random.choice(self.things),
             "template" : lambda : random.choice(self.templates["respect"])
         }
 
@@ -84,16 +84,16 @@ class Horoscope(MadLibber):
             "person" : lambda : random.choice(self.persons),
             "present_verb" : lambda : random.choice(self.present_verbs),
             "noun" : lambda : random.choice(self.nouns),
+            "nouns" : lambda : infl.plural_noun(random.choice(self.nouns)),
             "ing_verb" : lambda : random.choice(self.ing_verbs),
             "planet" : lambda : random.choice(self.planets)
         }
     
-    def make_horoscope(self, variant=None):
-        try:
-            horoscope_template = random.choice(self.templates["horoscope"][variant or "generic"])
-        except KeyError:
-            return "Hooo boy, \"" + variant + "\" is a funky sounding star sign. I'm also a case-sensitive little baby."
-        return self._format_template(horoscope_template)
+    def get_variants(self):
+        return self.templates["horoscope"].keys()
+    
+    def make_horoscope(self, variant):
+        return self._format_template(random.choice(self.templates["horoscope"][variant]))
 
 class Prompter(MadLibber):
     def __init__(self):

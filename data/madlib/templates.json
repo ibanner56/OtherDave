@@ -4,22 +4,22 @@
 		"you are {{amount}} {{adjective}}",
 		"you make {{person}} feel {{adjective}}",
 		"you make {{person}} feel {{amount}} {{adjective}}",
-		"you have {{adjective}} {{asset}}",
-		"you have {{amount}} {{adjective}} {{asset}}",
-		"you have {{an_adjective}} {{noun}}",
-		"you have {{an_amount}} {{adjective}} {{noun}}"
+		"you have {{adjective}} {{parts}}",
+		"you have {{amount}} {{adjective}} {{parts}}",
+		"you have {{an_adjective}} {{thing}}",
+		"you have {{an_amount}} {{adjective}} {{thing}}"
 	],
 	"horoscope":{
 		"generic": [
 			"Step into your {{adverb}} zone and {{present_verb}} today, the cards are in your favor. No {{noun}} can stop you this week.",
-			"I'm not gonna lie to you chief, your {{noun}} ain't doin so good. Something about the chakras and the {{noun}}s not lining up this week. May the {{noun}}s be ever in your favour kiddo.",
+			"I'm not gonna lie to you chief, your {{noun}} ain't doin so good. Something about the chakras and the {{nouns}} not lining up this week. May the {{nouns}} be ever in your favour kiddo.",
 			"There's no point in {{ing_verb}} today, unless you know that your inner {{noun}} is totally {{adjective}}.",
-			"Sometimes the best {{noun}}s are the ones you {{present_verb}}, so stay {{adverb}} today and it should be {{adjective}}.",
+			"Sometimes the best {{nouns}} are the ones you {{present_verb}}, so stay {{adverb}} today and it should be {{adjective}}.",
 			"Today is a day for {{noun}}, so be sure to {{present_verb}} with your best {{noun}} today and bring out your inner {{adjective}} self.",
 			"Today is the perfect day to find with your {{noun}}, as long as you do it in the most {{adjective}} way possible.",
-			"Make room for {{noun}} today because the {{noun}}s are in your favor. The time for {{ing_verb}} is upon you and its your chance to go turbo with your {{adjective}} game.",
-			"Today brings {{adjective}} surprises, so make sure you {{present_verb}} until the {{noun}}s come home.",
-			"OtherDave says: boy oh boy, are your {{asset}} not ready for this week! Brace yourself because the {{adverb}} {{adjective}} {{noun}}s are coming and you better be {{present_verb}}."
+			"Make room for {{noun}} today because the {{nouns}} are in your favor. The time for {{ing_verb}} is upon you and its your chance to go turbo with your {{adjective}} game.",
+			"Today brings {{adjective}} surprises, so make sure you {{present_verb}} until the {{nouns}} come home.",
+			"OtherDave says: boy oh boy, are your {{asset}} not ready for this week! Brace yourself because the {{adverb}} {{adjective}} {{nouns}} are coming and you better be {{present_verb}}."
 		],
 		"aries": [
 			"Well, {{ing_verb}} may be the last thing on your mind, even if you and your {{noun}} have similar goals. This can be down to {{planet}} being {{adverb}} involved. {{person}} could seem a tad {{adjective}} and not inclined to {{present_verb}}. Don't let it bother you, you have better things to be getting on with. A friend might have a {{adjective}} suggestion, so why not take them up on it?"
@@ -28,10 +28,10 @@
 			"A {{adjective}} {{noun}} can {{present_verb}} an issue that could soon be {{present_verb}}, if you're {{ing_verb}} to look it in the {{asset}}. If this is something you're {{ing_verb}} with, don't {{present_verb}} any longer, Aquarius. If you try to {{present_verb}} it down and {{present_verb}} about it, it will only {{present_verb}} {{adjective}} and from another {{asset}}. If in need of help, {{ing_verb}} with {{person}} or counsellor may be a {{adjective}} start."
 		],
 		"cancer": [
-			"Find yourself more affected by {{person}} than usual? You may put off {{ing_verb}} something if you feel it will {{present_verb}} the boat. And yet your {{noun}} has power too, and {{ing_verb}} out might be an opportunity to ring in {{noun}}s that are long overdue. Although you could feel {{adjective}} now, this is a good time to get it out in the open. Don't worry about others, do this for yourself, Cancer."
+			"Find yourself more affected by {{person}} than usual? You may put off {{ing_verb}} something if you feel it will {{present_verb}} the boat. And yet your {{noun}} has power too, and {{ing_verb}} out might be an opportunity to ring in {{nouns}} that are long overdue. Although you could feel {{adjective}} now, this is a good time to get it out in the open. Don't worry about others, do this for yourself, Cancer."
 		],
 		"capricorn": [
-			"Involved in a {{noun}} of {{noun}}s? It's {{adverb}} you both want the same thing, but can't {{present_verb}} this yet. While {{ing_verb}} things over may be a {{adjective}} of time right now, there is potential to {{present_verb}} this. You'll need to put yourself in {{person}}'s {{noun}}s. And if you can, it might be a {{noun}}. Whatever you decide, {{noun}} could make things {{adjective}}, and might help this matter {{present_verb}} {{adverb}}."
+			"Involved in a {{noun}} of {{nouns}}? It's {{adverb}} you both want the same thing, but can't {{present_verb}} this yet. While {{ing_verb}} things over may be a {{adjective}} of time right now, there is potential to {{present_verb}} this. You'll need to put yourself in {{person}}'s {{nouns}}. And if you can, it might be a {{noun}}. Whatever you decide, {{noun}} could make things {{adjective}}, and might help this matter {{present_verb}} {{adverb}}."
 		],
 		"gemini": [
 			"No matter how {{adverb}} you put something across, {{person}} can still take offence. This might not have anything to do with you, and is {{adverb}} linked to a {{noun}} issue. With {{planet}} in your sector of {{ing_verb}}, you could try reaching out, Gemini. Maybe they need to {{present_verb}}, and are {{adjective}} because they've been holding it all in. If you break the ice for a {{noun}}, they might become so much {{adjective}}."

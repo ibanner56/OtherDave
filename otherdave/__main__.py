@@ -115,11 +115,11 @@ async def cmd_haunt_error(ctx, error):
 
 @client.command(
     brief = "Gives you a damn fine horoscope.",
-    help = "Gives you a horoscope, you can provide a star sign or al.",
+    help = "Gives you a horoscope, you can provide a star sign or place the word 'al' after command to recieve a Weird Al horoscope.",
     name = "horoscope",
-    usage = "[<target>]"
+    usage = "[starsign | al]"
 )
-async def cmd_horoscope(ctx, variant: str = None):
+async def cmd_horoscope(ctx, variant: str = "generic"):
     await ctx.send(horoscope(variant))
 
 @client.command(
