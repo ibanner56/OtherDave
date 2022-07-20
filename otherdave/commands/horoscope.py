@@ -1,6 +1,6 @@
-from otherdave.util.madlib import Horoscope
+from otherdave.util.madlib import Horoscoper
 
-OtherDavesTerribleHoroscope = Horoscope()
+OtherDavesTerribleHoroscope = Horoscoper()
 
 def horoscope(variant):
     if variant not in OtherDavesTerribleHoroscope.get_variants():
