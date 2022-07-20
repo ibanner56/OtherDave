@@ -4,8 +4,8 @@ import random
 from discord import activity, Embed, Colour
 
 spotifyColor = Colour(1947988)
-musicTemplate = "{listener} has listened to [{title}]({trackUrl}) on {album} by {artist} ... {listens} time(s)! - it must be pretty {description}!"
-adjectives = json.load(open("./data/madlib/adjectives.json"))["adjectives"]
+musicTemplate = "{listener} has listened to ::\n[{title}]({trackUrl}) on {album} by {artist}\n...{listens} time(s)! It must be {adverb} {description}!"
+adjectives = json.load(open("./data/madlib/adjectives.json"))
 
 #   recommendations:
 #       music:
@@ -63,7 +63,7 @@ def recommend(kind):
         track = recs.dget("music", random.choice(list(recs.dkeys("music"))))
         trackListener = random.choice(list(track["listeners"]))
 
-        embed = Embed(colour=spotifyColor, url=track["trackUrl"])
+        embed = Embed(colour=spotifyColor, url=track["trackUrl"], title=track["artist"])
         embed.set_thumbnail(url = track["albumCover"])
         embed.description = musicTemplate.format(
             listener = trackListener,
@@ -72,7 +72,8 @@ def recommend(kind):
             album = track["album"],
             artist = track["artist"],
             listens = track["listeners"][trackListener],
-            description = random.choice(adjectives)
+            adverb = random.choice(adjectives["adverbs"]),
+            description = random.choice(adjectives["adjectives"])
         )
 
         return embed
