@@ -6,11 +6,10 @@ import re
 infl = inflect.engine()
 
 class MadLibber():
-    def make(self):
-        template = self.actions["template"]()
-        return self._format_template(template)
+    def make(self, template = None):
+        if(template is None):
+            template = self.actions["template"]()
 
-    def _format_template(self, template):
         tokens = template.split(" ")
         result = ""
         for token in tokens:
@@ -53,7 +52,7 @@ class Complimenter(MadLibber):
             "template" : lambda : random.choice(self.templates["respect"])
         }
 
-class Horoscope(MadLibber):
+class Horoscoper(MadLibber):
     def __init__(self):
         with open("./data/madlib/adjectives.json") as adf:
             self.adjectives = json.load(adf)
@@ -93,7 +92,7 @@ class Horoscope(MadLibber):
         return self.templates["horoscope"].keys()
     
     def make_horoscope(self, variant):
-        return self._format_template(random.choice(self.templates["horoscope"][variant]))
+        return self.make(random.choice(self.templates["horoscope"][variant]))
 
 class Prompter(MadLibber):
     def __init__(self):
