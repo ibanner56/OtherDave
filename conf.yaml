@@ -1,4 +1,5 @@
-version: '2.1.7, now proudly on python :snake:'
+# https://semver.org/
+version: '2.2.0, now proudly on python :snake:'
 description: |+ 
   OtherDave is not David.
   

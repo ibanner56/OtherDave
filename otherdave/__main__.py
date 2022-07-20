@@ -1,7 +1,7 @@
 import logging
 import yaml
 from datetime import *
-from discord import AllowedMentions
+from discord import AllowedMentions, activity
 from discord.ext import tasks, commands
 from otherdave.commands import haiku
 from otherdave.commands import jabber
@@ -13,6 +13,7 @@ from otherdave.commands.jabber import *
 from otherdave.commands.memory import *
 from otherdave.commands.mimic import *
 from otherdave.commands.prompt import prompt
+from otherdave.commands.recommend import *
 from otherdave.commands.respect import respect
 from otherdave.util.dlog import dlog
 from otherdave.util.triggers import *
@@ -30,7 +31,8 @@ help_command = commands.DefaultHelpCommand(
 client = commands.Bot(
     command_prefix = "!",
     description = config["description"],
-    help_command = help_command,)
+    help_command = help_command,
+    intents=discord.Intents.all())
 
 # Set up logging
 logger = logging.getLogger("discord")
@@ -219,6 +221,15 @@ async def cmd_quiet(ctx, *args):
         quietTime = datetime.now() + timedelta(minutes=5)
 
 @client.command(
+    brief = "Gives you a cool recommendation.",
+    help = "Gives you a song or game recommendation based on what others have been enjoying.",
+    name = "recommend",
+    usage = "[-music | -games]"
+)
+async def cmd_recommend(ctx, kind: str = "-music"):
+    await ctx.send(embed=recommend(kind))
+
+@client.command(
     brief = "Saves something a user just said to quote later.",
     help = "Saves something a user just said to quote later.",
     name = "remember",
@@ -294,6 +305,16 @@ async def on_reaction_add(reaction, _):
         return
     if(reaction.count == 1 and reaction.emoji in config["rereactions"]):
         await reaction.message.channel.send(config["rereactions"][reaction.emoji])
+
+@client.event
+async def on_presence_update(user, after):
+    if (len(after.activities) != 1):
+        return
+
+    if (isinstance(after.activity, activity.Spotify)):
+        playlist(user, after.activity)
+    elif (isinstance(after.activity, activity.Game)):
+        wishlist(user, after.activity)
 
 if __name__ == "__main__":
     tokenFile = open("bot.tkn", "r")
