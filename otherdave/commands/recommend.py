@@ -55,7 +55,7 @@ def wishlist(user, game):
     if (not isinstance(game, activity.Game)):
         return
 
-def recommend(kind):
+def recommend(kind = "-music"):
     if (not (kind in ["-music", "-games"])):
         return Embed(description="I *recommend* you read the usage statement for this command.")
     
