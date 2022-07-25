@@ -88,7 +88,8 @@ async def cmd_forget(ctx, *args):
     name = "give",
     usage = "[<target> <object>]"
 )
-async def cmd_give(ctx, target: str = "<@" + config["self_id"] + ">", thing: str = "something"):
+async def cmd_give(ctx, target: str = "<@" + config["self_id"] + ">", *thing):
+    thing = "something" if len(thing) == 0 else " ".join(thing)
     await ctx.send(give(target, thing))
 
 @client.command(
