@@ -11,6 +11,7 @@ inventoryKey = "inventory"
 bagsize = int(config["bag_size"])
 selftag = "<@" + config["self_id"] + ">"
 
+# TODO: It would be neat if there could be a few different madlibs for these responses.
 _emptyBag = "Aw heck, I'm all out of stuff."
 _inventoryPreface = "Well heck, I've got a whole bunch of stuff. Right now I'm carrying:"
 _unknownThing = "I don't have {thing}, give them one yourself."
@@ -65,6 +66,9 @@ def take(target, thing):
         return _giftMessage.format(target = target, thing = gift)
 
 def inventory():
+    if (bag.llen(inventoryKey) == 0):
+        return _emptyBag
+
     inventoryString = _inventoryPreface
     
     for thing in bag.lgetall(inventoryKey):
