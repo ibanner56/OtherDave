@@ -12,6 +12,7 @@ bagsize = int(config["bag_size"])
 selftag = "<@" + config["self_id"] + ">"
 
 _emptyBag = "Aw heck, I'm all out of stuff."
+_inventoryPreface = "Well heck, I've got a whole bunch of stuff. Right now I'm carrying:"
 _unknownThing = "I don't have {thing}, give them one yourself."
 _giftMessage = "Here, {target}, have {thing}."
 _knownThing = "I've already got {thing}!"
@@ -50,7 +51,7 @@ def take(target, thing):
         return _emptyBag
 
     if (thing == "something"):
-        bagIndex = random.randint(0, bag.llen(inventoryKey))
+        bagIndex = random.randint(0, bag.llen(inventoryKey)-1)
         gift = bag.lpop(inventoryKey, bagIndex)
     elif (bag.lexists(inventoryKey, thing)):
         gift = thing
@@ -62,3 +63,11 @@ def take(target, thing):
         return _takeMessage.format(thing = infl.a(gift))
     else:
         return _giftMessage.format(target = target, thing = infl.a(gift))
+
+def inventory():
+    inventoryString = _inventoryPreface
+    
+    for thing in bag.lgetall(inventoryKey):
+        inventoryString += "\n\t- " + infl.a(thing)
+
+    return inventoryString
