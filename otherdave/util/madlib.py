@@ -13,16 +13,21 @@ class MadLibber():
         tokens = template.split(" ")
         result = ""
         for token in tokens:
-            action = re.match("\{\{(.+?)\}\}", token)
+            action = re.match("\{\{(.+?)\}\}(.*)", token)
             if(action):
                 if(action[1] in self.actions):
-                    result += self.actions[action[1]]()
+                    result += self.actions[action[1]]() + action[2]
                 else:
                     result += action[0]
             else:
                 result += token
 
-            result += " "
+            result += " " + action
+
+        if (re.match("\{\{(.+?)\}\}", result)):
+            # Recursion with no base case -
+            # I'm going to regret this some day aren't I...
+            return self.make(result)
 
         return result.strip()
 
