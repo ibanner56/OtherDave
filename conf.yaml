@@ -12,6 +12,8 @@ max_lookback: 100
 parrot_channel: 328946766747533314
 parrot_interval: 1800
 dave_id: 194865073943085056
+self_id: 355497099762073600
+bag_size: 10
 
 drunkdraw:
   locales:
