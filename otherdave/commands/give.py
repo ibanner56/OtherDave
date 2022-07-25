@@ -32,18 +32,18 @@ def give(target = selftag, thing = "something"):
         return take(target, thing)
     
     if (thing == "something"):
-        thing = thinger.make()
+        thing = infl.a(thinger.make())
     
     if (bag.lexists(inventoryKey, thing)):
-        return _knownThing.format(thing = infl.a(thing))
+        return _knownThing.format(thing = thing)
     
     if (bag.llen(inventoryKey) >= bagsize):
         oldThing = bag.lpop(inventoryKey, 0)
         bag.ladd(inventoryKey, thing)
-        return _thanksfulMessage.format(oldThing = infl.an(oldThing), newThing = infl.a(thing))
+        return _thanksfulMessage.format(oldThing = oldThing, newThing = thing)
 
     bag.ladd(inventoryKey, thing)
-    return _thanksMessage.format(thing = infl.a(thing))
+    return _thanksMessage.format(thing = thing)
 
 
 def take(target, thing):
@@ -57,17 +57,17 @@ def take(target, thing):
         gift = thing
         bag.lremvalue(inventoryKey, thing)
     else:
-        return _unknownThing.format(thing = infl.a(thing))
+        return _unknownThing.format(thing = thing)
 
     if (target == "me"):
-        return _takeMessage.format(thing = infl.a(gift))
+        return _takeMessage.format(thing = gift)
     else:
-        return _giftMessage.format(target = target, thing = infl.a(gift))
+        return _giftMessage.format(target = target, thing = gift)
 
 def inventory():
     inventoryString = _inventoryPreface
     
     for thing in bag.lgetall(inventoryKey):
-        inventoryString += "\n\t- " + infl.a(thing)
+        inventoryString += "\n\t- " + thing
 
     return inventoryString
