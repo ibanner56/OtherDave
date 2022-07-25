@@ -22,7 +22,7 @@ class MadLibber():
             else:
                 result += token
 
-            result += " " + action
+            result += " " 
 
         if (re.match("\{\{(.+?)\}\}", result)):
             # Recursion with no base case -
