@@ -3,20 +3,8 @@ import yaml
 from datetime import *
 from discord import AllowedMentions, activity
 from discord.ext import tasks, commands
-from otherdave.commands import haiku
-from otherdave.commands import jabber
-from otherdave.commands.drunkdraw import drunkdraw
-from otherdave.commands.haunt import haunt
-from otherdave.commands.horoscope import horoscope
-from otherdave.commands.ignore import *
-from otherdave.commands.jabber import *
-from otherdave.commands.memory import *
-from otherdave.commands.mimic import *
-from otherdave.commands.prompt import prompt
-from otherdave.commands.recommend import *
-from otherdave.commands.respect import respect
-from otherdave.util.dlog import dlog
-from otherdave.util.triggers import *
+from otherdave.commands import *
+from otherdave.util import *
 
 # Configure client
 with open("./conf.yaml") as conf:
@@ -91,6 +79,20 @@ async def cmd_forget(ctx, *args):
     await ctx.send(forget(args))
 
 @client.command(
+    brief = "Interacts with OtherDave's inventory.",
+    help = """Gives something *to* @OtherDave, if he's the target, 
+        or takes something *from* @OtherDave and gives it to the @<target>. If you're not feeling 
+        creative, leave object blank or request 'something' and OD will be creative for you. 
+        If you're not feeling generous, '!give me [<object>]' will give things to you instead of a <target>.
+        Defaults to giving @OtherDave a random 'something'.""",
+    name = "give",
+    usage = "[<target> <object>]"
+)
+async def cmd_give(ctx, target: str = "<@" + config["self_id"] + ">", *thing):
+    thing = "something" if len(thing) == 0 else " ".join(thing)
+    await ctx.send(give(target, thing))
+
+@client.command(
     brief = "..... ....... .....",
     help = """*Prints out a haiku.* 
         *Can be used to debug them,* 
@@ -134,6 +136,14 @@ async def cmd_ignore(ctx, *args):
     response = await ignore(ctx, args)
     if (response):
         await ctx.send(response)
+
+@client.command(
+    brief = "Lists everything OtherDave is holding.",
+    help = "Lists everything in OtherDave's inventory. You can add or remove items with !give.",
+    name = "inventory"
+)
+async def cmd_inventory(ctx):
+    await ctx.send(inventory())
 
 @client.command(
     brief = "Creates a fake LWYS script.",

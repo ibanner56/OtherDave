@@ -9,6 +9,28 @@
 		"you have {{an_adjective}} {{thing}}",
 		"you have {{an_amount}} {{adjective}} {{thing}}"
 	],
+	"thing":[
+		"{{noun}}",
+		"{{noun}}",
+		"{{noun}}",
+		"{{noun}}",
+		"{{adjective}} {{noun}}",
+		"{{adjective}} {{noun}}",
+		"{{adjective}} {{noun}}",
+		"{{adjective}} {{noun}}",
+		"{{ing_verb}} {{noun}}",
+		"{{ing_verb}} {{noun}}",
+		"{{ing_verb}} {{noun}}",
+		"{{ing_verb}} {{noun}}",
+		"{{noun}}'s {{asset}}",
+		"{{noun}}'s {{adjective}} {{asset}}",
+		"{{noun}}'s {{adjective}} {{noun}}",
+		"{{noun}}'s {{adverb}} {{adjective}} {{asset}}",
+		"{{noun}}'s {{adverb}} {{ing_verb}} {{noun}}",
+		"{{adverb}} {{adjective}} {{noun}}",
+		"{{adverb}} {{ing_verb}} {{noun}}",
+		"{{template}}'s {{template}}"
+	],
 	"horoscope":{
 		"generic": [
 			"Step into your {{adverb}} zone and {{present_verb}} today, the cards are in your favor. No {{noun}} can stop you this week.",

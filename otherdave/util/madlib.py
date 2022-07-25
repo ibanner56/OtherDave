@@ -13,16 +13,21 @@ class MadLibber():
         tokens = template.split(" ")
         result = ""
         for token in tokens:
-            action = re.match("\{\{(.+?)\}\}", token)
+            action = re.match("\{\{(.+?)\}\}(.*)", token)
             if(action):
                 if(action[1] in self.actions):
-                    result += self.actions[action[1]]()
+                    result += self.actions[action[1]]() + action[2]
                 else:
                     result += action[0]
             else:
                 result += token
 
-            result += " "
+            result += " " 
+
+        if (re.match("\{\{(.+?)\}\}", result)):
+            # Recursion with no base case -
+            # I'm going to regret this some day aren't I...
+            return self.make(result)
 
         return result.strip()
 
@@ -128,3 +133,30 @@ class Prompter(MadLibber):
             self.adjectives.remove(adjective)
             with open("./data/prompt/adjectives.json", "w") as adf:
                 json.dump(adf)
+
+class Thinger(MadLibber):
+    def __init__(self) -> None:
+        with open("./data/madlib/adjectives.json") as adf:
+            self.adjectives = json.load(adf)
+        with open("./data/madlib/amounts.json") as amf:
+            self.amounts = json.load(amf)
+        with open("./data/madlib/assets.json") as parf:
+            self.assets = json.load(parf)
+        with open("./data/madlib/templates.json") as temf:
+            self.templates = json.load(temf)
+        with open("./data/madlib/nouns.json") as nounf:
+            self.nouns = json.load(nounf)
+        with open("./data/madlib/ing_verbs.json") as ing_verbsf:
+            self.ing_verbs = json.load(ing_verbsf)
+
+        self.actions = {
+            "adjective" : lambda : random.choice(self.adjectives["adjectives"]),
+            "an_adjective" : lambda : infl.an(self.actions["adjective"]()),
+            "adverb" : lambda : random.choice(self.adjectives["adverbs"]),
+            "amount" : lambda : random.choice(self.amounts),
+            "an_amount" : lambda : infl.an(self.actions["amount"]()),
+            "asset" : lambda : random.choice(self.assets),
+            "noun" : lambda : random.choice(self.nouns),
+            "ing_verb" : lambda : random.choice(self.ing_verbs),
+            "template" : lambda : random.choice(self.templates["thing"])
+        }
