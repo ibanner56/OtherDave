@@ -80,11 +80,11 @@ async def cmd_forget(ctx, *args):
 
 @client.command(
     brief = "Interacts with OtherDave's inventory.",
-    help = """Gives something *to* <@""" + config["self_id"] + """>, if he's the target, 
-        or takes something *from* OtherDave and gives it to the <target>. If you're not feeling 
+    help = """Gives something *to* @OtherDave, if he's the target, 
+        or takes something *from* @OtherDave and gives it to the @<target>. If you're not feeling 
         creative, leave object blank or request 'something' and OD will be creative for you. 
         If you're not feeling generous, '!give me [<object>]' will give things to you instead of a <target>.
-        Defaults to giving OtherDave a random object.""",
+        Defaults to giving @OtherDave a random 'something'.""",
     name = "give",
     usage = "[<target> <object>]"
 )
