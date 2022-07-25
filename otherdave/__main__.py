@@ -3,6 +3,7 @@ import yaml
 from datetime import *
 from discord import AllowedMentions, activity
 from discord.ext import tasks, commands
+from otherdave.commands import give
 from otherdave.commands import haiku
 from otherdave.commands import jabber
 from otherdave.commands.drunkdraw import drunkdraw
@@ -89,6 +90,19 @@ async def cmd_drunkdraw(ctx, *args):
 )
 async def cmd_forget(ctx, *args):
     await ctx.send(forget(args))
+
+@client.command(
+    brief = "Interacts with OtherDave's inventory.",
+    help = """Gives something *to* <@""" + config["self_id"] + """>, if he's the target, 
+        or takes something *from* OtherDave and gives it to the <target>. If you're not feeling 
+        creative, leave object blank or request 'something' and OD will be creative for you. 
+        If you're not feeling generous, '!give me [<object>]' will give things to you instead of a <target>.
+        Defaults to giving OtherDave a random object.""",
+    name = "give",
+    usage = "[<target> <object>]"
+)
+async def cmd_give(ctx, target: str = "<@" + config["self_id"] + ">", thing: str = "something"):
+    await ctx.send(give(target, thing))
 
 @client.command(
     brief = "..... ....... .....",
