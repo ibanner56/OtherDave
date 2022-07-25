@@ -3,21 +3,8 @@ import yaml
 from datetime import *
 from discord import AllowedMentions, activity
 from discord.ext import tasks, commands
-from otherdave.commands import give
-from otherdave.commands import haiku
-from otherdave.commands import jabber
-from otherdave.commands.drunkdraw import drunkdraw
-from otherdave.commands.haunt import haunt
-from otherdave.commands.horoscope import horoscope
-from otherdave.commands.ignore import *
-from otherdave.commands.jabber import *
-from otherdave.commands.memory import *
-from otherdave.commands.mimic import *
-from otherdave.commands.prompt import prompt
-from otherdave.commands.recommend import *
-from otherdave.commands.respect import respect
-from otherdave.util.dlog import dlog
-from otherdave.util.triggers import *
+from otherdave.commands import *
+from otherdave.util import *
 
 # Configure client
 with open("./conf.yaml") as conf:
@@ -148,6 +135,14 @@ async def cmd_ignore(ctx, *args):
     response = await ignore(ctx, args)
     if (response):
         await ctx.send(response)
+
+@client.command(
+    brief = "Lists everything OtherDave is holding.",
+    help = "Lists everything in OtherDave's inventory. You can add or remove items with !give.",
+    name = "inventory"
+)
+async def cmd_inventory(ctx):
+    await ctx.send(inventory())
 
 @client.command(
     brief = "Creates a fake LWYS script.",
