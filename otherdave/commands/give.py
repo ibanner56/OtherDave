@@ -2,6 +2,7 @@ import inflect
 import pickledb
 import random
 import yaml
+from datetime import *
 from otherdave.util import Thinger
 
 with open("./conf.yaml") as conf:
@@ -10,6 +11,7 @@ with open("./conf.yaml") as conf:
 inventoryKey = "inventory"
 bagsize = int(config["bag_size"])
 userbagsize = int(config["user_bag_size"])
+greedytime = int(config["greedy_time"])
 selftag = "<@" + config["self_id"] + ">"
 
 # TODO: It would be neat if there could be a few different madlibs for these responses.
@@ -22,10 +24,14 @@ _takeMessage = "Here, have {thing}."
 _thanksMessage = selftag + " is now carrying {thing}."
 _thanksfulMessage = selftag + " dropped {oldThing} and is now carrying {newThing}."
 _userfulMessage = "..\n\t*...it looks like you've dropped {thing} - I hope it wasn't important.*"
+_greedyMessage = "Noooooooo I only just got that! Get your own, you selfish gremlin."
 
 thinger = Thinger()
 infl = inflect.engine()
 bag = pickledb.load("./data/bag.db", True)
+
+# Keep a list of recently acquired things in memory that he doesn't want to give away.
+newThings = {}
 
 if (not bag.exists(inventoryKey)):
     bag.lcreate(inventoryKey)
@@ -42,6 +48,7 @@ def give(author, target = selftag, thing = "something"):
     
     # Put the new thing in the bag
     bag.ladd(inventoryKey, thing)
+    newThings[thing] = datetime.now()
 
     # Throw an old thing out if we're all full
     if (bag.llen(inventoryKey) >= bagsize):
@@ -58,9 +65,17 @@ def take(author, target, thing):
     if (thing == "something"):
         bagIndex = random.randint(0, bag.llen(inventoryKey)-1)
         gift = bag.lpop(inventoryKey, bagIndex)
+
     elif (bag.lexists(inventoryKey, thing)):
+        now = datetime.now()
+        delta = (now - newThings[thing]).total_seconds()
+
+        if (delta < greedytime):
+            return _greedyMessage
+
         gift = thing
         bag.lremvalue(inventoryKey, thing)
+
     else:
         return _unknownThing.format(thing = thing)
 
