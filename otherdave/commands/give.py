@@ -51,7 +51,7 @@ def give(author, target = selftag, thing = "something"):
     newThings[thing] = datetime.now()
 
     # Throw an old thing out if we're all full
-    if (bag.llen(inventoryKey) >= bagsize):
+    if (bag.llen(inventoryKey) > bagsize):
         oldThing = bag.lpop(inventoryKey, 0)
         newThings.pop(oldThing, None)
         return _thanksfulMessage.format(oldThing = oldThing, newThing = thing)
@@ -96,7 +96,7 @@ def take(author, target, thing):
         response = _giftMessage.format(target = target, thing = gift)
 
     # Throw an old thing out if they're all full
-    if (bag.llen(target) >= userbagsize):
+    if (bag.llen(target) > userbagsize):
         oldThing = bag.lpop(target, 0)
         response += _userfulMessage.format(thing = oldThing)
 
