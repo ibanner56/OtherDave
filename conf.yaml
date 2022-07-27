@@ -14,6 +14,7 @@ parrot_interval: 1800
 dave_id: 194865073943085056
 self_id: 355497099762073600
 bag_size: 10
+user_bag_size: 4
 
 drunkdraw:
   locales:
