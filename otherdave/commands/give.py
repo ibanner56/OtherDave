@@ -50,7 +50,7 @@ newThings = {}
 def byteWiseAdd(sthing, ithing):
     sbytes = sthing.encode("utf-8")
     ibytes = ithing.to_bytes(len(sbytes), "big")
-    return bytes(list(map(lambda x, y: x + y, sbytes, ibytes)))
+    return bytes(list(map(lambda x, y: min(x + y, 255), sbytes, ibytes)))
 
 def weirdIntAddAndReByte(sthing, ithing):
     sVal = sum(sthing.encode("utf-8")) + ithing
@@ -164,11 +164,12 @@ def davebucks(author, target, thing):
         bag.dadd(daveBucksKey, (target, 0))
 
     wallet = bag.dpop(daveBucksKey, target)
+    thingIsDigit = thing.isdigit() or (thing.startsWith("-") and thing[1:].isdigit())
 
-    if (thing.isdigit() and isinstance(wallet, int)):
+    if (thingIsDigit and isinstance(wallet, int)):
         # Both are integers
         bag.dadd(daveBucksKey, (target, int(thing) + wallet))
-    elif(thing.isdigit()):
+    elif(thingIsDigit):
         bag.dadd(daveBucksKey, (target, random.choice(stringMischief)(wallet, int(thing))))
     elif(isinstance(wallet, int)):
         bag.dadd(daveBucksKey, (target, random.choice(stringMischief)(thing, wallet)))
