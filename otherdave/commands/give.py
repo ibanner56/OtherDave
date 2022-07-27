@@ -98,6 +98,9 @@ def take(author, target, thing):
         oldThing = bag.lpop(target, 0)
         response += _userfulMessage.format(thing = oldThing)
 
+    # Stop tracking when OD got the thing
+    newThings.pop(gift)
+    
     return response
 
 def inventory(author, user):
