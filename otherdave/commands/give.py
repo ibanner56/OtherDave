@@ -149,7 +149,7 @@ def take(author, target, thing):
     return response
 
 def davebucks(author, target, thing):
-    if (author.id != daveid):
+    if (author.id != int(daveid)):
         return _noBucksMessage
     if (target == selftag):
         return _odBucksMessage
