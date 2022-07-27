@@ -84,13 +84,13 @@ async def cmd_forget(ctx, *args):
         or takes something *from* @OtherDave and gives it to the @<target>. If you're not feeling 
         creative, leave object blank or request 'something' and OD will be creative for you. 
         If you're not feeling generous, '!give me [<object>]' will give things to you instead of a <target>.
-        Defaults to giving @OtherDave a random 'something'.""",
+        Defaults to giving @OtherDave a random 'something'. Only Dave can give out DaveBucks.""",
     name = "give",
     usage = "[<target> <object>]"
 )
 async def cmd_give(ctx, target: str = "<@" + config["self_id"] + ">", *thing):
     thing = "something" if len(thing) == 0 else " ".join(thing)
-    await ctx.send(give( ctx.author.mention, target, thing))
+    await ctx.send(give(ctx.author, target, thing))
 
 @client.command(
     brief = "..... ....... .....",
@@ -143,7 +143,7 @@ async def cmd_ignore(ctx, *args):
     name = "inventory"
 )
 async def cmd_inventory(ctx, user: str = None):
-    await ctx.send(inventory(ctx.author.mention, user))
+    await ctx.send(inventory(ctx.author, user))
 
 @client.command(
     brief = "Creates a fake LWYS script.",
@@ -266,6 +266,14 @@ async def cmd_respect(ctx, *args):
 )
 async def cmd_version(ctx):
     await ctx.send(version())
+
+@client.command(
+    brief = "Checks your wallet for DaveBucks",
+    help = "Tells you how many DaveBucks you've got - I hope it's a whoooooole bunch!",
+    name = "wallet",
+)
+async def cmd_wallet(ctx):
+    await ctx.send(wallet(ctx.author))
 
 # Configure events
 @client.event
