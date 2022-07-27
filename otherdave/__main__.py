@@ -90,7 +90,7 @@ async def cmd_forget(ctx, *args):
 )
 async def cmd_give(ctx, target: str = "<@" + config["self_id"] + ">", *thing):
     thing = "something" if len(thing) == 0 else " ".join(thing)
-    await ctx.send(give(target, thing))
+    await ctx.send(give( ctx.author.mention, target, thing))
 
 @client.command(
     brief = "..... ....... .....",
@@ -142,8 +142,8 @@ async def cmd_ignore(ctx, *args):
     help = "Lists everything in OtherDave's inventory. You can add or remove items with !give.",
     name = "inventory"
 )
-async def cmd_inventory(ctx):
-    await ctx.send(inventory())
+async def cmd_inventory(ctx, user: str = None):
+    await ctx.send(inventory(ctx.author.mention, user))
 
 @client.command(
     brief = "Creates a fake LWYS script.",
