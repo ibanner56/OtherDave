@@ -15,7 +15,7 @@ bagsize = int(config["bag_size"])
 userbagsize = int(config["user_bag_size"])
 greedytime = int(config["greedy_time"])
 selftag = "<@" + config["self_id"] + ">"
-daveid = config["dave_id"]
+daveid = int(config["dave_id"])
 
 # TODO: It would be neat if there could be a few different madlibs for these responses.
 _emptyBag = "Aw heck, {whos} all out of stuff."
