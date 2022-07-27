@@ -50,7 +50,7 @@ newThings = {}
 def byteWiseAdd(sthing, ithing):
     sbytes = sthing.encode("utf-8")
     ibytes = ithing.to_bytes(len(sbytes), "big")
-    return bytes(list(map(lambda x, y: x + y, sbytes, ibytes)))
+    return bytes(list(map(lambda x, y: min(x + y, 255), sbytes, ibytes)))
 
 def weirdIntAddAndReByte(sthing, ithing):
     sVal = sum(sthing.encode("utf-8")) + ithing
