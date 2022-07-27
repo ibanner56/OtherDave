@@ -164,7 +164,7 @@ def davebucks(author, target, thing):
         bag.dadd(daveBucksKey, (target, 0))
 
     wallet = bag.dpop(daveBucksKey, target)
-    thingIsDigit = thing.isdigit() or (thing.startsWith("-") and thing[1:].isdigit())
+    thingIsDigit = thing.isdigit() or (thing.startswith("-") and thing[1:].isdigit())
 
     if (thingIsDigit and isinstance(wallet, int)):
         # Both are integers
