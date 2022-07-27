@@ -53,6 +53,7 @@ def give(author, target = selftag, thing = "something"):
     # Throw an old thing out if we're all full
     if (bag.llen(inventoryKey) >= bagsize):
         oldThing = bag.lpop(inventoryKey, 0)
+        newThings.pop(oldThing)
         return _thanksfulMessage.format(oldThing = oldThing, newThing = thing)
     else:
         return _thanksMessage.format(thing = thing)
@@ -93,14 +94,14 @@ def take(author, target, thing):
     else:
         response = _giftMessage.format(target = target, thing = gift)
 
-    # Throw an old thing out if we're all full
+    # Throw an old thing out if they're all full
     if (bag.llen(target) >= userbagsize):
         oldThing = bag.lpop(target, 0)
         response += _userfulMessage.format(thing = oldThing)
 
     # Stop tracking when OD got the thing
     newThings.pop(gift)
-    
+
     return response
 
 def inventory(author, user):
