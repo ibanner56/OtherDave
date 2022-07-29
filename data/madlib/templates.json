@@ -31,6 +31,13 @@
 		"{{adverb}} {{ing_verb}} {{noun}}",
 		"{{template}}'s {{template}}"
 	],
+	"use": [
+		"{who} took {thing} and put it inside {{a_noun}}!",
+		"{who} shoved {thing} into {whos} {{asset}} ... {{adjective}}!",
+		"{who} {{adverb}} {{present_verb}} {thing} thinking nobody would notice, but we all saw it happen.",
+		"{who} chucked {thing} over a {{noun}}, which is a shame because it was really {{adjective}}.",
+		"{who} taped {thing} to {{an_adjective}} rocket and launched it to {{planet}}!"
+	],
 	"horoscope":{
 		"generic": [
 			"Step into your {{adverb}} zone and {{present_verb}} today, the cards are in your favor. No {{noun}} can stop you this week.",
