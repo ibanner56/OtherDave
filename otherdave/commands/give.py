@@ -192,12 +192,12 @@ def use(author, *args):
     thing = args[0] if len_args == 1 else args[1]
     (who, whos) = ("I", "my") if len_args == 1 else ("You", "your")
 
+    if (thing == "something"):
+        thing = random.choice(bag.lgetall(mention))
+
     if (not bag.exists(mention)
         or not bag.lexists(mention, thing)):
         return _noUseMessage.format(who = who, thing = thing)
-
-    if (thing == "something"):
-        thing = random.choice(bag.lgetall(mention))
 
     bag.lremvalue(mention, thing)
     
