@@ -34,6 +34,8 @@ _daveDaveBucksMessage = "Isn't that a bit, uhhhhh, masturbatory?"
 _decimalMessage = "Whoa, you think I'm minting coinage here?"
 _daveBucksResultMessage = "Alriiiight, {target} now has {daveBucks} DaveBucks! Way to goooo!"
 _walletMessage = "Well heck, you've got {daveBucks} DaveBucks! Livin' *large*, buddy!"
+_dropMessage = "*It looks like {who} dropped {whos} {thing} - I hope it wasn't important...*"
+_noDropMessage = "Uhhh, {who} can't drop {thing}, {who} don't have one..."
 
 thinger = Thinger()
 infl = inflect.engine()
@@ -72,6 +74,19 @@ stringMischief = [
     lambda sthing, ithing: "".join(list(map(lambda x: chr(dodgeControlBytes(x)), weirdIntAddAndReByte(sthing, ithing))))
 ]
 
+# Strip all these indefinite articles we're adding
+def unflect_a(word: str) -> str:
+    if (word.startswith("a ")):
+        return word[2:]
+    if (word.startswith("an ")):
+        return word[3:]
+    # No indefinite article
+    return word
+
+# Alias an to a to be cute like inflect
+def unflect_an(word: str) -> str: return unflect_a(word)
+
+
 def give(author, target = selftag, thing = "something"):
     lowerThing = thing.lower()
     if (lowerThing.endswith("davebuck")):
@@ -100,7 +115,6 @@ def give(author, target = selftag, thing = "something"):
         return _thanksfulMessage.format(oldThing = oldThing, newThing = thing)
     else:
         return _thanksMessage.format(thing = thing)
-
 
 def take(author, target, thing):
     if (bag.llen(inventoryKey) == 0):
@@ -147,6 +161,21 @@ def take(author, target, thing):
     newThings.pop(gift, None)
 
     return response
+
+def drop(mention, thing):
+    who = "I" if mention == inventoryKey else "you"
+    whos = "my" if mention == inventoryKey else "your"
+
+    if (not bag.exists(mention)
+        or not bag.lexists(mention, thing)):
+        return _noDropMessage.format(who = who, thing = thing)
+
+    bag.lremvalue(mention, thing)
+    return _dropMessage.format(who = who, whos = whos, thing = unflect_a(thing))
+
+def selfdrop():
+    thing = random.choice(bag.lgetall(inventoryKey))
+    return drop(inventoryKey, thing)
 
 def davebucks(author, target, thing):
     if (author.id != int(daveid)):
