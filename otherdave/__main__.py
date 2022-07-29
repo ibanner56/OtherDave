@@ -269,6 +269,19 @@ async def cmd_respect(ctx, *args):
     await ctx.send(respect(ctx, args))
 
 @client.command(
+    brief = "Puts things to use.",
+    help = """Uses an object in your inventory, or tells OtherDave to use an object in his.
+        If you're using your own stuff you need to specify what you want to use, but OtherDave
+        can use an object at random if no other arguments are specified.""",
+    name = "use",
+    usage = "[-my <thing> | <thing>]"
+)
+async def cmd_use(ctx, *args):
+    if(len(args) == 0):
+        args = ["something"]
+    await ctx.send(ctx.author, args)
+
+@client.command(
     brief = "Prints the current version of OtherDave.",
     help = "Prints the current version of OtherDave.",
     name = "version"

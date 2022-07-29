@@ -3,7 +3,7 @@ import pickledb
 import random
 import yaml
 from datetime import *
-from otherdave.util import Thinger
+from otherdave.util import Thinger, User
 
 with open("./conf.yaml") as conf:
     config = yaml.load(conf, Loader=yaml.BaseLoader)
@@ -18,6 +18,7 @@ selftag = "<@" + config["self_id"] + ">"
 daveid = config["dave_id"]
 
 # TODO: It would be neat if there could be a few different madlibs for these responses.
+# TODO: Or a better way to set all these than a monolith of constants
 _emptyBag = "Aw heck, {whos} all out of stuff."
 _inventoryPreface = "Well heck, {whove} got a whole bunch of stuff. Right now {whos} carrying:"
 _unknownThing = "I don't have {thing}, give them one yourself."
@@ -36,8 +37,11 @@ _daveBucksResultMessage = "Alriiiight, {target} now has {daveBucks} DaveBucks! W
 _walletMessage = "Well heck, you've got {daveBucks} DaveBucks! Livin' *large*, buddy!"
 _dropMessage = "*It looks like {who} dropped {whos} {thing} - I hope it wasn't important...*"
 _noDropMessage = "Uhhh, {who} can't drop {thing}, {who} don't have one..."
+_noUseMessage = "{who} can't use {thing}, silly, {who} don't have one."
+_useUsage = "Maybe try using `!help use` first, huh buddy?"
 
 thinger = Thinger()
+user = User()
 infl = inflect.engine()
 bag = pickledb.load("./data/bag.db", True)
 if (not bag.exists(inventoryKey)):
@@ -176,6 +180,32 @@ def drop(mention, thing):
 def selfdrop():
     thing = random.choice(bag.lgetall(inventoryKey))
     return drop(inventoryKey, thing)
+
+def use(author, *args):
+    len_args = len(args)
+
+    if (not (0 < len_args < 3)
+        or (len_args == 2 and args[0] != "-my")):
+        return _useUsage
+    
+    mention = inventoryKey if len_args == 1 else author.mention
+    thing = args[0] if len_args == 1 else args[1]
+    (who, whos) = ("I", "my") if len_args == 1 else ("You", "your")
+
+    if (not bag.exists(mention)
+        or not bag.lexists(mention, thing)):
+        return _noUseMessage.format(who = who, thing = thing)
+
+    if (thing == "something"):
+        thing = random.choice(bag.lgetall(mention))
+
+    bag.lremvalue(mention, thing)
+    
+    return user.make().format(
+        who = who, 
+        whos = whos, 
+        thing = unflect_a(thing), 
+        a_thing = thing)
 
 def davebucks(author, target, thing):
     if (author.id != int(daveid)):
