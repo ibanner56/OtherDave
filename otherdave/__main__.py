@@ -61,6 +61,15 @@ async def cmd_dms(ctx, flag = None):
     await ctx.send(dms(ctx.author.id, flag))
 
 @client.command(
+    brief = "Drops something in your inventory",
+    help = "Allows you to drop a non-davebucks thing you're carrying.",
+    name = "drop",
+    usage = "<thing>"
+)
+async def cmd_drop(ctx, thing: str):
+    await ctx.send(drop(ctx.author.mention, thing))
+
+@client.command(
     name = "drunkdraw",
     help = "Announces the next drunkdraw. Dave and Isaac can configure the draw as well.",
     brief = "Announces the next drunkdraw.",
