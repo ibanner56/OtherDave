@@ -33,12 +33,12 @@
 	],
 	"use": [
 		"{who} took {a_thing} and put it inside {{a_noun}}!",
-		"{who} shoved {a_thing} into {whos} {{asset}} ... {{adjective}}!",
-		"{who} {{adverb}} {{present_verb}} {whos} {thing} thinking nobody would notice, but we all saw it happen.",
+		"{who} shoved {a_thing} into {whose} {{asset}} ... {{adjective}}!",
+		"{who} {{adverb}} {{present_verb}} {whose} {thing} thinking nobody would notice, but we all saw it happen.",
 		"{who} chucked {a_thing} over a {{noun}}, which is a shame because it was really {{adjective}}.",
 		"{who} taped {a_thing} to {{an_adjective}} rocket and launched it to {{planet}}!",
-		"{who} re-gifted {whos} {thing} to {{a_noun}} under false pretenses - {who} never really liked it in the first place.",
-		"{who} ***\"forgot\"*** {whos} thing when getting off an airplane instead of {{ing_verb}} it properly."
+		"{who} re-gifted {whose} {thing} to {{a_noun}} under false pretenses - {who} never really liked it in the first place.",
+		"{who} ***\"forgot\"*** {whose} {thing} when getting off an airplane instead of {{ing_verb}} it properly."
 	],
 	"horoscope":{
 		"generic": [

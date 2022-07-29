@@ -35,8 +35,9 @@ _daveDaveBucksMessage = "Isn't that a bit, uhhhhh, masturbatory?"
 _decimalMessage = "Whoa, you think I'm minting coinage here?"
 _daveBucksResultMessage = "Alriiiight, {target} now has {daveBucks} DaveBucks! Way to goooo!"
 _walletMessage = "Well heck, you've got {daveBucks} DaveBucks! Livin' *large*, buddy!"
-_dropMessage = "*It looks like {who} dropped {whos} {thing} - I hope it wasn't important...*"
+_dropMessage = "*It looks like {who} dropped {whose} {thing} - I hope it wasn't important...*"
 _noDropMessage = "Uhhh, {who} can't drop {thing}, {who} don't have one..."
+_emptyUseMessage = "But {whos} not carrying anything!"
 _noUseMessage = "{who} can't use {thing}, silly, {who} don't have one."
 _useUsage = "Maybe try using `!help use` first, huh buddy?"
 
@@ -168,14 +169,14 @@ def take(author, target, thing):
 
 def drop(mention, thing):
     who = "I" if mention == inventoryKey else "you"
-    whos = "my" if mention == inventoryKey else "your"
+    whose = "my" if mention == inventoryKey else "your"
 
     if (not bag.exists(mention)
         or not bag.lexists(mention, thing)):
         return _noDropMessage.format(who = who, thing = thing)
 
     bag.lremvalue(mention, thing)
-    return _dropMessage.format(who = who, whos = whos, thing = unflect_a(thing))
+    return _dropMessage.format(who = who, whose = whose, thing = unflect_a(thing))
 
 def selfdrop():
     thing = random.choice(bag.lgetall(inventoryKey))
@@ -190,11 +191,14 @@ def use(author, *args):
     
     mention = inventoryKey if len_args == 1 else author.mention
     thing = args[0] if len_args == 1 else args[1]
-    (who, whos) = ("I", "my") if len_args == 1 else ("You", "your")
+    (who, whos, whose) = ("I", "I'm", "my") if len_args == 1 else ("You", "you're", "your")
 
     if (thing == "something"):
+        if (not bag.exists(mention)
+            or bag.llen(mention == 0)):
+            return _emptyUseMessage.format(whos = whos)
         thing = random.choice(bag.lgetall(mention))
-
+        
     if (not bag.exists(mention)
         or not bag.lexists(mention, thing)):
         return _noUseMessage.format(who = who, thing = thing)
@@ -203,7 +207,7 @@ def use(author, *args):
     
     return user.make().format(
         who = who, 
-        whos = whos, 
+        whose = whose, 
         thing = unflect_a(thing), 
         a_thing = thing)
 
