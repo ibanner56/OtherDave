@@ -195,7 +195,7 @@ def use(author, *args):
 
     if (thing == "something"):
         if (not bag.exists(mention)
-            or bag.llen(mention == 0)):
+            or bag.llen(mention) == 0):
             return _emptyUseMessage.format(whos = whos)
         thing = random.choice(bag.lgetall(mention))
         
