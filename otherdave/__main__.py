@@ -66,8 +66,8 @@ async def cmd_dms(ctx, flag = None):
     name = "drop",
     usage = "<thing>"
 )
-async def cmd_drop(ctx, thing: str):
-    await ctx.send(drop(ctx.author.mention, thing))
+async def cmd_drop(ctx, *thing):
+    await ctx.send(drop(ctx.author.mention, " ".join(thing)))
 
 @client.command(
     name = "drunkdraw",
@@ -279,7 +279,7 @@ async def cmd_respect(ctx, *args):
 async def cmd_use(ctx, *args):
     if(len(args) == 0):
         args = ["something"]
-    await ctx.send(ctx.author, args)
+    await ctx.send(use(ctx.author, *args))
 
 @client.command(
     brief = "Prints the current version of OtherDave.",
