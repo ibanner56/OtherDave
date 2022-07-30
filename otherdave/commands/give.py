@@ -189,7 +189,7 @@ def use(author, *args):
     args = [args[0], " ".join(args[1:])] if args[0] == "-my" else [" ".join(args)]
 
     mention = inventoryKey if len(args) == 1 else author.mention
-    thing = args[0] if len(args) == 1 else args[1:]
+    thing = args[0] if len(args) == 1 else args[1]
     (who, whos, whose) = ("I", "I'm", "my") if len(args) == 1 else ("You", "you're", "your")
 
     if (thing == "something"):
