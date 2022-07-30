@@ -183,16 +183,14 @@ def selfdrop():
     return drop(inventoryKey, thing)
 
 def use(author, *args):
-    len_args = len(args)
-
-    if (len_args < 2 and args[0] == "-my"):
+    if (len(args) < 2 and args[0] == "-my"):
         return _useUsage
     
     args = args[0] + [" ".join(args[1:])] if args[0] == "-my" else [" ".join(args)]
 
-    mention = inventoryKey if len_args == 1 else author.mention
-    thing = args[0] if len_args == 1 else args[1]
-    (who, whos, whose) = ("I", "I'm", "my") if len_args == 1 else ("You", "you're", "your")
+    mention = inventoryKey if len(args) == 1 else author.mention
+    thing = args[0] if len(args) == 1 else args[1:]
+    (who, whos, whose) = ("I", "I'm", "my") if len(args) == 1 else ("You", "you're", "your")
 
     if (thing == "something"):
         if (not bag.exists(mention)
