@@ -186,7 +186,7 @@ def use(author, *args):
     if (len(args) < 2 and args[0] == "-my"):
         return _useUsage
     
-    args = args[0] + [" ".join(args[1:])] if args[0] == "-my" else [" ".join(args)]
+    args = [args[0], " ".join(args[1:])] if args[0] == "-my" else [" ".join(args)]
 
     mention = inventoryKey if len(args) == 1 else author.mention
     thing = args[0] if len(args) == 1 else args[1:]
