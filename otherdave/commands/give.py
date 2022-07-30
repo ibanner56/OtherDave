@@ -3,7 +3,7 @@ import pickledb
 import random
 import yaml
 from datetime import *
-from otherdave.util import Thinger
+from otherdave.util import Thinger, User
 
 with open("./conf.yaml") as conf:
     config = yaml.load(conf, Loader=yaml.BaseLoader)
@@ -18,6 +18,7 @@ selftag = "<@" + config["self_id"] + ">"
 daveid = config["dave_id"]
 
 # TODO: It would be neat if there could be a few different madlibs for these responses.
+# TODO: Or a better way to set all these than a monolith of constants
 _emptyBag = "Aw heck, {whos} all out of stuff."
 _inventoryPreface = "Well heck, {whove} got a whole bunch of stuff. Right now {whos} carrying:"
 _unknownThing = "I don't have {thing}, give them one yourself."
@@ -34,8 +35,14 @@ _daveDaveBucksMessage = "Isn't that a bit, uhhhhh, masturbatory?"
 _decimalMessage = "Whoa, you think I'm minting coinage here?"
 _daveBucksResultMessage = "Alriiiight, {target} now has {daveBucks} DaveBucks! Way to goooo!"
 _walletMessage = "Well heck, you've got {daveBucks} DaveBucks! Livin' *large*, buddy!"
+_dropMessage = "*It looks like {who} dropped {whose} {thing} - I hope it wasn't important...*"
+_noDropMessage = "Uhhh, {who} can't drop {thing}, {who} don't have one..."
+_emptyUseMessage = "But {whos} not carrying anything!"
+_noUseMessage = "{who} can't use {thing}, silly, {who} don't have one."
+_useUsage = "Maybe try using `!help use` first, huh buddy?"
 
 thinger = Thinger()
+user = User()
 infl = inflect.engine()
 bag = pickledb.load("./data/bag.db", True)
 if (not bag.exists(inventoryKey)):
@@ -72,6 +79,19 @@ stringMischief = [
     lambda sthing, ithing: "".join(list(map(lambda x: chr(dodgeControlBytes(x)), weirdIntAddAndReByte(sthing, ithing))))
 ]
 
+# Strip all these indefinite articles we're adding
+def unflect_a(word: str) -> str:
+    if (word.startswith("a ")):
+        return word[2:]
+    if (word.startswith("an ")):
+        return word[3:]
+    # No indefinite article
+    return word
+
+# Alias an to a to be cute like inflect
+def unflect_an(word: str) -> str: return unflect_a(word)
+
+
 def give(author, target = selftag, thing = "something"):
     lowerThing = thing.lower()
     if (lowerThing.endswith("davebuck")):
@@ -100,7 +120,6 @@ def give(author, target = selftag, thing = "something"):
         return _thanksfulMessage.format(oldThing = oldThing, newThing = thing)
     else:
         return _thanksMessage.format(thing = thing)
-
 
 def take(author, target, thing):
     if (bag.llen(inventoryKey) == 0):
@@ -147,6 +166,50 @@ def take(author, target, thing):
     newThings.pop(gift, None)
 
     return response
+
+def drop(mention, thing):
+    who = "I" if mention == inventoryKey else "you"
+    whose = "my" if mention == inventoryKey else "your"
+
+    if (not bag.exists(mention)
+        or not bag.lexists(mention, thing)):
+        return _noDropMessage.format(who = who, thing = thing)
+
+    bag.lremvalue(mention, thing)
+    return _dropMessage.format(who = who, whose = whose, thing = unflect_a(thing))
+
+def selfdrop():
+    thing = random.choice(bag.lgetall(inventoryKey))
+    return drop(inventoryKey, thing)
+
+def use(author, *args):
+    len_args = len(args)
+
+    if (not (0 < len_args < 3)
+        or (len_args == 2 and args[0] != "-my")):
+        return _useUsage
+    
+    mention = inventoryKey if len_args == 1 else author.mention
+    thing = args[0] if len_args == 1 else args[1]
+    (who, whos, whose) = ("I", "I'm", "my") if len_args == 1 else ("You", "you're", "your")
+
+    if (thing == "something"):
+        if (not bag.exists(mention)
+            or bag.llen(mention) == 0):
+            return _emptyUseMessage.format(whos = whos)
+        thing = random.choice(bag.lgetall(mention))
+        
+    if (not bag.exists(mention)
+        or not bag.lexists(mention, thing)):
+        return _noUseMessage.format(who = who, thing = thing)
+
+    bag.lremvalue(mention, thing)
+    
+    return user.make().format(
+        who = who, 
+        whose = whose, 
+        thing = unflect_a(thing), 
+        a_thing = thing)
 
 def davebucks(author, target, thing):
     if (author.id != int(daveid)):

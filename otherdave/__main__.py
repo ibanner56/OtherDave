@@ -61,6 +61,15 @@ async def cmd_dms(ctx, flag = None):
     await ctx.send(dms(ctx.author.id, flag))
 
 @client.command(
+    brief = "Drops something in your inventory",
+    help = "Allows you to drop a non-davebucks thing you're carrying.",
+    name = "drop",
+    usage = "<thing>"
+)
+async def cmd_drop(ctx, thing: str):
+    await ctx.send(drop(ctx.author.mention, thing))
+
+@client.command(
     name = "drunkdraw",
     help = "Announces the next drunkdraw. Dave and Isaac can configure the draw as well.",
     brief = "Announces the next drunkdraw.",
@@ -258,6 +267,19 @@ async def cmd_remember(ctx, *args):
 )
 async def cmd_respect(ctx, *args):
     await ctx.send(respect(ctx, args))
+
+@client.command(
+    brief = "Puts things to use.",
+    help = """Uses an object in your inventory, or tells OtherDave to use an object in his.
+        If you're using your own stuff you need to specify what you want to use, but OtherDave
+        can use an object at random if no other arguments are specified.""",
+    name = "use",
+    usage = "[-my <thing> | <thing>]"
+)
+async def cmd_use(ctx, *args):
+    if(len(args) == 0):
+        args = ["something"]
+    await ctx.send(ctx.author, args)
 
 @client.command(
     brief = "Prints the current version of OtherDave.",

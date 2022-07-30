@@ -160,3 +160,35 @@ class Thinger(MadLibber):
             "ing_verb" : lambda : random.choice(self.ing_verbs),
             "template" : lambda : random.choice(self.templates["thing"])
         }
+
+class User(MadLibber):
+    def __init__(self) -> None:
+        with open("./data/madlib/adjectives.json") as adf:
+            self.adjectives = json.load(adf)
+        with open("./data/madlib/amounts.json") as amf:
+            self.amounts = json.load(amf)
+        with open("./data/madlib/assets.json") as parf:
+            self.assets = json.load(parf)
+        with open("./data/madlib/templates.json") as temf:
+            self.templates = json.load(temf)
+        with open("./data/madlib/nouns.json") as nounf:
+            self.nouns = json.load(nounf)
+        with open("./data/madlib/present_verbs.json") as present_verbsf:
+            self.present_verbs = json.load(present_verbsf)
+        with open("./data/madlib/ing_verbs.json") as ing_verbsf:
+            self.ing_verbs = json.load(ing_verbsf)
+        with open("./data/madlib/planets.json") as planetsf:
+            self.planets = json.load(planetsf)
+
+        self.actions = {
+            "adjective" : lambda : random.choice(self.adjectives["adjectives"]),
+            "an_adjective" : lambda : infl.an(self.actions["adjective"]()),
+            "adverb" : lambda : random.choice(self.adjectives["adverbs"]),
+            "asset" : lambda : random.choice(self.assets),
+            "a_noun": lambda : infl.a(self.actions["noun"]()),
+            "noun" : lambda : random.choice(self.nouns),
+            "planet" : lambda : random.choice(self.planets),
+            "present_verb" : lambda : random.choice(self.present_verbs),
+            "ing_verb": lambda : random.choice(self.ing_verbs),
+            "template" : lambda : random.choice(self.templates["use"])
+        }
