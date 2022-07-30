@@ -1,5 +1,9 @@
 # https://semver.org/
+<<<<<<< HEAD
 version: '2.3.8, now proudly on python :snake:'
+=======
+version: '2.3.9, now proudly on python :snake:'
+>>>>>>> c86d40a (Last set of fixes pls)
 description: |+ 
   OtherDave is not David.
   
