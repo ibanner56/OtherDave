@@ -11,7 +11,7 @@ with open("./conf.yaml") as conf:
     config = yaml.load(conf, Loader=yaml.BaseLoader)
 
 quietTime = None
-lastMsgTime = None
+lastMsgTime = datetime.now()
 otherotherdave = None
 help_command = commands.DefaultHelpCommand(
     no_category = "Commands",

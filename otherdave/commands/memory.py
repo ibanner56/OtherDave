@@ -90,7 +90,7 @@ async def toucan(client, lastMsgTime, quietTime):
 
     if(delta >= 14400 or random.randint(0, 100) <= squawkProb(delta)):
         # Pick an action
-        match random.randint(0, 100):
+        match (random.randint(0, 100)):
             case n if n == 0:
                 mins = random.randint(1, 60)
                 macaw = ignoreBandit(mins)
