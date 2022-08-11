@@ -6,9 +6,10 @@ from collections import deque
 from datetime import *
 from math import pow
 from discord import Embed
-from otherdave.commands.haiku import recall
-from otherdave.commands.recommend import recommend
 from otherdave.commands.give import find, use
+from otherdave.commands.haiku import recall
+from otherdave.commands.ignore import ignoreBandit
+from otherdave.commands.recommend import recommend
 
 _allQuotes = "_all"
 _badKeywords = "I don't remember saying that."
@@ -90,7 +91,10 @@ async def toucan(client, lastMsgTime, quietTime):
     if(delta >= 14400 or random.randint(0, 100) <= squawkProb(delta)):
         # Pick an action
         match random.randint(0, 100):
-            case n if 0 <= n < 50:
+            case n if n == 0:
+                mins = random.randint(1, 60)
+                macaw = ignoreBandit(mins)
+            case n if 1 <= n < 50:
                 macaw = parrot()
             case n if 50 <= n < 75:
                 macaw = recall()
