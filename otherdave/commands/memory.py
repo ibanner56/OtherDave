@@ -8,6 +8,7 @@ from math import pow
 from discord import Embed
 from otherdave.commands.haiku import recall
 from otherdave.commands.recommend import recommend
+from otherdave.commands.give import find, use
 
 _allQuotes = "_all"
 _badKeywords = "I don't remember saying that."
@@ -87,7 +88,21 @@ async def toucan(client, lastMsgTime, quietTime):
         return
 
     if(delta >= 14400 or random.randint(0, 100) <= squawkProb(delta)):
-        macaw = random.choice([parrot, recommend, recall])()
+        # Pick an action
+        match random.randint(0, 100):
+            case n if 0 <= n < 50:
+                macaw = parrot()
+            case n if 50 <= n < 75:
+                macaw = recall()
+            case n if 75 <= n < 85:
+                macaw = find()
+            case n if 85 <= n < 95:
+                macaw = use()
+            case n if 95 <= n <= 100:
+                macaw = recommend()
+            case _:
+                return None
+
         if(macaw == _emptyMemory):
             return None
         parrotChan = await client.fetch_channel(config["parrot_channel"])

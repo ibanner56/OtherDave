@@ -279,7 +279,7 @@ async def cmd_respect(ctx, *args):
 async def cmd_use(ctx, *args):
     if(len(args) == 0):
         args = ["something"]
-    await ctx.send(use(ctx.author, *args))
+    await ctx.send(useCmd(ctx.author, *args))
 
 @client.command(
     brief = "Prints the current version of OtherDave.",
