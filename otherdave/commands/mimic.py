@@ -16,7 +16,7 @@ def listen(message):
         return
 
     user = message.author.id
-    if("<@&" in content):
+    if("<@&" in message.content):
         content = re.sub("<@&\d+>", "<@&ROLE>", message.content)
     content = re.sub("<@!*\d+>", "<@USER>", message.content)
     if(not content.endswith(".")):
