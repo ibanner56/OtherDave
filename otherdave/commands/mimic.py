@@ -16,7 +16,9 @@ def listen(message):
         return
 
     user = message.author.id
-    content = re.sub("<@\d+>", "<@USER>", message.content)
+    if("<@&" in content):
+        content = re.sub("<@&\d+>", "<@&ROLE>", message.content)
+    content = re.sub("<@!*\d+>", "<@USER>", message.content)
     if(not content.endswith(".")):
         # Markovify doesn't treat \n as punctuation...
         content = content + "."
