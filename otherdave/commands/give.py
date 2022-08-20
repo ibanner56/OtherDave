@@ -104,10 +104,14 @@ def give(author, target = selftag, thing = "something"):
         return take(author, target, thing)
     
     if (thing == "something"):
-        thing = infl.a(thinger.make())
-    
-    if (bag.lexists(inventoryKey, thing)):
-        return _knownThing.format(thing = thing)
+        thing = thinger.make().split("::")
+        thing = thing[0] + "::" + infl.a(thing[1])
+    else:
+        if (bag.lexists(inventoryKey, thing)):
+            return _knownThing.format(thing = thing)        
+        
+        if (not ": :: " in thing):
+            thing = thinger.typeThing(thing)
     
     # Put the new thing in the bag
     bag.ladd(inventoryKey, thing)
@@ -204,10 +208,13 @@ def use(author, *args):
 
     bag.lremvalue(mention, thing)
     
+    unflectedthing = thing.split("::")
+    unflectedthing = thing[0] + "::" + unflect_a(thing[1])
+
     return user.make().format(
         who = who, 
         whose = whose, 
-        thing = unflect_a(thing), 
+        thing = unflectedthing, 
         a_thing = thing)
 
 def davebucks(author, target, thing):
