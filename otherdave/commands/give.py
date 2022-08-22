@@ -1,6 +1,7 @@
 import inflect
 import pickledb
 import random
+import re
 import yaml
 from datetime import *
 from otherdave.util import Thinger, User
@@ -91,6 +92,25 @@ def unflect_a(word: str) -> str:
 # Alias an to a to be cute like inflect
 def unflect_an(word: str) -> str: return unflect_a(word)
 
+# Extend the inventory to handle item types
+def lgetrg(self, key, value):
+    if (not self.exists(key)):
+        return None
+
+    items = self.lgetall(key)
+
+    for item in items:
+        if (re.match((value), item)):
+            return item
+
+    return None
+
+def lexistsrg(self, key, value):
+    return lgetrg(self, key, value) != None
+
+# set back the extension methods
+pickledb.PickleDB.lgetrg = lgetrg
+pickledb.PickleDB.lexistsrg = lexistsrg
 
 def give(author, target = selftag, thing = "something"):
     lowerThing = thing.lower()
@@ -107,7 +127,7 @@ def give(author, target = selftag, thing = "something"):
         thing = thinger.make().split("::")
         thing = thing[0] + "::" + infl.a(thing[1])
     else:
-        if (bag.lexists(inventoryKey, thing)):
+        if (bag.lexistsrg(inventoryKey, "^(:[a-z_]+: :: )*" + thing + "$")):
             return _knownThing.format(thing = thing)        
         
         if (not ": :: " in thing):
@@ -133,7 +153,7 @@ def take(author, target, thing):
         bagIndex = random.randint(0, bag.llen(inventoryKey)-1)
         gift = bag.lpop(inventoryKey, bagIndex)
 
-    elif (bag.lexists(inventoryKey, thing)):
+    elif (bag.lexistsrg(inventoryKey, "^(:[a-z_]+: :: )*" + thing + "$")):
         now = datetime.now()
         if (thing in newThings):
             delta = (now - newThings[thing]).total_seconds()
@@ -141,8 +161,8 @@ def take(author, target, thing):
             if (delta < greedytime):
                 return _greedyMessage
 
-        gift = thing
-        bag.lremvalue(inventoryKey, thing)
+        gift = bag.lgetrg(inventoryKey, "^(:[a-z_]+: :: )*" + thing + "$")
+        bag.lremvalue(inventoryKey, gift)
 
     else:
         return _unknownThing.format(thing = thing)
@@ -175,11 +195,14 @@ def drop(mention, thing):
     who = "I" if mention == inventoryKey else "you"
     whose = "my" if mention == inventoryKey else "your"
 
-    if (not bag.exists(mention)
-        or not bag.lexists(mention, thing)):
+    if (not bag.exists(mention)):
         return _noDropMessage.format(who = who, thing = thing)
 
-    bag.lremvalue(mention, thing)
+    typedThing = bag.lgetrg(mention, "^(:[a-z_]+: :: )*" + thing + "$")
+    if (typedThing == None):
+        return _noDropMessage.format(who = who, thing = thing)
+
+    bag.lremvalue(mention, typedThing)
     return _dropMessage.format(who = who, whose = whose, thing = unflect_a(thing))
 
 def selfdrop():
@@ -202,14 +225,17 @@ def use(author, *args):
             return _emptyUseMessage.format(whos = whos)
         thing = random.choice(bag.lgetall(mention))
         
-    if (not bag.exists(mention)
-        or not bag.lexists(mention, thing)):
+    if (not bag.exists(mention)):
         return _noUseMessage.format(who = who, thing = thing)
 
-    bag.lremvalue(mention, thing)
+    typedThing = bag.lgetrg(mention, "^(:[a-z_]+: :: )*" + thing + "$")
+    if (typedThing == None):
+        return _noDropMessage.format(who = who, thing = thing)
+
+    bag.lremvalue(mention, typedThing)
     
     unflectedthing = thing.split("::")
-    unflectedthing = thing[0] + "::" + unflect_a(thing[1])
+    unflectedthing = unflectedthing[0] + "::" + unflect_a(unflectedthing[1])
 
     return user.make().format(
         who = who, 
