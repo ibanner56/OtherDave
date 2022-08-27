@@ -28,6 +28,8 @@ _knownThing = "I've already got {thing}!"
 _takeMessage = "Here, have {thing}."
 _thanksMessage = selftag + " is now carrying {thing}."
 _thanksfulMessage = selftag + " dropped {oldThing} and is now carrying {newThing}."
+_foundMessage = "Hey, I found {thing}!"
+_foundfulMessage = "Hey, I found {thing}! Guess I don't need {oldThing} any more."
 _userfulMessage = "..\n\t*...it looks like you've dropped {thing} - I hope it wasn't important.*"
 _greedyMessage = "Noooooooo I only just got that! Get your own, you selfish gremlin."
 _noBucksMessage = "Hey, you're not <@" + daveid + "> <:lwys_todd_eyeburn:912451671181893632>\n\nGet your hands off my :sparkles:DaveBucks:sparkles:, you *capitalist swine*!"
@@ -111,6 +113,21 @@ def lexistsrg(self, key, value):
 # set back the extension methods
 pickledb.PickleDB.lgetrg = lgetrg
 pickledb.PickleDB.lexistsrg = lexistsrg
+
+def find():
+    thing = infl.a(thinger.make())
+
+    # Put the new thing in the bag
+    bag.ladd(inventoryKey, thing)
+    newThings[thing] = datetime.now()
+
+    # Throw an old thing out if we're all full
+    if (bag.llen(inventoryKey) > bagsize):
+        oldThing = bag.lpop(inventoryKey, 0)
+        newThings.pop(oldThing, None)
+        return _foundfulMessage.format(oldThing = oldThing, thing = thing)
+    else:
+        return _foundMessage.format(thing = thing)
 
 def give(author, target = selftag, thing = "something"):
     lowerThing = thing.lower()
@@ -209,16 +226,7 @@ def selfdrop():
     thing = random.choice(bag.lgetall(inventoryKey))
     return drop(inventoryKey, thing)
 
-def use(author, *args):
-    if (len(args) < 2 and args[0] == "-my"):
-        return _useUsage
-    
-    args = args[0] + [" ".join(args[1:])] if args[0] == "-my" else [" ".join(args)]
-
-    mention = inventoryKey if len(args) == 1 else author.mention
-    thing = args[0] if len(args) == 1 else args[1:]
-    (who, whos, whose) = ("I", "I'm", "my") if len(args) == 1 else ("You", "you're", "your")
-
+def use(mention = selftag, thing = "something", who= "I", whos = "I'm", whose = "my"):
     if (thing == "something"):
         if (not bag.exists(mention)
             or bag.llen(mention) == 0):
@@ -242,6 +250,18 @@ def use(author, *args):
         whose = whose, 
         thing = unflectedthing, 
         a_thing = thing)
+
+def useCmd(author, *args):
+    if (len(args) < 2 and args[0] == "-my"):
+        return _useUsage
+    
+    args = [args[0], " ".join(args[1:])] if args[0] == "-my" else [" ".join(args)]
+
+    mention = inventoryKey if len(args) == 1 else author.mention
+    thing = args[0] if len(args) == 1 else args[1]
+    (who, whos, whose) = ("I", "I'm", "my") if len(args) == 1 else ("You", "you're", "your")
+
+    return use(mention, thing, who, whos, whose)
 
 def davebucks(author, target, thing):
     if (author.id != int(daveid)):

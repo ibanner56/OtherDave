@@ -11,7 +11,7 @@ with open("./conf.yaml") as conf:
     config = yaml.load(conf, Loader=yaml.BaseLoader)
 
 quietTime = None
-lastMsgTime = None
+lastMsgTime = datetime.now()
 otherotherdave = None
 help_command = commands.DefaultHelpCommand(
     no_category = "Commands",
@@ -32,7 +32,11 @@ logger.addHandler(handler)
 # Configure tasks
 @tasks.loop(seconds=int(config["parrot_interval"]))
 async def squawk():
-    await toucan(client, lastMsgTime, quietTime)
+    try:
+        await toucan(client, lastMsgTime, quietTime)
+    except Exception as error:
+        dlog(client, str(error))
+        pass
 
 # Configure commands
 @client.command(
@@ -279,7 +283,7 @@ async def cmd_respect(ctx, *args):
 async def cmd_use(ctx, *args):
     if(len(args) == 0):
         args = ["something"]
-    await ctx.send(use(ctx.author, *args))
+    await ctx.send(useCmd(ctx.author, *args))
 
 @client.command(
     brief = "Prints the current version of OtherDave.",

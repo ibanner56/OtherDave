@@ -39,6 +39,12 @@ async def ignore(ctx, args):
         ignoreDb.set(nick, ignoreTime.isoformat())
         return f"Got it, I'll ignore {args[0]} for {mins} minutes. They must have been *naughty!*"
 
+def ignoreBandit(mins):
+    bandit = "442747712400654337"
+    ignoreTime = datetime.now() + timedelta(minutes=mins)
+    ignoreDb.set(bandit, ignoreTime.isoformat())
+    return f"Got it, I'll ignore <@!{bandit}> for {mins} minutes. They must have been *naughty!*"
+
 def dms(userId, flag):
     userId = str(userId)
     if (flag == "-enable"):
