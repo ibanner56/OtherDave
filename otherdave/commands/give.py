@@ -104,7 +104,7 @@ def find():
     if (bag.llen(inventoryKey) > bagsize):
         oldThing = bag.lpop(inventoryKey, 0)
         newThings.pop(oldThing, None)
-        return _foundfulMessage.format(oldThing = oldThing, newThing = thing)
+        return _foundfulMessage.format(oldThing = oldThing, thing = thing)
     else:
         return _foundMessage.format(thing = thing)
 

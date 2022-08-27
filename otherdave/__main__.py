@@ -32,7 +32,11 @@ logger.addHandler(handler)
 # Configure tasks
 @tasks.loop(seconds=int(config["parrot_interval"]))
 async def squawk():
-    await toucan(client, lastMsgTime, quietTime)
+    try:
+        await toucan(client, lastMsgTime, quietTime)
+    except Exception as error:
+        dlog(client, str(error))
+        pass
 
 # Configure commands
 @client.command(
