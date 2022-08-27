@@ -1,4 +1,4 @@
-discord.py>=1.4.0
+discord.py>=2.0.0
 inflect>=4.1
 markovify>=0.8.0
 pickleDB>=0.9.2

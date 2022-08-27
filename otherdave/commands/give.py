@@ -1,10 +1,8 @@
 import inflect
-import pickledb
 import random
-import re
 import yaml
 from datetime import *
-from otherdave.util import Thinger, User
+from otherdave.util import pickledb, Thinger, User
 
 with open("./conf.yaml") as conf:
     config = yaml.load(conf, Loader=yaml.BaseLoader)
@@ -93,26 +91,6 @@ def unflect_a(word: str) -> str:
 
 # Alias an to a to be cute like inflect
 def unflect_an(word: str) -> str: return unflect_a(word)
-
-# Extend the inventory to handle item types
-def lgetrg(self, key, value):
-    if (not self.exists(key)):
-        return None
-
-    items = self.lgetall(key)
-
-    for item in items:
-        if (re.match((value), item)):
-            return item
-
-    return None
-
-def lexistsrg(self, key, value):
-    return lgetrg(self, key, value) != None
-
-# set back the extension methods
-pickledb.PickleDB.lgetrg = lgetrg
-pickledb.PickleDB.lexistsrg = lexistsrg
 
 def find():
     thing = infl.a(thinger.make())
