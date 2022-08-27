@@ -1,9 +1,8 @@
 import inflect
-import pickledb
 import random
 import yaml
 from datetime import *
-from otherdave.util import Thinger, User
+from otherdave.util import pickledb, Thinger, User
 
 with open("./conf.yaml") as conf:
     config = yaml.load(conf, Loader=yaml.BaseLoader)
@@ -120,10 +119,15 @@ def give(author, target = selftag, thing = "something"):
         return take(author, target, thing)
     
     if (thing == "something"):
-        thing = infl.a(thinger.make())
-    
-    if (bag.lexists(inventoryKey, thing)):
-        return _knownThing.format(thing = thing)
+        thing = thinger.make().split(")")
+        thing = thing[0] + ")" + infl.a(thing[1])
+    else:
+        if (bag.lexistsrg(inventoryKey, "^(\(:[a-z_]+:\) )*" + thing + "$")):
+            return _knownThing.format(thing = thing)        
+        
+        if (not "(:" in thing
+            or not ":)" in thing):
+            thing = thinger.typeThing(thing)
     
     # Put the new thing in the bag
     bag.ladd(inventoryKey, thing)
@@ -145,7 +149,7 @@ def take(author, target, thing):
         bagIndex = random.randint(0, bag.llen(inventoryKey)-1)
         gift = bag.lpop(inventoryKey, bagIndex)
 
-    elif (bag.lexists(inventoryKey, thing)):
+    elif (bag.lexistsrg(inventoryKey, "^(\(:[a-z_]+:\) )*" + thing + "$")):
         now = datetime.now()
         if (thing in newThings):
             delta = (now - newThings[thing]).total_seconds()
@@ -153,8 +157,8 @@ def take(author, target, thing):
             if (delta < greedytime):
                 return _greedyMessage
 
-        gift = thing
-        bag.lremvalue(inventoryKey, thing)
+        gift = bag.lgetrg(inventoryKey, "^(\(:[a-z_]+:\) )*" + thing + "$")
+        bag.lremvalue(inventoryKey, gift)
 
     else:
         return _unknownThing.format(thing = thing)
@@ -187,11 +191,14 @@ def drop(mention, thing):
     who = "I" if mention == inventoryKey else "you"
     whose = "my" if mention == inventoryKey else "your"
 
-    if (not bag.exists(mention)
-        or not bag.lexists(mention, thing)):
+    if (not bag.exists(mention)):
         return _noDropMessage.format(who = who, thing = thing)
 
-    bag.lremvalue(mention, thing)
+    typedThing = bag.lgetrg(mention, "^(\(:[a-z_]+:\) )*" + thing + "$")
+    if (typedThing == None):
+        return _noDropMessage.format(who = who, thing = thing)
+
+    bag.lremvalue(mention, typedThing)
     return _dropMessage.format(who = who, whose = whose, thing = unflect_a(thing))
 
 def selfdrop():
@@ -205,16 +212,22 @@ def use(mention = selftag, thing = "something", who= "I", whos = "I'm", whose = 
             return _emptyUseMessage.format(whos = whos)
         thing = random.choice(bag.lgetall(mention))
         
-    if (not bag.exists(mention)
-        or not bag.lexists(mention, thing)):
+    if (not bag.exists(mention)):
         return _noUseMessage.format(who = who, thing = thing)
 
-    bag.lremvalue(mention, thing)
+    typedThing = bag.lgetrg(mention, "^(\(:[a-z_]+:\) )*" + thing + "$")
+    if (typedThing == None):
+        return _noDropMessage.format(who = who, thing = thing)
+
+    bag.lremvalue(mention, typedThing)
     
+    unflectedthing = thing.split(")")
+    unflectedthing = unflectedthing[0] + ")" + unflect_a(unflectedthing[1])
+
     return user.make().format(
         who = who, 
         whose = whose, 
-        thing = unflect_a(thing), 
+        thing = unflectedthing, 
         a_thing = thing)
 
 def useCmd(author, *args):

@@ -148,6 +148,8 @@ class Thinger(MadLibber):
             self.nouns = json.load(nounf)
         with open("./data/madlib/ing_verbs.json") as ing_verbsf:
             self.ing_verbs = json.load(ing_verbsf)
+        with open("./data/madlib/itemtypes.json") as typef:
+            self.types = json.load(typef)
 
         self.actions = {
             "adjective" : lambda : random.choice(self.adjectives["adjectives"]),
@@ -158,8 +160,12 @@ class Thinger(MadLibber):
             "asset" : lambda : random.choice(self.assets),
             "noun" : lambda : random.choice(self.nouns),
             "ing_verb" : lambda : random.choice(self.ing_verbs),
-            "template" : lambda : random.choice(self.templates["thing"])
+            "template" : lambda : random.choice(self.templates["thing"]),
+            "type": lambda : random.choice(self.types)
         }
+
+    def typeThing(self, thing):
+        return self.actions["type"]() + " :: " + thing
 
 class User(MadLibber):
     def __init__(self) -> None:
