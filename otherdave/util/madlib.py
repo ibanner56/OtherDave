@@ -13,10 +13,10 @@ class MadLibber():
         tokens = template.split(" ")
         result = ""
         for token in tokens:
-            action = re.match("\{\{(.+?)\}\}(.*)", token)
+            action = re.match("(.*)\{\{(.+?)\}\}(.*)", token)
             if(action):
-                if(action[1] in self.actions):
-                    result += self.actions[action[1]]() + action[2]
+                if(action[2] in self.actions):
+                    result += action[1] + self.actions[action[2]]() + action[3]
                 else:
                     result += action[0]
             else:
