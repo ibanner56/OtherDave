@@ -119,13 +119,14 @@ def give(author, target = selftag, thing = "something"):
         return take(author, target, thing)
     
     if (thing == "something"):
-        thing = thinger.make().split("::")
-        thing = thing[0] + "::" + infl.a(thing[1])
+        thing = thinger.make().split(")")
+        thing = thing[0] + ")" + infl.a(thing[1])
     else:
-        if (bag.lexistsrg(inventoryKey, "^(:[a-z_]+: :: )*" + thing + "$")):
+        if (bag.lexistsrg(inventoryKey, "^(\(:[a-z_]+:\) )*" + thing + "$")):
             return _knownThing.format(thing = thing)        
         
-        if (not ": :: " in thing):
+        if (not "(:" in thing
+            or not ":)" in thing):
             thing = thinger.typeThing(thing)
     
     # Put the new thing in the bag
@@ -148,7 +149,7 @@ def take(author, target, thing):
         bagIndex = random.randint(0, bag.llen(inventoryKey)-1)
         gift = bag.lpop(inventoryKey, bagIndex)
 
-    elif (bag.lexistsrg(inventoryKey, "^(:[a-z_]+: :: )*" + thing + "$")):
+    elif (bag.lexistsrg(inventoryKey, "^(\(:[a-z_]+:\) )*" + thing + "$")):
         now = datetime.now()
         if (thing in newThings):
             delta = (now - newThings[thing]).total_seconds()
@@ -156,7 +157,7 @@ def take(author, target, thing):
             if (delta < greedytime):
                 return _greedyMessage
 
-        gift = bag.lgetrg(inventoryKey, "^(:[a-z_]+: :: )*" + thing + "$")
+        gift = bag.lgetrg(inventoryKey, "^(\(:[a-z_]+:\) )*" + thing + "$")
         bag.lremvalue(inventoryKey, gift)
 
     else:
@@ -193,7 +194,7 @@ def drop(mention, thing):
     if (not bag.exists(mention)):
         return _noDropMessage.format(who = who, thing = thing)
 
-    typedThing = bag.lgetrg(mention, "^(:[a-z_]+: :: )*" + thing + "$")
+    typedThing = bag.lgetrg(mention, "^(\(:[a-z_]+:\) )*" + thing + "$")
     if (typedThing == None):
         return _noDropMessage.format(who = who, thing = thing)
 
@@ -214,14 +215,14 @@ def use(mention = selftag, thing = "something", who= "I", whos = "I'm", whose = 
     if (not bag.exists(mention)):
         return _noUseMessage.format(who = who, thing = thing)
 
-    typedThing = bag.lgetrg(mention, "^(:[a-z_]+: :: )*" + thing + "$")
+    typedThing = bag.lgetrg(mention, "^(\(:[a-z_]+:\) )*" + thing + "$")
     if (typedThing == None):
         return _noDropMessage.format(who = who, thing = thing)
 
     bag.lremvalue(mention, typedThing)
     
-    unflectedthing = thing.split("::")
-    unflectedthing = unflectedthing[0] + "::" + unflect_a(unflectedthing[1])
+    unflectedthing = thing.split(")")
+    unflectedthing = unflectedthing[0] + ")" + unflect_a(unflectedthing[1])
 
     return user.make().format(
         who = who, 
