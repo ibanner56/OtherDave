@@ -20,15 +20,15 @@ daveid = config["dave_id"]
 # TODO: Or a better way to set all these than a monolith of constants
 _emptyBag = "Aw heck, {whos} all out of stuff."
 _inventoryPreface = "Well heck, {whove} got a whole bunch of stuff. Right now {whos} carrying:"
-_unknownThing = "I don't have {thing}, give them one yourself."
-_giftMessage = "Here, {target}, have {thing}."
-_knownThing = "I've already got {thing}!"
-_takeMessage = "Here, have {thing}."
-_thanksMessage = selftag + " is now carrying {thing}."
-_thanksfulMessage = selftag + " dropped {oldThing} and is now carrying {newThing}."
-_foundMessage = "Hey, I found {thing}!"
-_foundfulMessage = "Hey, I found {thing}! Guess I don't need {oldThing} any more."
-_userfulMessage = "..\n\t*...it looks like you've dropped {thing} - I hope it wasn't important.*"
+_unknownThing = "I don't have **{thing}**, give them one yourself."
+_giftMessage = "Here, {target}, have **{thing}**."
+_knownThing = "I've already got **{thing}**!"
+_takeMessage = "Here, have **{thing}**."
+_thanksMessage = selftag + " is now carrying **{thing}**."
+_thanksfulMessage = selftag + " dropped **{oldThing}** and is now carrying **{newThing}**."
+_foundMessage = "Hey, I found **{thing}**!"
+_foundfulMessage = "Hey, I found **{newThing}**! Guess I don't need **{oldThing}** any more."
+_userfulMessage = "..\n\t*...it looks like you've dropped **{thing}** - I hope it wasn't important.*"
 _greedyMessage = "Noooooooo I only just got that! Get your own, you selfish gremlin."
 _noBucksMessage = "Hey, you're not <@" + daveid + "> <:lwys_todd_eyeburn:912451671181893632>\n\nGet your hands off my :sparkles:DaveBucks:sparkles:, you *capitalist swine*!"
 _odBucksMessage = "No thanks, dad, all I need is your approval."
@@ -36,10 +36,10 @@ _daveDaveBucksMessage = "Isn't that a bit, uhhhhh, masturbatory?"
 _decimalMessage = "Whoa, you think I'm minting coinage here?"
 _daveBucksResultMessage = "Alriiiight, {target} now has {daveBucks} DaveBucks! Way to goooo!"
 _walletMessage = "Well heck, you've got {daveBucks} DaveBucks! Livin' *large*, buddy!"
-_dropMessage = "*It looks like {who} dropped {whose} {thing} - I hope it wasn't important...*"
-_noDropMessage = "Uhhh, {who} can't drop {thing}, {who} don't have one..."
+_dropMessage = "*It looks like {who} dropped {whose} **{thing}** - I hope it wasn't important...*"
+_noDropMessage = "Uhhh, {who} can't drop **{thing}**, {who} don't have one..."
 _emptyUseMessage = "But {whos} not carrying anything!"
-_noUseMessage = "{who} can't use {thing}, silly, {who} don't have one."
+_noUseMessage = "{who} can't use **{thing}**, silly, {who} don't have one."
 _useUsage = "Maybe try using `!help use` first, huh buddy?"
 
 thinger = Thinger()
@@ -103,7 +103,7 @@ def find():
     if (bag.llen(inventoryKey) > bagsize):
         oldThing = bag.lpop(inventoryKey, 0)
         newThings.pop(oldThing, None)
-        return _foundfulMessage.format(oldThing = oldThing, thing = thing)
+        return _foundfulMessage.format(oldThing = oldThing, newThing = thing)
     else:
         return _foundMessage.format(thing = thing)
 
