@@ -221,14 +221,14 @@ def use(mention = selftag, thing = "something", who= "I", whos = "I'm", whose = 
 
     bag.lremvalue(mention, typedThing)
     
-    unflectedthing = thing.split(")")
+    unflectedthing = typedThing.split(")")
     unflectedthing = unflectedthing[0] + ")" + unflect_a(unflectedthing[1])
 
     return user.make().format(
         who = who, 
         whose = whose, 
         thing = unflectedthing, 
-        a_thing = thing)
+        a_thing = typedThing)
 
 def useCmd(author, *args):
     if (len(args) < 2 and args[0] == "-my"):
