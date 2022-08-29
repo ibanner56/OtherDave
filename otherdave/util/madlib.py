@@ -115,24 +115,24 @@ class Prompter(MadLibber):
     def addNoun(self, noun):
         self.nouns.append(noun)
         with open("./data/prompt/nouns.json", "w") as nf:
-            json.dump(nf)
+            json.dump(self.nouns, nf)
 
     def remNoun(self, noun):
         if(noun in self.nouns):
             self.nouns.remove(noun)
             with open("./data/prompt/nouns.json", "w") as nf:
-                json.dump(nf)
+                json.dump(self.nouns, nf)
 
     def addAdjective(self, adjective):
         self.adjectives.append(adjective)
         with open("./data/prompt/adjectives.json", "w") as adf:
-            json.dump(adf)
+            json.dump(self.adjectives, adf)
 
     def remAdjective(self, adjective):
         if(adjective in self.adjectives):
             self.adjectives.remove(adjective)
             with open("./data/prompt/adjectives.json", "w") as adf:
-                json.dump(adf)
+                json.dump(self.adjectives, adf)
 
 class Thinger(MadLibber):
     def __init__(self) -> None:
