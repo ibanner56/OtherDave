@@ -15,7 +15,7 @@ def prompt(args):
             return "added " + args[2]
         elif(args[1].lower() == "adjective"):
             prompter.addAdjective(args[2])
-            return args[2] + "addition"
+            return args[2] + " addition"
         else:
             return "invalid article"
     else:
