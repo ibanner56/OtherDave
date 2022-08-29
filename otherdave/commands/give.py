@@ -151,14 +151,15 @@ def take(author, target, thing):
         gift = bag.lpop(inventoryKey, bagIndex)
 
     elif (bag.lexistsrg(inventoryKey, "^(\(:[a-z_]+:\) )*" + thing + "$")):
+        gift = bag.lgetrg(inventoryKey, "^(\(:[a-z_]+:\) )*" + thing + "$")
+        
         now = datetime.now()
-        if (thing in newThings):
-            delta = (now - newThings[thing]).total_seconds()
+        if (gift in newThings):
+            delta = (now - newThings[gift]).total_seconds()
 
             if (delta < greedytime):
                 return _greedyMessage
 
-        gift = bag.lgetrg(inventoryKey, "^(\(:[a-z_]+:\) )*" + thing + "$")
         bag.lremvalue(inventoryKey, gift)
 
     else:
