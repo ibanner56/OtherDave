@@ -165,7 +165,7 @@ class Thinger(MadLibber):
         }
 
     def typeThing(self, thing):
-        return self.actions["type"]() + " :: " + thing
+        return "(" + self.actions["type"]() + ") " + thing
 
 class User(MadLibber):
     def __init__(self) -> None:
