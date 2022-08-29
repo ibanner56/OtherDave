@@ -12,8 +12,10 @@ def prompt(args):
     elif(args[0] == "-add" and args[1] and args[2]):
         if(args[1].lower() == "noun"):
             prompter.addNoun(args[2])
+            return "added " + args[2]
         elif(args[1].lower() == "adjective"):
             prompter.addAdjective(args[2])
+            return args[2] + "addition"
         else:
             return "invalid article"
     else:
