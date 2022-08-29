@@ -93,7 +93,8 @@ def unflect_a(word: str) -> str:
 def unflect_an(word: str) -> str: return unflect_a(word)
 
 def find():
-    thing = infl.a(thinger.make())
+    thing = thinger.make().split(")")
+    thing = thing[0] + ")" + infl.a(thing[1])
 
     # Put the new thing in the bag
     bag.ladd(inventoryKey, thing)
