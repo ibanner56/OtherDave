@@ -196,7 +196,14 @@ def drop(mention, thing):
     if (not bag.exists(mention)):
         return _noDropMessage.format(who = who, thing = thing)
 
-    typedThing = bag.lgetrg(mention, "^(\(:[a-z_]+:\) )*" + thing + "$")
+    if (not "(:" in thing
+        or not ":)" in thing):
+        typedThing = bag.lgetrg(mention, "^(\(:[a-z_]+:\) )*" + thing + "$")
+    elif (bag.lexists(mention, thing)):
+        typedThing = typedThing
+    else:
+        typedThing = None
+
     if (typedThing == None):
         return _noDropMessage.format(who = who, thing = thing)
 
@@ -207,7 +214,7 @@ def selfdrop():
     thing = random.choice(bag.lgetall(inventoryKey))
     return drop(inventoryKey, thing)
 
-def use(mention = selftag, thing = "something", who= "I", whos = "I'm", whose = "my"):
+def use(mention = inventoryKey, thing = "something", who= "I", whos = "I'm", whose = "my"):
     if (thing == "something"):
         if (not bag.exists(mention)
             or bag.llen(mention) == 0):
