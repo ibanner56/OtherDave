@@ -101,7 +101,7 @@ def getTimeZones(value):
 
     return timeString
 
-def drunkdraw(ctx, args):
+def drunkdrawCmd(ctx, args):
     if(len(args) == 0):
         return getDraw()
     else:

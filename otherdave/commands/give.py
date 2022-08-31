@@ -124,7 +124,7 @@ def drop(mention, thing):
         or not ":)" in thing):
         typedThing = bag.lgetrg(mention, "^(\(:[a-z_]+:\) )*" + thing + "$")
     elif (bag.lexists(mention, thing)):
-        typedThing = typedThing
+        typedThing = thing
     else:
         typedThing = None
 
@@ -155,7 +155,7 @@ def use(mention = constants.inventoryKey, thing = "something", who= "I", whos = 
         typedThing = typedThing
     else:
         typedThing = None
-        
+
     if (typedThing == None):
         return constants.noUseMessage.format(who = who, thing = thing)
 
