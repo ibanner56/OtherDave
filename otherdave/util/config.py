@@ -1,7 +1,5 @@
 import yaml
 
-from otherdave.commands.drunkdraw import drunkdraw
-
 with open("./conf.yaml") as conf:
     config = yaml.load(conf, Loader=yaml.BaseLoader)
 
