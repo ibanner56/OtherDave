@@ -1,30 +1,18 @@
 import inflect
 import pickledb
-import math
 import random
 import re
 import textstat
 import uuid
-import yaml
 from collections import deque
-
-_badKeywords = "*The words that you seek,*\n*I simply don't remember.*\n*Did you spell them right?*"
-_correctionSuccess = "*I've taken your word*\n*that this word was not quite right,*\n*but now it should be.*"
-_correctionFailed = "*Corrections require*\n*a word and a whole number*\n*What'chu doin', fool?*"
-_emptyBuffer = "*I don't understand -*\n*we haven't said anything.*\n*Try again later.*"
-_emptyMemory = "*I don't remember*\n*any of your rad poems.*\n*Make one up instead.*"
-_forgetSuccess = "*Like fading sunset,*\n*those tired words now fade away.*\n*Eh...they weren't great.*"
-_savedHaiku = "*Alright then, sounds good,*\n*I'll keep that one for later.*\n*Refrigerator.*"
-_unknownCritique = "*What you're asking for -*\n*I don't know how to do it.*\n*So piss off, nerd! Yeah!*"
+from otherdave.util import config, constants
 
 infl = inflect.engine()
 masterSyllables = pickledb.load("./data/syllables.db", True)
 memories = pickledb.load("./data/haikus.db", True)
-with open("./conf.yaml", encoding="utf-8") as conf:
-    config = yaml.load(conf, Loader=yaml.FullLoader)
 
-lastCache = deque(maxlen=config["cache_length"])
-memCache = deque(maxlen=config["cache_length"])
+lastCache = deque(maxlen=config.cacheLength)
+memCache = deque(maxlen=config.cacheLength)
 
 def flushCache():
     lastCache.clear()
@@ -116,23 +104,23 @@ def correct(word, syllables):
 
 def save(keywords):
     if(len(lastCache) == 0):
-        return _emptyBuffer
+        return constants.emptyBuffer
     if(keywords):
         poem = next((last for last in reversed(lastCache) if keywords in last), None)
         if(poem):
             lastCache.remove(poem)
             memories.set(str(uuid.uuid1()), poem)
         else:
-            return _badKeywords
+            return constants.badKeywords
     else:
         memories.set(str(uuid.uuid1()), lastCache.pop())
     
-    return _savedHaiku
+    return constants.savedHaiku
 
 def recall():
     memkeys = list(memories.getall())
     if(len(memkeys) == 0):
-        return _emptyMemory
+        return constants.emptyMemory
     rkey = random.choice(memkeys)
     rmem = memories.get(rkey)
     memCache.append((rkey, rmem))
@@ -141,18 +129,18 @@ def recall():
 
 def forget(keywords):
     if(len(memCache) == 0):
-        return _emptyBuffer
+        return constants.emptyBuffer
     if(keywords):
         memory = next((mem for mem in reversed(memCache) if keywords in mem[1]), None)
         if(memory):
             memCache.remove(memory)
             memories.rem(memory[0])
         else:
-            return _badKeywords
+            return constants.badKeywords
     else:
         memories.rem(memCache.pop()[0])
     
-    return _forgetSuccess
+    return constants.forgetSuccess
 
 def debug(poem):
     if(poem):
@@ -173,12 +161,12 @@ def critique(args):
         return debug(" ".join(args[1:]))
     elif(args[0] == "-correct" and len(args) == 3):
         if(correct(args[1], args[2])):
-            return _correctionSuccess
+            return constants.correctionSuccess
         else:
-            return _correctionFailed
+            return constants.correctionFailed
     elif(args[0] == "-save"):
         return save(" ".join(args[1:]))
     elif(args[0] == "-forget"):
         return forget(" ".join(args[1:]))
     else:
-        return _unknownCritique
+        return constants.unknownCritique

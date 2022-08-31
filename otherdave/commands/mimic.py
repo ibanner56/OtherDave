@@ -1,13 +1,8 @@
 import markovify
 import random
 import re
-from .haiku import parseHaiku
-
-_haikuMakeFailed = "*It seems that today*\n*this request that you have made*\n*is simply too hard.*"
-_incorrectArgs = "The haha to arguments sorry, for correct not are command that <@ACCIDENTAL_USER_TAG>."
-_lwysFailed = "Stage: Everyone stares at you, wondering what you're trying to do."
-_makeFailed = "hahaha Oof owie Heck, guess I don't know you well enough to do that."
-_lwysCast = ["fixit", "hattie", "oldie", "sophie", "todd", "tomo"]
+from otherdave.commands.haiku import parseHaiku
+from otherdave.util import constants
 
 loads = {}
 
@@ -35,11 +30,11 @@ def lwys(args):
     cast = ["stage"]
     if (args):
         for castMember in args:
-            if (not castMember.lower() in _lwysCast):
-                return _lwysFailed
+            if (not castMember.lower() in constants.lwysCast):
+                return constants.lwysFailed
             cast += [castMember]            
     else:
-        cast += [random.choice(_lwysCast)] + [random.choice(_lwysCast)]
+        cast += [random.choice(constants.lwysCast)] + [random.choice(constants.lwysCast)]
 
     lines = []
     for castMember in cast:
@@ -49,7 +44,7 @@ def lwys(args):
                 with open(filename, "r", encoding="utf-8") as cfile:
                     loads[castMember] = cfile.read()
             except OSError:
-                return _lwysFailed
+                return constants.lwysFailed
         
         model = markovify.Text(loads[castMember], well_formed=True)
 
@@ -79,7 +74,7 @@ def mimic(ctx, args):
         validThreeArgs = len(args) == 3 and (combo or chat)
 
         if (not validNoFlags and not validOneArg  and not validTwoArgs and not validThreeArgs):
-            return [_incorrectArgs]
+            return [constants.incorrectArgs]
         elif (validNoFlags):
             user = re.sub("<@!*|>", "", args[0]).lower()
         elif (validOneArg):
@@ -100,21 +95,21 @@ def mimic(ctx, args):
                 with open(filename, "r", encoding="utf-8") as mfile:
                     loads[user1] = mfile.read()
             except OSError:
-                return [_makeFailed]
+                return [constants.makeFailed]
         if (not user2 in loads):
             filename = "./data/markov/" + str(user2) + ".txt"
             try:
                 with open(filename, "r", encoding="utf-8") as mfile:
                     loads[user2] = mfile.read()
             except OSError:
-                return [_makeFailed]
+                return [constants.makeFailed]
     elif (not user in loads):
         filename = "./data/markov/" + str(user) + ".txt"
         try:
             with open(filename, "r", encoding="utf-8") as mfile:
                 loads[user] = mfile.read()
         except OSError:
-            return [_makeFailed]
+            return [constants.makeFailed]
 
     # Build models and mimic appropriately
     result = []
@@ -129,7 +124,7 @@ def mimic(ctx, args):
             if (sentence1 and sentence2):
                 result.append(args[1] + ": " + sentence1 + "\r\n" + args[2] + ": " + sentence2)
             else:
-                return [_makeFailed]
+                return [constants.makeFailed]
     else:
         if (combo):
             model1 = markovify.Text(loads[user1], well_formed=True)
@@ -153,13 +148,13 @@ def mimic(ctx, args):
                     break
                     
             if (len(result) == 0):
-                return [_haikuMakeFailed]
+                return [constants.haikuMakeFailed]
         else:
             for _ in range(3):
                 sentence = model.make_sentence(tries=100, max_words=random.randint(8, 40))
                 if(sentence):
                     result.append(sentence)
                 else:
-                    return [_makeFailed]
+                    return [constants.makeFailed]
     
     return result

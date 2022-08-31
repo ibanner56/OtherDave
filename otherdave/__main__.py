@@ -1,5 +1,4 @@
 import logging
-import yaml
 from datetime import *
 from discord import AllowedMentions, activity
 from discord.ext import tasks, commands
@@ -7,9 +6,6 @@ from otherdave.commands import *
 from otherdave.util import *
 
 # Configure client
-with open("./conf.yaml") as conf:
-    config = yaml.load(conf, Loader=yaml.BaseLoader)
-
 quietTime = None
 lastMsgTime = datetime.now()
 otherotherdave = None
@@ -18,7 +14,7 @@ help_command = commands.DefaultHelpCommand(
     command_not_found = helpNotFound)
 client = commands.Bot(
     command_prefix = "!",
-    description = config["description"],
+    description = config.description,
     help_command = help_command,
     intents=discord.Intents.all())
 
@@ -30,7 +26,7 @@ handler.setFormatter(logging.Formatter("%(asctime)s:%(levelname)s:%(name)s: %(me
 logger.addHandler(handler)
 
 # Configure tasks
-@tasks.loop(seconds=int(config["parrot_interval"]))
+@tasks.loop(seconds=int(config.parrotInterval))
 async def squawk():
     try:
         await toucan(client, lastMsgTime, quietTime)
@@ -101,7 +97,7 @@ async def cmd_forget(ctx, *args):
     name = "give",
     usage = "[<target> <object>]"
 )
-async def cmd_give(ctx, target: str = "<@" + config["self_id"] + ">", *thing):
+async def cmd_give(ctx, target: str = config.selftag, *thing):
     thing = "something" if len(thing) == 0 else " ".join(thing)
     await ctx.send(give(ctx.author, target, thing))
 
@@ -347,8 +343,8 @@ async def on_message(message):
 async def on_reaction_add(reaction, _):
     if(reaction.message.author != client.user):
         return
-    if(reaction.count == 1 and reaction.emoji in config["rereactions"]):
-        await reaction.message.channel.send(config["rereactions"][reaction.emoji])
+    if(reaction.count == 1 and reaction.emoji in config.rereactions):
+        await reaction.message.channel.send(config.rereactions[reaction.emoji])
 
 @client.event
 async def on_presence_update(user, after):

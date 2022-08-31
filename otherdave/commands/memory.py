@@ -1,7 +1,6 @@
 import pickledb
 import random
 import re
-import yaml
 from collections import deque
 from datetime import *
 from math import pow
@@ -10,23 +9,12 @@ from otherdave.commands.give import find, use
 from otherdave.commands.haiku import recall
 from otherdave.commands.ignore import ignoreBandit
 from otherdave.commands.recommend import recommend
+from otherdave.util import config, constants
 
-_allQuotes = "_all"
-_badKeywords = "I don't remember saying that."
-_emptyBuffer = "I haven't said anything yet."
-_emptyMemory = "Do I even know you people?"
-_forgetSuccess = "Got it, I'll forget you said that."
-_invalidArgs = "I need a user and some keywords to do that."
-_notFound = "I don't remember anything they've said!"
-_saveFailed = "Sorry, I don't remember that."
-
-with open("./conf.yaml", encoding="utf-8") as conf:
-    config = yaml.load(conf, Loader=yaml.FullLoader)
-
-memCache = deque(maxlen=config["cache_length"])
+memCache = deque(maxlen=config.cacheLength)
 memories = pickledb.load("./data/quotes.db", True)
-if (not memories.get(_allQuotes)):
-    memories.set(_allQuotes, [])
+if (not memories.get(constants.allQuotes)):
+    memories.set(constants.allQuotes, [])
 
 # Cubic Regression to match:
 #     00 sec ->   0% chance
@@ -45,12 +33,12 @@ squawkProb = lambda x : (
 
 async def remember(ctx, args):
     if(len(args) < 2):
-        return _invalidArgs
+        return constants.invalidArgs
     else:
         nick = re.sub("<@!*|>", "", args[0])
         snippet = " ".join(args[1:])
 
-        async for msg in ctx.channel.history(limit=config["max_lookback"]):
+        async for msg in ctx.channel.history(limit=config.maxLookback):
             # Ignore commands
             if(msg.content.startswith("!")):
                 continue
@@ -61,24 +49,24 @@ async def remember(ctx, args):
                 else:
                     memories.set(nick, [msg.content])
 
-                memories.append(_allQuotes, [[nick, msg.content]])
-                await ctx.message.add_reaction(config["emotions"]["_memorymoji"])
+                memories.append(constants.allQuotes, [[nick, msg.content]])
+                await ctx.message.add_reaction(config.emotions["_memorymoji"])
                 return None
 
-        return _saveFailed
+        return constants.saveFailed
 
 def parrot(args = []):
     if(len(args) > 0):
         nick = re.sub("<@!*|>", "", args[0])
         if(not memories.get(nick)):
-            return _notFound
+            return constants.notFound
         rmem = random.choice(memories.get(nick))
         memCache.append([nick, rmem])
         return rmem
     else:
-        if(len(memories.get(_allQuotes)) == 0):
-            return _emptyMemory
-        rmem = random.choice(memories.get(_allQuotes))
+        if(len(memories.get(constants.allQuotes)) == 0):
+            return constants.emptyMemory
+        rmem = random.choice(memories.get(constants.allQuotes))
         memCache.append([rmem[0], rmem[1]])
         return rmem[1]
 
@@ -107,9 +95,9 @@ async def toucan(client, lastMsgTime, quietTime):
             case _:
                 return None
 
-        if(macaw == _emptyMemory):
+        if(macaw == constants.emptyMemory):
             return None
-        parrotChan = await client.fetch_channel(config["parrot_channel"])
+        parrotChan = await client.fetch_channel(config.parrotChan)
 
         if(isinstance(macaw, Embed)):
             return await parrotChan.send(embed = macaw)
@@ -118,7 +106,7 @@ async def toucan(client, lastMsgTime, quietTime):
 
 def forget(args):
     if(len(memCache) == 0):
-        return _emptyBuffer
+        return constants.emptyBuffer
     
     memory = None
     if(args):
@@ -127,13 +115,13 @@ def forget(args):
         if(memory):
             memCache.remove(memory)
         else:
-            return _badKeywords
+            return constants.badKeywords
     else:
         memory = memCache.pop()
     
     memories.get(memory[0]).remove(memory[1])
-    memories.get(_allQuotes).remove(memory)
+    memories.get(constants.allQuotes).remove(memory)
     
     # Because pickleDB doesn't support list element removal properly, dump manually
     memories.dump()
-    return _forgetSuccess
+    return constants.forgetSuccess

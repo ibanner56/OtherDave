@@ -1,8 +1,8 @@
 import pickledb
-import yaml
 from datetime import *
 from dateutil.parser import *
 from dateutil.tz import *
+from otherdave.util import config
 
 pttzinfo = {
     "PT": gettz("America/Los_Angeles"),
@@ -11,9 +11,7 @@ pttzinfo = {
 }
 default_date = datetime.combine(datetime.now(), time(0, tzinfo=gettz("America/Los_Angeles")))
 drawDB = pickledb.load("./data/dd.db", True)
-with open("./conf.yaml") as conf:
-    config = yaml.load(conf, Loader=yaml.FullLoader)
-    drawConf = config["drunkdraw"]
+drawConf = config.drunkdraw
 
 def updateDraw(author, args):
     if(author != "Isaac" and author != "MercWorks"):
