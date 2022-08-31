@@ -1,5 +1,6 @@
 import unittest
 from otherdave.commands import haiku
+from otherdave.util import constants
 
 class HaikuTestCase(unittest.TestCase):
     def setUp(self):
@@ -80,7 +81,7 @@ class SaveHaikuTestCase(unittest.TestCase):
         text = "This one is a test. This poem is a haiku. Refrigerator."
         expected = "*This one is a test.*\n*This poem is a haiku.*\n*Refrigerator.*"
         self.assertIsNotNone(haiku.parseHaiku(text, False))
-        self.assertEqual(haiku.save(""), haiku._savedHaiku)
+        self.assertEqual(haiku.save(""), constants.savedHaiku)
         self.assertEqual(haiku.recall(), expected)
 
     def test_savewithkeywords(self):
@@ -89,19 +90,19 @@ class SaveHaikuTestCase(unittest.TestCase):
         expected = "*This one is a test.*\n*This poem is a haiku.*\n*Refrigerator.*"
         self.assertIsNotNone(haiku.parseHaiku(text1, False))
         self.assertIsNotNone(haiku.parseHaiku(text2, False))
-        self.assertEqual(haiku.save("This one"), haiku._savedHaiku)
+        self.assertEqual(haiku.save("This one"), constants.savedHaiku)
         self.assertEqual(haiku.recall(), expected)
 
     def test_savewithbadkeywords(self):
         text = "This one is a test. This poem is a haiku. Refrigerator."
         self.assertIsNotNone(haiku.parseHaiku(text, False))
-        self.assertEqual(haiku.save("Farts"), haiku._badKeywords)
+        self.assertEqual(haiku.save("Farts"), constants.badKeywords)
 
     def test_recallemptymemory(self):
-        self.assertEqual(haiku.recall(), haiku._emptyMemory)
+        self.assertEqual(haiku.recall(), constants.emptyMemory)
 
     def test_saveemptybuffer(self):
-        self.assertEqual(haiku.save(""), haiku._emptyBuffer)
+        self.assertEqual(haiku.save(""), constants.emptyBuffer)
 
 class ForgetHaikuTestCase(unittest.TestCase):
     def setUp(self):
@@ -112,15 +113,15 @@ class ForgetHaikuTestCase(unittest.TestCase):
         haiku.memories.deldb()
 
     def test_forgetemptybuffer(self):
-        self.assertEqual(haiku.forget(""), haiku._emptyBuffer)
+        self.assertEqual(haiku.forget(""), constants.emptyBuffer)
 
     def test_forgetlast(self):
         text = "This one is a test. This poem is a haiku. Refrigerator."
         expected = "*This one is a test.*\n*This poem is a haiku.*\n*Refrigerator.*"
         self.assertIsNotNone(haiku.parseHaiku(text, False))
-        self.assertEqual(haiku.save(""), haiku._savedHaiku)
+        self.assertEqual(haiku.save(""), constants.savedHaiku)
         self.assertEqual(haiku.recall(), expected)
-        self.assertEqual(haiku.forget(""), haiku._forgetSuccess)
+        self.assertEqual(haiku.forget(""), constants.forgetSuccess)
 
     def test_forgetwithkeywords(self):
         text1 = "This one is a test. This poem is a haiku. Refrigerator."
@@ -128,9 +129,9 @@ class ForgetHaikuTestCase(unittest.TestCase):
         expected = "*This one is a test.*\n*This poem is a haiku.*\n*Refrigerator.*"
         self.assertIsNotNone(haiku.parseHaiku(text1, False))
         self.assertIsNotNone(haiku.parseHaiku(text2, False))
-        self.assertEqual(haiku.save("This one"), haiku._savedHaiku)
+        self.assertEqual(haiku.save("This one"), constants.savedHaiku)
         self.assertEqual(haiku.recall(), expected)
-        self.assertEqual(haiku.forget("This one"), haiku._forgetSuccess)
+        self.assertEqual(haiku.forget("This one"), constants.forgetSuccess)
 
     def test_forgetwithbadkeywords(self):
         text1 = "This one is a test. This poem is a haiku. Refrigerator."
@@ -138,6 +139,6 @@ class ForgetHaikuTestCase(unittest.TestCase):
         expected = "*This one is a test.*\n*This poem is a haiku.*\n*Refrigerator.*"
         self.assertIsNotNone(haiku.parseHaiku(text1, False))
         self.assertIsNotNone(haiku.parseHaiku(text2, False))
-        self.assertEqual(haiku.save("This one"), haiku._savedHaiku)
+        self.assertEqual(haiku.save("This one"), constants.savedHaiku)
         self.assertEqual(haiku.recall(), expected)
-        self.assertEqual(haiku.forget("Farts"), haiku._badKeywords)
+        self.assertEqual(haiku.forget("Farts"), constants.badKeywords)
