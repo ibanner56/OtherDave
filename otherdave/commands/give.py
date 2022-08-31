@@ -152,7 +152,7 @@ def use(mention = constants.inventoryKey, thing = "something", who= "I", whos = 
         or not ":)" in thing):
         typedThing = bag.lgetrg(mention, "^(\(:[a-z_]+:\) )*" + thing + "$")
     elif (bag.lexists(mention, thing)):
-        typedThing = typedThing
+        typedThing = thing
     else:
         typedThing = None
 
