@@ -214,7 +214,7 @@ def selfdrop():
     thing = random.choice(bag.lgetall(inventoryKey))
     return drop(inventoryKey, thing)
 
-def use(mention = selftag, thing = "something", who= "I", whos = "I'm", whose = "my"):
+def use(mention = inventoryKey, thing = "something", who= "I", whos = "I'm", whose = "my"):
     if (thing == "something"):
         if (not bag.exists(mention)
             or bag.llen(mention) == 0):
