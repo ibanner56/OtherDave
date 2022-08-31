@@ -11,7 +11,7 @@ lastMsgTime = datetime.now()
 otherotherdave = None
 help_command = commands.DefaultHelpCommand(
     no_category = "Commands",
-    command_not_found = helpNotFound)
+    command_not_found = constants.notFound)
 client = commands.Bot(
     command_prefix = "!",
     description = config.description,
@@ -287,7 +287,7 @@ async def cmd_use(ctx, *args):
     name = "version"
 )
 async def cmd_version(ctx):
-    await ctx.send(version())
+    await ctx.send(config.version)
 
 @client.command(
     brief = "Checks your wallet for DaveBucks",

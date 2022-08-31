@@ -10,11 +10,5 @@ def beach():
     joy = random.choice(constants.joy)
     return "Today I'm on a beach with {} grains of sand, {}!".format(sand, joy)
 
-def helpNotFound():
-    return constants.notFound
-
-def version():
-    return constants.version
-
 def dad():
     return random.choice(dadjokes)
