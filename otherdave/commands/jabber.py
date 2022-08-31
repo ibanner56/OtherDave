@@ -1,5 +1,5 @@
 import random
-from otherdave import constants
+from otherdave.util import constants
 from sys import maxsize
 
 with open("./data/dad.txt", encoding="utf-8") as dadf:
