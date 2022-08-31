@@ -1,7 +1,8 @@
 import inflect
 import random
 from datetime import *
-from otherdave.util import config, constants, pickledb, Thinger, User
+from otherdave.util import config, constants, pickledb, Thinger, unflect, User
+from otherdave.util.stringmischief import stringMischief
 
 thinger = Thinger()
 user = User()
@@ -14,44 +15,6 @@ if (not bag.exists(constants.daveBucksKey)):
 
 # Keep a list of recently acquired things in memory that he doesn't want to give away.
 newThings = {}
-
-# Some helpers for stringMischief down below
-def byteWiseAdd(sthing, ithing):
-    sbytes = sthing.encode("utf-8")
-    ibytes = ithing.to_bytes(len(sbytes), "big")
-    return bytes(list(map(lambda x, y: min(x + y, 255), sbytes, ibytes)))
-
-def weirdIntAddAndReByte(sthing, ithing):
-    sVal = sum(sthing.encode("utf-8")) + ithing
-    return sVal.to_bytes((sVal.bit_length() + 7) // 8, "big")
-
-def dodgeControlBytes(byteVal):
-    byteVal = max(byteVal, 36)
-    if 127 <= byteVal <= 160:
-        return 161
-    return byteVal
-
-# A few insane ways to add an int to a string
-stringMischief = [
-    lambda sthing, ithing: str(sthing) + str(ithing),                           # (STR) Simple string concat
-    lambda sthing, ithing: str(byteWiseAdd(sthing, ithing), "utf-8"),           # (STR) Bytewise addition
-    lambda sthing, ithing: int.from_bytes(byteWiseAdd(sthing, ithing), "big"),  # (INT) Bytewise addition
-    lambda sthing, ithing: sum(sthing.encode("utf-8")) + ithing,                # (INT) Sum the string bytes and add the int
-                                                                                # (STR) Uhhhhhh, don't ask me about this next one
-    lambda sthing, ithing: "".join(list(map(lambda x: chr(dodgeControlBytes(x)), weirdIntAddAndReByte(sthing, ithing))))
-]
-
-# Strip all these indefinite articles we're adding
-def unflect_a(word: str) -> str:
-    if (word.startswith("a ")):
-        return word[2:]
-    if (word.startswith("an ")):
-        return word[3:]
-    # No indefinite article
-    return word
-
-# Alias an to a to be cute like inflect
-def unflect_an(word: str) -> str: return unflect_a(word)
 
 def find():
     thing = thinger.make().split(")")
@@ -169,7 +132,7 @@ def drop(mention, thing):
         return constants.noDropMessage.format(who = who, thing = thing)
 
     bag.lremvalue(mention, typedThing)
-    return constants.dropMessage.format(who = who, whose = whose, thing = unflect_a(thing))
+    return constants.dropMessage.format(who = who, whose = whose, thing = unflect.a(thing))
 
 def selfdrop():
     thing = random.choice(bag.lgetall(constants.inventoryKey))
@@ -192,7 +155,7 @@ def use(mention = constants.inventoryKey, thing = "something", who= "I", whos = 
     bag.lremvalue(mention, typedThing)
     
     unflectedthing = typedThing.split(")")
-    unflectedthing = unflectedthing[0] + ")" + unflect_a(unflectedthing[1])
+    unflectedthing = unflectedthing[0] + ")" + unflect.an(unflectedthing[1])
 
     return user.make().format(
         who = who, 

@@ -5,4 +5,6 @@ from .constants import *
 from .madlib import *
 from .dlog import *
 from .pickledbrg import *
+from .stringmischief import *
 from .triggers import *
+from .unflect import *
