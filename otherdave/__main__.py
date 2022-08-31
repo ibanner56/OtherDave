@@ -76,7 +76,7 @@ async def cmd_drop(ctx, *thing):
     usage = "[[-date date] [-time time] [-theme theme] [-references references] | -reset]"
 )
 async def cmd_drunkdraw(ctx, *args):
-    await ctx.send(drunkdraw(ctx, args))
+    await ctx.send(drunkdrawCmd(ctx, args))
     
 @client.command(
     brief = "Forgets something that was recently quoted.",
