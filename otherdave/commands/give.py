@@ -148,9 +148,16 @@ def use(mention = constants.inventoryKey, thing = "something", who= "I", whos = 
     if (not bag.exists(mention)):
         return constants.noUseMessage.format(who = who, thing = thing)
 
-    typedThing = bag.lgetrg(mention, "^(\(:[a-z_]+:\) )*" + thing + "$")
+    if (not "(:" in thing
+        or not ":)" in thing):
+        typedThing = bag.lgetrg(mention, "^(\(:[a-z_]+:\) )*" + thing + "$")
+    elif (bag.lexists(mention, thing)):
+        typedThing = typedThing
+    else:
+        typedThing = None
+        
     if (typedThing == None):
-        return constants.noDropMessage.format(who = who, thing = thing)
+        return constants.noUseMessage.format(who = who, thing = thing)
 
     bag.lremvalue(mention, typedThing)
     
