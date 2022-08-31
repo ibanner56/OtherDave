@@ -1,22 +1,22 @@
 import yaml
 
 with open("./conf.yaml") as conf:
-    config = yaml.load(conf, Loader=yaml.BaseLoader)
+    loadedConfig = yaml.load(conf, Loader=yaml.BaseLoader)
 
-version = config["version"]
-description = config["description"]
+version = loadedConfig["version"]
+description = loadedConfig["description"]
 
-cacheLength = int(config["cache_length"])
-maxLookback = int(config["max_lookback"])
-parrotChan = config["parrot_channel"]
-parrotInterval = config["parrot_interval"]
-daveid = config["dave_id"]
-selfid = config["self_id"]
+cacheLength = int(loadedConfig["cache_length"])
+maxLookback = int(loadedConfig["max_lookback"])
+parrotChan = loadedConfig["parrot_channel"]
+parrotInterval = loadedConfig["parrot_interval"]
+daveid = loadedConfig["dave_id"]
+selfid = loadedConfig["self_id"]
 selftag = "<@" + selfid + ">"
-bagsize = int(config["bag_size"])
-userbagsize = int(config["user_bag_size"])
-greedytime = int(config["greedy_time"])
+bagsize = int(loadedConfig["bag_size"])
+userbagsize = int(loadedConfig["user_bag_size"])
+greedytime = int(loadedConfig["greedy_time"])
 
-drunkdraw = config["drunkdraw"]
-emotions = config["emotions"]
-rereactions = config["rereactions"]
+drunkdraw = loadedConfig["drunkdraw"]
+emotions = loadedConfig["emotions"]
+rereactions = loadedConfig["rereactions"]
