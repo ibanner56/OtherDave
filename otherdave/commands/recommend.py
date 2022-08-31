@@ -1,10 +1,9 @@
 import json
 import pickledb
 import random
-from discord import activity, Embed, Colour
+from discord import activity, Embed
+from otherdave.util import constants
 
-spotifyColor = Colour(1947988)
-musicTemplate = "{listener} has listened to ::\n[{title}]({trackUrl}) on {album} by {artist}\n...{listens} time(s)! It must be {adverb} {description}!"
 adjectives = json.load(open("./data/madlib/adjectives.json"))
 
 #   recommendations:
@@ -63,9 +62,9 @@ def recommend(kind = "-music"):
         track = recs.dget("music", random.choice(list(recs.dkeys("music"))))
         trackListener = random.choice(list(track["listeners"]))
 
-        embed = Embed(colour=spotifyColor, url=track["trackUrl"], title=track["artist"])
+        embed = Embed(colour=constants.spotifyColor, url=track["trackUrl"], title=track["artist"])
         embed.set_thumbnail(url = track["albumCover"])
-        embed.description = musicTemplate.format(
+        embed.description = constants.musicTemplate.format(
             listener = trackListener,
             title = track["title"],
             trackUrl = track["trackUrl"],

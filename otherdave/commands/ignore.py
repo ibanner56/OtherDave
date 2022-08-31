@@ -1,20 +1,14 @@
 import pickledb
 import re
-import yaml
 from datetime import *
-
-_ignoreUsage = "Sorry, I don't understand. The correct usage is '!ignore <-me | @user> [minutes]'."
-_dmsUsage = "Sorry, I dom't understand. The correct usage is '!dms <-enable | -disable>'."
-
-with open("./conf.yaml") as conf:
-    config = yaml.load(conf, Loader=yaml.BaseLoader)
+from otherdave.util import config, constants
 
 ignoreDb = pickledb.load("./data/ignore.db", True)
 slideDb = pickledb.load("./data/slide.db", True)
 
 async def ignore(ctx, args):
     if (len(args) < 1 or len(args) > 2):
-        return _ignoreUsage
+        return constants.ignoreUsage
     
     try:
         if (len(args) == 2):
@@ -22,13 +16,13 @@ async def ignore(ctx, args):
         else:
             mins = 5
     except ValueError:
-        return _ignoreUsage
+        return constants.ignoreUsage
     
     ignoreTime = datetime.now() + timedelta(minutes=mins)
 
     if (args[0] == "-me"):
         ignoreDb.set(str(ctx.author.id), ignoreTime.isoformat())
-        await ctx.message.add_reaction(config["emotions"]["_zipit"])
+        await ctx.message.add_reaction(config.emotions["_zipit"])
         return None
     else:
         author = ctx.author.name
@@ -55,7 +49,7 @@ def dms(userId, flag):
         slideDb.set(userId, True)
         return "Okay, I won't send you any direct messages."
     else:
-        return _dmsUsage
+        return constants.dmsUsage
 
 def shouldIgnore(userId):
     userId = str(userId)
