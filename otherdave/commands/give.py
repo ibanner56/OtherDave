@@ -17,8 +17,9 @@ if (not bag.exists(constants.daveBucksKey)):
 newThings = {}
 
 def find():
-    thing = thinger.make().split(")")
-    thing = thing[0] + ")" + infl.a(thing[1])
+    thing = thinger.make()
+    thing = infl.a(thing)
+    thing = thinger.typeThing(thing)
 
     # Put the new thing in the bag
     bag.ladd(constants.inventoryKey, thing)
@@ -44,8 +45,9 @@ def give(author, target = config.selftag, thing = "something"):
         return take(author, target, thing)
     
     if (thing == "something"):
-        thing = thinger.make().split(")")
-        thing = thing[0] + ")" + infl.a(thing[1])
+        thing = thinger.make()
+        thing = infl.a(thing)
+        thing = thinger.typeThing(thing)
     else:
         if (bag.lexistsrg(constants.inventoryKey, "^(\(:[a-z_]+:\) )*" + thing + "$")):
             return constants.knownThing.format(thing = thing)        
