@@ -24,7 +24,7 @@ class MadLibber():
 
             result += " " 
 
-        if (re.match("\{\{(.+?)\}\}", result)):
+        if (re.search("\{\{(.+?)\}\}", result)):
             # Recursion with no base case -
             # I'm going to regret this some day aren't I...
             return self.make(result)
