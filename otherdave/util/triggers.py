@@ -17,16 +17,13 @@ async def react(message):
                 # Deploy random banjo
                 await message.add_reaction(config.emotions["_banjo"])
 
-async def grump(ctx, args):
-    if (len(args) != 1):
-        return constants.pedantUsage
-    
-    if (args[0] == "-me"):
-        grumps.set(str(ctx.author.id), False)
-        await ctx.message.add_reaction(config.emotions["_teacher"])
-    elif (args[0] == "-stop"):
-        grumps.set(str(ctx.author.id), True)
-        await ctx.message.add_reaction(config.emotions["_zipit"])
+def grump(interaction, action):
+    if (action == "enable"):
+        grumps.set(str(interaction.user.id), False)
+        return config.emotions["_teacher"]
+    elif (action == "disable"):
+        grumps.set(str(interaction.user.id), True)
+        return config.emotions["_zipit"]
     else:
         return constants.pedantUsage
 

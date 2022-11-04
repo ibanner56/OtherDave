@@ -1,5 +1,5 @@
 # https://semver.org/
-version: '2.3.19, now proudly on python :snake:'
+version: '2.4.1, now proudly on python :snake:'
 description: |+ 
   OtherDave is not David.
   
@@ -16,6 +16,7 @@ self_id: 355497099762073600
 bag_size: 10
 user_bag_size: 4
 greedy_time: 1800
+guild_id: 328946766747533314
 
 drunkdraw:
   locales:

@@ -2,7 +2,6 @@ from otherdave.util.madlib import Complimenter
 
 OtherDavesGraphicRespect = Complimenter()
 
-def respect(ctx, args):
-    target = " ".join(args) if args else ctx.author.mention
+def respect(target):
     compliment = OtherDavesGraphicRespect.make()
     return target + ", " + compliment

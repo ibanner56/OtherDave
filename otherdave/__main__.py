@@ -1,11 +1,14 @@
 import logging
 from datetime import *
-from discord import AllowedMentions, activity
+import discord
+from discord import AllowedMentions, activity, app_commands
 from discord.ext import tasks, commands
 from otherdave.commands import *
 from otherdave.util import *
+from typing import Literal, Optional
 
 # Configure client
+synced = False
 quietTime = None
 lastMsgTime = datetime.now()
 otherotherdave = None
@@ -35,39 +38,38 @@ async def squawk():
         pass
 
 # Configure commands
-@client.command(
-    brief = "Fine, you wanted a beach - I made him a beach. Happy? Sheesh.",
-    help = "Fine, you wanted a beach - I made him a beach. Happy? Sheesh.",
-    name="beach"
+@client.tree.command(
+    name="beach",
+    description = "Fine, you wanted a beach - I made him a beach. Happy? Sheesh."
 )
-async def cmd_beach(ctx):
-    await ctx.send(jabber.beach())
+@app_commands.check(callerNotIgnored)
+async def cmd_beach(interaction: discord.Interaction):
+    await interaction.response.send_message(jabber.beach())
 
-@client.command(
-    brief = "I tell dad jokes but I'm not a dad.",
-    help = "I tell dad jokes but I'm not a dad. Guess that makes me a faux pa.",
-    name = "dadjoke"
-)
-async def cmd_dad(ctx):
-    await ctx.send(jabber.dad())
+@client.tree.command(
+    name = "dadjoke", 
+    description="I tell dad jokes but I'm not a dad. Guess that makes me a faux pa.")
+@app_commands.check(callerNotIgnored)
+async def cmd_dad(interaction: discord.Interaction):
+    await interaction.response.send_message(jabber.dad())
 
-@client.command(
-    brief = "Disables direct messages.",
-    help = "Disables direct messages from OtherDave, triggered by other users or otherwise.",
+@client.tree.command(
     name = "dms",
-    usage = "<-enable | -disable>"
+    description = "Disables direct messages from OtherDave, triggered by other users or otherwise."
 )
-async def cmd_dms(ctx, flag = None):
-    await ctx.send(dms(ctx.author.id, flag))
+async def cmd_dms(interaction: discord.Interaction, action: Literal["enable", "disable"]):
+    await interaction.response.send_message(dms(interaction.user.id, action))
 
-@client.command(
-    brief = "Drops something in your inventory",
-    help = "Allows you to drop a non-davebucks thing you're carrying.",
+@client.tree.command(
     name = "drop",
-    usage = "<thing>"
+    description = "Allows you to drop a non-davebucks thing you're carrying.",
 )
-async def cmd_drop(ctx, *thing):
-    await ctx.send(drop(ctx.author.mention, " ".join(thing)))
+@app_commands.describe(
+    thing = "The item you want to drop"
+)
+@app_commands.check(callerNotIgnored)
+async def cmd_drop(interaction:discord.Interaction, thing: str):
+    await interaction.response.send_message(drop(interaction.author.mention, thing))
 
 @client.command(
     name = "drunkdraw",
@@ -78,28 +80,33 @@ async def cmd_drop(ctx, *thing):
 async def cmd_drunkdraw(ctx, *args):
     await ctx.send(drunkdrawCmd(ctx, args))
     
-@client.command(
-    brief = "Forgets something that was recently quoted.",
-    help = "Forgets something that was recently quoted.",
+@client.tree.command(
     name = "forget",
-    usage = "[keywords]"
+    description = "Forgets something that was recently quoted."
 )
-async def cmd_forget(ctx, *args):
-    await ctx.send(forget(args))
+@app_commands.check(callerNotIgnored)
+async def cmd_forget(interaction: discord.Interaction, snippet: str):
+    await interaction.response.send_message(forget(snippet))
 
-@client.command(
-    brief = "Interacts with OtherDave's inventory.",
-    help = """Gives something *to* @OtherDave, if he's the target, 
-        or takes something *from* @OtherDave and gives it to the @<target>. If you're not feeling 
-        creative, leave object blank or request 'something' and OD will be creative for you. 
-        If you're not feeling generous, '!give me [<object>]' will give things to you instead of a <target>.
-        Defaults to giving @OtherDave a random 'something'. Only Dave can give out DaveBucks.""",
-    name = "give",
-    usage = "[<target> <object>]"
+@client.tree.context_menu(
+    name="Forget Message"
 )
-async def cmd_give(ctx, target: str = config.selftag, *thing):
-    thing = "something" if len(thing) == 0 else " ".join(thing)
-    await ctx.send(give(ctx.author, target, thing))
+async def ctx_forget(interaction: discord.Interaction, message: discord.Message):
+    response = forget_msg(message)
+    await interaction.response.send_message(response, ephemeral=True)
+
+@client.tree.command(
+    name = "give",
+    description = "Gives something *to* OD or takes something *from* OD and gives it to the target."
+)
+@app_commands.describe(
+    thing = "If you're not feeling creative, leave this blank. Only Dave can give out DaveBucks."
+)
+@app_commands.check(callerNotIgnored)
+async def cmd_give(interaction: discord.Interaction, target: Optional[discord.Member] = None, thing: Optional[str] = None):
+    thing = thing if thing else "something"
+    target = target if target else discord.Object(id=config.selfid)
+    await interaction.response.send_message(give(interaction.user, target, thing))
 
 @client.command(
     brief = "..... ....... .....",
@@ -112,61 +119,72 @@ async def cmd_give(ctx, target: str = config.selftag, *thing):
 async def cmd_haiku(ctx, *args):
     await ctx.send(haiku.critique(args))
 
-@client.command(
-    brief = "Haunts a user in DMs.",
-    help = "Haunts a <@user> of your choosing, or yourself.",
+@client.tree.command(
     name = "haunt",
-    usage = "[<target>]"
+    description = "Haunts a <@user> of your choosing, or yourself."
 )
-async def cmd_haunt(ctx, user: discord.Member = None):
-    await haunt(ctx, user)
+@app_commands.describe(
+    user = "The boring lame-o who needs some spooky spice in their life, or you, shackled with ennui, if empty"
+)
+@app_commands.check(callerNotIgnored)
+async def cmd_haunt(interaction: discord.Interaction, user: Optional[discord.Member] = None):
+    await haunt(interaction, user)
 
 @cmd_haunt.error
-async def cmd_haunt_error(ctx, error):
+async def cmd_haunt_error(interaction: discord.Interaction, error):
     if isinstance(error, commands.BadArgument):
-        await ctx.send("OOPSIE, looks like that user doesn't exist, sad day for them whoever they are!")
+        await interaction.response.send_message("OOPSIE, looks like that user doesn't exist, sad day for them whoever they are!", ephemeral=True)
 
-@client.command(
-    brief = "Gives you a damn fine horoscope.",
-    help = "Gives you a horoscope, you can provide a star sign or place the word 'al' after command to recieve a Weird Al horoscope.",
+@client.tree.command(
     name = "horoscope",
-    usage = "[starsign | al]"
+    description = "Gives you a horoscope, given a star sign."
 )
-async def cmd_horoscope(ctx, variant: str = "generic"):
-    await ctx.send(horoscope(variant))
+@app_commands.describe(
+    variant = "A star sign for a specific horoscope, or 'al' for a Weird Al horoscope"
+)
+@app_commands.check(callerNotIgnored)
+async def cmd_horoscope(interaction: discord.Interaction, variant: Optional[str] = "generic"):
+    await interaction.response.send_message(horoscope(variant))
 
-@client.command(
-    brief = "Stop listening to a user.",
-    help = "Stops listening to a user for a set time, or 5 minutes. They must have been naughty!",
+@client.tree.command(
     name = "ignore",
-    usage = "<-me | @user> [minutes]"
+    description = "Stops listening to a user for a set time, or 5 minutes. They must have been naughty!"
 )
-async def cmd_ignore(ctx, *args):
-    response = await ignore(ctx, args)
+@app_commands.describe(
+    user = "Who needs ignoring, or you if you leave this blank",
+    minutes = "How long they need to be ignored"
+)
+async def cmd_ignore(interaction: discord.Interaction, user: Optional[discord.User] = None, minutes: Optional[int] = 5):
+    user = user if user else interaction.user
+    response = await ignore(interaction, user, minutes)
     if (response):
-        await ctx.send(response)
+        await interaction.response.send_message(response)
 
-@client.command(
-    brief = "Lists everything OtherDave is holding.",
-    help = "Lists everything in OtherDave's inventory. You can add or remove items with !give.",
-    name = "inventory"
+@client.tree.command(
+    name = "inventory",
+    description = "Lists everything in OtherDave's inventory. You can add or remove items with !give."
 )
-async def cmd_inventory(ctx, user: str = None):
-    await ctx.send(inventory(ctx.author, user))
+@app_commands.describe(
+    user = "The user who's inventory you want to list, leave blank for OtherDave"
+)
+@app_commands.check(callerNotIgnored)
+async def cmd_inventory(interaction: discord.Interaction, user: Optional[discord.User] = None):
+    await interaction.response.send_message(inventory(interaction.user, user))
 
-@client.command(
-    brief = "Creates a fake LWYS script.",
-    help = """Creates a fake LWYS script, always beginning with stage direction. If no characters are provided, two are chosen at random.
-        The full cast includes Fixit, Hattie, Oldie, Sophie, Todd, and Tomo.]""",
+@client.tree.command(
     name = "lwys",
-    usage = "[character1 [character2 ...]]"
+    description = "Creates a fake LWYS script, always beginning with stage direction.",
 )
-async def cmd_lwys(ctx, *args):
+@app_commands.describe(
+    cast = "The cast to use, from Fixit, Hattie, Oldie, Sophie, Todd, and Tomo. Chooses two at random if empty."
+)
+@app_commands.check(callerNotIgnored)
+async def cmd_lwys(interaction: discord.Interaction, cast: Optional[str] = ""):
     strip = None
-    async with ctx.channel.typing():
-        strip = lwys(args)
+    async with interaction.channel.typing():
+        strip = lwys(cast.split())
 
-    await ctx.send(strip)
+    await interaction.response.send_message(strip)
 
 @client.command(
     brief = "Tries to talk like you or another user.",
@@ -183,33 +201,32 @@ async def cmd_mimic(ctx, *args):
     for line in lines:
         await ctx.send(line, allowed_mentions=AllowedMentions(users=[otherotherdave]))
 
-@client.command(
-    brief = "Repeats a saved quote.",
-    help = "Repeats a saved quote at random or for a specific user.",
+@client.tree.command(
     name = "parrot",
-    usage = "[<@user>]"
+    description = "Repeats a saved quote at random for you or for a specific user."
 )
-async def cmd_parrot(ctx, *args):
-    await ctx.send(parrot(args), allowed_mentions=AllowedMentions(users=[otherotherdave]))
+@app_commands.describe(
+    user = "Who to parrot, defaults to you if empty"
+)
+@app_commands.check(callerNotIgnored)
+async def cmd_parrot(interaction: discord.Interaction, user: Optional[discord.User] = None):
+    mention = user.mention if user else interaction.user.mention
+    await interaction.response.send_message(parrot(mention), allowed_mentions=AllowedMentions(users=[otherotherdave]))
 
-@client.command(
-    brief = "Enables or disables auto-responses from OtherDave.",
-    help = "Enables or disables auto-responses from OtherDave, if you're a grump and want him to leave you alone.",
+@client.tree.command(
     name = "pedant",
-    usage = "-me | -stop"
+    description = "Enables or disables auto-responses from OtherDave, if you're grumpy and want him to leave you alone.",
 )
-async def cmd_pedant(ctx, *args):
-    response = await grump(ctx, args)
-    if (response):
-        await ctx.send(response)
+async def cmd_pedant(interaction: discord.Interaction, action: Literal["enable", "disable"]):
+    await interaction.response.send_message(grump(interaction, action), ephemeral=True)
 
-@client.command(
-    brief = "pong",
-    help = "pong",
-    name = "ping"
+@client.tree.command(
+    name = "ping",
+    description = "pong"
 )
-async def cmd_ping(ctx):
-    await ctx.channel.send("pong")
+@app_commands.check(callerNotIgnored)
+async def cmd_ping(interaction: discord.Interaction):
+    await interaction.response.send_message("pong")
 
 @client.command(
     brief = "Madlibs a writing prompt.",
@@ -220,86 +237,97 @@ async def cmd_ping(ctx):
 async def cmd_prompt(ctx, *args):
     await ctx.channel.send(prompt(args))
 
-@client.command(
-    brief = "Disables all non-command triggers for a number of minutes.",
-    help = "Disables all non-command triggers for a number of minutes. Defaults to 5 min.",
+@client.tree.command(
     name = "quiet",
-    usage = "[mins]"
+    description = "Disables all non-command triggers for a number of minutes. Defaults to 5 min.",
 )
-async def cmd_quiet(ctx, *args):
+@app_commands.check(callerNotIgnored)
+async def cmd_quiet(interaction: discord.Interaction, mins: Optional[int] = 5):
     global quietTime
     try:
-        min = 5
-        if(len(args)):
-            min = int(args[0])
-
-        quietTime = datetime.now() + timedelta(minutes=min)
-        await ctx.send("Got it, I'll keep quiet for " + args[0] + " minutes.")
+        quietTime = datetime.now() + timedelta(minutes=mins)
+        await interaction.response.send_message("Got it, I'll keep quiet for " + mins + " minutes.")
     except:
-        await ctx.send("Sorry, not sure how long that is...defaulting to 5 min")
+        await interaction.response.send_message("Sorry, not sure how long that is...defaulting to 5 min")
         quietTime = datetime.now() + timedelta(minutes=5)
 
-@client.command(
-    brief = "Gives you a cool recommendation.",
-    help = "Gives you a song or game recommendation based on what others have been enjoying.",
+@client.tree.command(
     name = "recommend",
-    usage = "[-music | -games]"
+    description = "Gives you a song or game recommendation based on what others have been enjoying."
 )
-async def cmd_recommend(ctx, kind: str = "-music"):
-    await ctx.send(embed=recommend(kind))
+@app_commands.check(callerNotIgnored)
+async def cmd_recommend(interaction: discord.Interaction, kind: Optional[Literal["music", "games"]] = "music"):
+    await interaction.response.send_message(embed=recommend(kind))
 
-@client.command(
-    brief = "Saves something a user just said to quote later.",
-    help = "Saves something a user just said to quote later.",
+@client.tree.command(
     name = "remember",
-    usage = "<@user> keywords"
+    description = "Saves something a user just said to quote later."
 )
-async def cmd_remember(ctx, *args):
-    response = await remember(ctx, args)
-    if (response):
-        await ctx.send(response)
+@app_commands.describe(
+    member="The person who said that funny thing",
+    snippet="A bit of that funny thing that funny person said"
+)
+@app_commands.check(callerNotIgnored)
+async def cmd_remember(interaction: discord.Interaction, member:discord.Member, snippet: str):
+    response = await remember(interaction, member, snippet)
+    await interaction.response.send_message(content=response, ephemeral=True)
 
-@client.command(
-    brief = "Respects you or another target.",
-    help = "Respects you or another target. Can target <@user>s.",
+@client.tree.context_menu(
+    name="Remember Message"
+)
+async def ctx_remember(interaction: discord.Interaction, message: discord.Message):
+    response = await remember_msg(message)
+    await interaction.response.send_message(response, ephemeral=True)
+
+@client.tree.command(
     name = "respect",
-    usage = "[<target>]"
+    description = "Respects you or another specified target."
 )
-async def cmd_respect(ctx, *args):
-    await ctx.send(respect(ctx, args))
+@app_commands.describe(
+    user = "The glum chum who needs a pick-me-up",
+    thing = "The rad chad you need OtherDave to stan"
+)
+@app_commands.check(callerNotIgnored)
+async def cmd_respect(interaction: discord.Interaction, user: Optional[discord.Member] = None, thing: Optional[str] = None):
+    if user and thing:
+        await interaction.response.send_message(constants.tooMuchRespect)
+        return
 
-@client.command(
-    brief = "Puts things to use.",
-    help = """Uses an object in your inventory, or tells OtherDave to use an object in his.
-        If you're using your own stuff you need to specify what you want to use, but OtherDave
-        can use an object at random if no other arguments are specified.""",
+    target = user.mention if user else thing if thing else interaction.user.mention
+    await interaction.response.send_message(respect(target))
+
+@client.tree.command(
     name = "use",
-    usage = "[-my <thing> | <thing>]"
+    description = "Uses an object in your inventory, or tells OtherDave to use an object in his."
 )
-async def cmd_use(ctx, *args):
-    if(len(args) == 0):
-        args = ["something"]
-    await ctx.send(useCmd(ctx.author, *args))
+@app_commands.check(callerNotIgnored)
+async def cmd_use(interaction: discord.Interaction, my: Optional[bool] = False, thing: Optional[str] = "something"):
+    await interaction.response.send_message(useCmd(interaction.user, my, thing))
 
-@client.command(
-    brief = "Prints the current version of OtherDave.",
-    help = "Prints the current version of OtherDave.",
-    name = "version"
+@client.tree.command(
+    name = "version",
+    description = "Prints the current version of OtherDave.",
 )
-async def cmd_version(ctx):
-    await ctx.send(config.version)
+async def cmd_version(interaction: discord.Interaction):
+    await interaction.response.send_message(config.version)
 
-@client.command(
-    brief = "Checks your wallet for DaveBucks",
-    help = "Tells you how many DaveBucks you've got - I hope it's a whoooooole bunch!",
+@client.tree.command(
     name = "wallet",
+    description = "Tells you how many DaveBucks you've got - I hope it's a whoooooole bunch!"
 )
-async def cmd_wallet(ctx):
-    await ctx.send(wallet(ctx.author))
+@app_commands.check(callerNotIgnored)
+async def cmd_wallet(interaction: discord.Interaction):
+    await interaction.response.send_message(wallet(interaction.user))
 
 # Configure events
 @client.event
 async def on_ready():
+    global synced
+    if (not synced):
+        client.tree.copy_global_to(guild=discord.Object(id = config.guildid))
+        await client.tree.sync(guild=discord.Object(id = config.guildid))
+        synced = True
+
     global otherotherdave
     otherotherdave = await client.fetch_user(194865073943085056)
 
