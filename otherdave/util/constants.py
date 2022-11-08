@@ -42,6 +42,7 @@ emptyMemory = "*I don't remember*\n*any of your rad poems.*\n*Make one up instea
 forgetSuccess = "*Like fading sunset,*\n*those tired words now fade away.*\n*Eh...they weren't great.*"
 savedHaiku = "*Alright then, sounds good,*\n*I'll keep that one for later.*\n*Refrigerator.*"
 unknownCritique = "*What you're asking for -*\n*I don't know how to do it.*\n*So piss off, nerd! Yeah!*"
+tooManyArgs = "*I regret to say,*\n*you're asking me for too much.*\n*Don't be so greedy.*"
 
 # Ignore and Triggers response strings
 ignoreUsage = "Sorry, I don't understand. The correct usage is '!ignore <-me | @user> [minutes]'."

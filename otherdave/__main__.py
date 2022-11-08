@@ -71,12 +71,7 @@ async def cmd_dms(interaction: discord.Interaction, action: Literal["enable", "d
 async def cmd_drop(interaction:discord.Interaction, thing: str):
     await interaction.response.send_message(drop(interaction.author.mention, thing))
 
-@client.command(
-    name = "drunkdraw",
-    help = "Announces the next drunkdraw. Dave and Isaac can configure the draw as well.",
-    brief = "Announces the next drunkdraw.",
-    usage = "[[-date date] [-time time] [-theme theme] [-references references] | -reset]"
-)
+## TODO: Update drunkdraw to list guild events
 async def cmd_drunkdraw(ctx, *args):
     await ctx.send(drunkdrawCmd(ctx, args))
     
@@ -108,16 +103,32 @@ async def cmd_give(interaction: discord.Interaction, target: Optional[discord.Me
     target = target if target else discord.Object(id=config.selfid)
     await interaction.response.send_message(give(interaction.user, target, thing))
 
-@client.command(
-    brief = "..... ....... .....",
-    help = """*Prints out a haiku.* 
-        *Can be used to debug them,* 
-        *fix, save, or forget.*""",
+@client.tree.command(
     name = "haiku",
-    usage = "[-debug [poem] | -correct word syllables | -save [keywords] | -forget [keywords]]"
+    description = """*Prints out a haiku.* 
+        *Can be used to debug them,* 
+        *fix, save, or forget.*"""
 )
-async def cmd_haiku(ctx, *args):
-    await ctx.send(haiku.critique(args))
+@app_commands.rename(
+    debugSnippet = "debug", 
+    correctParams = "correct",
+    saveSnippet = "save",
+    forgetSnippet = "forget")
+@app_commands.check(callerNotIgnored)
+async def cmd_haiku(
+    interaction: discord.Interaction, 
+    debugSnippet: Optional[str] = None, 
+    correctParams: Optional[str] = None, 
+    saveSnippet: Optional[str] = None, 
+    forgetSnippet: Optional[str] = None):
+
+    await interaction.response.send_message(
+        haiku.critique(
+            debugSnippet,
+            correctParams,
+            saveSnippet,
+            forgetSnippet
+        ))
 
 @client.tree.command(
     name = "haunt",
@@ -186,21 +197,6 @@ async def cmd_lwys(interaction: discord.Interaction, cast: Optional[str] = ""):
 
     await interaction.response.send_message(strip)
 
-@client.command(
-    brief = "Tries to talk like you or another user.",
-    help = """Tries to talk like you or another user. Can mash two users together or fake a conversation. Sometimes produces coherent poetry.
-        Try adams, austen, carroll, doyle, hemingway, melville, obama, plato, or thoreau for some fun.""",
-    name = "mimic",
-    usage = "[<@user> | -combo <@user> <@user> | -chat <@user> <@user> | -haiku [<@user>]]"
-)
-async def cmd_mimic(ctx, *args):
-    lines = []
-    async with ctx.channel.typing():
-        lines += mimic(ctx, args)
-
-    for line in lines:
-        await ctx.send(line, allowed_mentions=AllowedMentions(users=[otherotherdave]))
-
 @client.tree.command(
     name = "parrot",
     description = "Repeats a saved quote at random for you or for a specific user."
@@ -228,14 +224,17 @@ async def cmd_pedant(interaction: discord.Interaction, action: Literal["enable",
 async def cmd_ping(interaction: discord.Interaction):
     await interaction.response.send_message("pong")
 
-@client.command(
-    brief = "Madlibs a writing prompt.",
-    help = "Madlibs a writing prompt and can {verb} a {noun} or {verb} one too.",
+@client.tree.command(
     name = "prompt",
-    usage = "[-add {noun|adjective} word | -forget word]"
+    description = "Madlibs a writing prompt and can {verb} a {noun} or {verb} one too.",
 )
-async def cmd_prompt(ctx, *args):
-    await ctx.channel.send(prompt(args))
+@app_commands.rename(
+    addParams = "add",
+    forgetParams = "forget"
+)
+@app_commands.check(callerNotIgnored)
+async def cmd_prompt(interaction: discord.Interaction, addParams: Optional[str] = None, forgetParams: Optional[str] = None):
+    await interaction.response.send_message(prompt(addParams, forgetParams))
 
 @client.tree.command(
     name = "quiet",
@@ -319,9 +318,67 @@ async def cmd_version(interaction: discord.Interaction):
 async def cmd_wallet(interaction: discord.Interaction):
     await interaction.response.send_message(wallet(interaction.user))
 
+# Command groups
+class MimicCog(commands.GroupCog, name="mimic"):
+    def __init__(self, client: commands.Bot):
+        self.client = client
+        super().__init__()
+
+    @app_commands.command(
+        name = "user",
+        description = "Tries to talk like you or other users. Can fake a conversation."
+    )
+    async def cmd_mimic_user(self, interaction: discord.Interaction, user: Optional[discord.User] = None):
+        lines = []
+        async with interaction.channel.typing():
+            lines += mimicUser(user if user else interaction.user)
+            
+        for line in lines:
+            await interaction.response.send_message(line, allowed_mentions=AllowedMentions(users=[otherotherdave]))
+
+    @app_commands.command(
+        name = "combo",
+        description = "Mimics a combination of two users."
+    )
+    async def cmd_mimic_combo(self, interaction: discord.Interaction, user1: discord.User, user2: discord.User):
+        lines = []
+        async with interaction.channel.typing():
+            lines += mimicCombo(user1, user2)
+            
+        for line in lines:
+            await interaction.response.send_message(line, allowed_mentions=AllowedMentions(users=[otherotherdave]))
+
+    @app_commands.command(
+        name = "chat",
+        description = "Imitates a conversation between two users"
+    )
+    async def cmd_mimic_chat(self, interaction: discord.Interaction, user1: discord.User, user2: discord.User):
+        lines = []
+        async with interaction.channel.typing():
+            lines += mimicChat(user1, user2)
+            
+        for line in lines:
+            await interaction.response.send_message(line, allowed_mentions=AllowedMentions(users=[otherotherdave]))
+
+    @app_commands.command(
+        name = "haiku",
+        description = "Sometimes produces coherent poetry."
+    )
+    async def cmd_mimic_haiku(self, interaction: discord.Interaction, user: Optional[discord.User] = None):
+        lines = []
+        async with interaction.channel.typing():
+            lines += mimicHaiku(user if user else interaction.user)
+            
+        for line in lines:
+            await interaction.response.send_message(line, allowed_mentions=AllowedMentions(users=[otherotherdave]))
+
 # Configure events
 @client.event
 async def on_ready():
+    # Add command groups
+    await client.add_cog(MimicCog(client))
+
+    # Sync command tree
     global synced
     if (not synced):
         client.tree.copy_global_to(guild=discord.Object(id = config.guildid))

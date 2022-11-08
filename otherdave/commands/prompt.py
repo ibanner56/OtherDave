@@ -2,20 +2,29 @@ from otherdave.util.madlib import Prompter
 
 prompter = Prompter()
 
-def prompt(args):
-    if(len(args) == 0):
+def prompt(addParams, forgetParams):
+    # Only one argument at a time
+    args = [x for x in [addParams, forgetParams] if x is not None]
+
+    if(args == 0):
         return prompter.make()
-    elif(args[0] == "-forget" and args[1]):
-        prompter.remNoun(args[1])
-        prompter.remAdjective(args[1])
-        return "forgotten" + args[1]
-    elif(args[0] == "-add" and args[1] and args[2]):
-        if(args[1].lower() == "noun"):
-            prompter.addNoun(args[2])
-            return "added " + args[2]
-        elif(args[1].lower() == "adjective"):
-            prompter.addAdjective(args[2])
-            return args[2] + " addition"
+    if (args > 1):
+        return "stupid command"
+
+    addArgs = addParams.split() if addParams else None
+    forgetArgs = forgetParams.split() if forgetParams else None
+    
+    if (forgetParams and len(forgetArgs) == 1):
+        prompter.remNoun(forgetArgs[0])
+        prompter.remAdjective(forgetArgs[0])
+        return "forgotten" + forgetArgs[0]
+    elif(addParams and len(addArgs) == 2):
+        if(addArgs[0].lower() == "noun"):
+            prompter.addNoun(addArgs[1])
+            return "added " + addArgs[1]
+        elif(addArgs[0].lower() == "adjective"):
+            prompter.addAdjective(addArgs[1])
+            return addArgs[1] + " addition"
         else:
             return "invalid article"
     else:

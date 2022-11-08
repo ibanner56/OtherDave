@@ -55,6 +55,128 @@ def lwys(args):
 
     return '\n'.join(lines)
 
+def mimicUser(user):
+    userId = str(user.id)
+
+    if (not userId in loads):
+        filename = "./data/markov/" + userId + ".txt"
+        try:
+            with open(filename, "r", encoding="utf-8") as mfile:
+                loads[userId] = mfile.read()
+        except OSError:
+            return [constants.makeFailed]
+
+    model = markovify.Text(loads[userId], well_formed=True)
+
+    result = []
+    for _ in range(3):
+        sentence = model.make_sentence(tries=100, max_words=random.randint(8, 40))
+        if(sentence):
+            result.append(sentence)
+        else:
+            return [constants.makeFailed]
+    
+    return result
+
+def mimicCombo(user1, user2):
+    if (not user1 in loads):
+        filename = "./data/markov/" + str(user1) + ".txt"
+        try:
+            with open(filename, "r", encoding="utf-8") as mfile:
+                loads[user1] = mfile.read()
+        except OSError:
+            return [constants.makeFailed]
+    if (not user2 in loads):
+        filename = "./data/markov/" + str(user2) + ".txt"
+        try:
+            with open(filename, "r", encoding="utf-8") as mfile:
+                loads[user2] = mfile.read()
+        except OSError:
+            return [constants.makeFailed]
+
+    # Build models and mimic appropriately
+    result = []
+    model1 = markovify.Text(loads[user1], well_formed=True)
+    model2 = markovify.Text(loads[user2], well_formed=True)
+    model = markovify.combine([model1, model2])
+
+    for _ in range(3):
+        sentence = model.make_sentence(tries=100, max_words=random.randint(8, 40))
+        if(sentence):
+            result.append(sentence)
+        else:
+            return [constants.makeFailed]
+    
+    return result
+
+def mimicChat(user1, user2):
+    userId1 = str(user1.id)
+    userId2 = str(user2.id)
+
+    if (not userId1 in loads):
+        filename = "./data/markov/" + str(userId1) + ".txt"
+        try:
+            with open(filename, "r", encoding="utf-8") as mfile:
+                loads[userId1] = mfile.read()
+        except OSError:
+            return [constants.makeFailed]
+    if (not userId2 in loads):
+        filename = "./data/markov/" + str(userId2) + ".txt"
+        try:
+            with open(filename, "r", encoding="utf-8") as mfile:
+                loads[userId2] = mfile.read()
+        except OSError:
+            return [constants.makeFailed]
+
+    # Build models and mimic appropriately
+    result = []
+    model1 = markovify.Text(loads[userId1], well_formed=True)
+    model2 = markovify.Text(loads[userId2], well_formed=True)
+
+    for _ in range(2):
+        sentence1 = model1.make_sentence(tries=100, max_words=random.randint(8, 40))
+        sentence2 = model2.make_sentence(tries=100, max_words=random.randint(8, 40))
+
+        if (sentence1 and sentence2):
+            result.append(user1.display_name + ": " + sentence1 + "\r\n" + user2.display_name + ": " + sentence2)
+        else:
+            return [constants.makeFailed]
+
+    return result
+
+def mimicHaiku(user):
+    userId = str(user.id)
+
+    if (not userId in loads):
+        filename = "./data/markov/" + userId + ".txt"
+        try:
+            with open(filename, "r", encoding="utf-8") as mfile:
+                loads[userId] = mfile.read()
+        except OSError:
+            return [constants.makeFailed]
+
+    model = markovify.Text(loads[userId], well_formed=True)
+
+    result = []
+
+    for _ in range(1000):
+        sentence1 = model.make_sentence(tries=100, max_words=5)
+        sentence2 = model.make_sentence(tries=100, max_words=7)
+        sentence3 = model.make_sentence(tries=100, max_words=5)
+        parsedHaiku = None
+
+        if (sentence1 and sentence2 and sentence3):
+            parsedHaiku = parseHaiku(sentence1 + " " + sentence2 + " " + sentence3, False)
+
+        if (parsedHaiku):
+            result.append(parsedHaiku)
+            break
+            
+    if (len(result) == 0):
+        return [constants.haikuMakeFailed]
+
+    return result
+
 def mimic(ctx, args):
     chat = False
     combo = False

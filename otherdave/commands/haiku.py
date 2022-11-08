@@ -154,19 +154,25 @@ async def detect(message):
     if(haiku != None):
         await message.channel.send(haiku)
 
-def critique(args):
-    if(len(args) == 0):
+def critique(debugSnippet, correctParams, saveSnippet, forgetSnippet):
+    # Only one argument at a time
+    args = [x for x in [debugSnippet, correctParams, saveSnippet, forgetSnippet] if x is not None]
+
+    if (args == 0):
         return recall()
-    elif(args[0] == "-debug"):
-        return debug(" ".join(args[1:]))
-    elif(args[0] == "-correct" and len(args) == 3):
-        if(correct(args[1], args[2])):
+    elif (args > 1):
+        return constants.tooManyArgs
+    elif(debugSnippet):
+        return debug(debugSnippet)
+    elif(correctParams):
+        correctArgs = correctParams.split()
+        if (len(correctArgs) == 2 and correct(correctArgs[0], correctArgs[1])):
             return constants.correctionSuccess
         else:
             return constants.correctionFailed
-    elif(args[0] == "-save"):
-        return save(" ".join(args[1:]))
-    elif(args[0] == "-forget"):
-        return forget(" ".join(args[1:]))
+    elif(saveSnippet):
+        return save(saveSnippet)
+    elif(forgetSnippet):
+        return forget(forgetSnippet)
     else:
         return constants.unknownCritique
