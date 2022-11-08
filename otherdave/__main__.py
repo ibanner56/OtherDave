@@ -192,7 +192,7 @@ async def cmd_inventory(interaction: discord.Interaction, user: Optional[discord
 async def cmd_lwys(interaction: discord.Interaction, cast: Optional[str] = ""):
     strip = None
     async with interaction.channel.typing():
-        strip = lwys(cast.split())
+        strip = lwys(re.split(r"[\s,;]+", cast))
 
     await interaction.response.send_message(strip)
 
