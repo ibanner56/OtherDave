@@ -212,7 +212,7 @@ def davebucks(author, target, thing):
 
     return constants.daveBucksResultMessage.format(
         target = target.mention, 
-        daveBucks = bag.dget(constants.daveBucksKey, target.idD))
+        daveBucks = bag.dget(constants.daveBucksKey, target.id))
     
 def wallet(author):
     if (author.id == config.daveid):
