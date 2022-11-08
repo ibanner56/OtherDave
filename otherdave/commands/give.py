@@ -190,38 +190,42 @@ def davebucks(author, target, thing):
         return constants.daveDaveBucksMessage
     if ("." in thing):
         return constants.decimalMessage
+    
+    targetId = str(target.id)
 
     thing = thing[:thing.lower().replace("dave bucks", "davebucks").find("davebucks")].strip()
-
-    if (not bag.dexists(constants.daveBucksKey, target.id)):
-        bag.dadd(constants.daveBucksKey, (target.id, 0))
-
-    wallet = bag.dpop(constants.daveBucksKey, target.id)
     thingIsDigit = thing.isdigit() or (thing.startswith("-") and thing[1:].isdigit())
+    
+    if (not bag.dexists(constants.daveBucksKey, targetId)):
+        bag.dadd(constants.daveBucksKey, (targetId, 0 if thingIsDigit else ""))
+
+    wallet = bag.dpop(constants.daveBucksKey, targetId)
 
     if (thingIsDigit and isinstance(wallet, int)):
         # Both are integers
-        bag.dadd(constants.daveBucksKey, (target.id, int(thing) + wallet))
+        bag.dadd(constants.daveBucksKey, (targetId, int(thing) + wallet))
     elif(thingIsDigit):
-        bag.dadd(constants.daveBucksKey, (target.id, random.choice(stringMischief)(wallet, int(thing))))
+        bag.dadd(constants.daveBucksKey, (targetId, random.choice(stringMischief)(wallet, int(thing))))
     elif(isinstance(wallet, int)):
-        bag.dadd(constants.daveBucksKey, (target.id, random.choice(stringMischief)(thing, wallet)))
+        bag.dadd(constants.daveBucksKey, (targetId, random.choice(stringMischief)(thing, wallet)))
     else:
         # Both are strings
-        bag.dadd(constants.daveBucksKey, (target.id, thing + wallet))
+        bag.dadd(constants.daveBucksKey, (targetId, thing + wallet))
 
     return constants.daveBucksResultMessage.format(
         target = target.mention, 
-        daveBucks = bag.dget(constants.daveBucksKey, target.id))
+        daveBucks = bag.dget(constants.daveBucksKey, targetId))
     
 def wallet(author):
     if (author.id == config.daveid):
         return constants.daveWalletMessage
     
-    if (not bag.dexists(constants.daveBucksKey, author.mention)):
-        bag.dadd(constants.daveBucksKey, (author.mention, 0))
+    authorId = str(author.id)
     
-    return constants.walletMessage.format(daveBucks = bag.dget(constants.daveBucksKey, author.mention))
+    if (not bag.dexists(constants.daveBucksKey, authorId)):
+        bag.dadd(constants.daveBucksKey, (authorId, 0))
+    
+    return constants.walletMessage.format(daveBucks = bag.dget(constants.daveBucksKey, authorId))
 
 def inventory(author, target):
     userId = str(target.id) if target else config.selfid
