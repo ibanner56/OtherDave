@@ -200,7 +200,7 @@ async def cmd_lwys(interaction: discord.Interaction, cast: Optional[str] = ""):
     name="Mock User"
 )
 async def ctx_mock(interaction: discord.Interaction, message: discord.Message):
-    await interaction.response.send_message(mock(message))
+    await interaction.response.send_message(mock(message.content))
 
 @client.tree.command(
     name = "parrot",
