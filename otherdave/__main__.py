@@ -340,7 +340,7 @@ class MimicCog(commands.GroupCog, name="mimic"):
         async with interaction.channel.typing():
             lines += mimicUser(user if user else interaction.user)
             
-        self.sendMimicResponse(interaction, lines)
+        await self.sendMimicResponse(interaction, lines)
 
     @app_commands.command(
         name = "combo",
@@ -351,7 +351,7 @@ class MimicCog(commands.GroupCog, name="mimic"):
         async with interaction.channel.typing():
             lines += mimicCombo(user1, user2)
             
-        self.sendMimicResponse(interaction, lines)
+        await self.sendMimicResponse(interaction, lines)
 
     @app_commands.command(
         name = "chat",
@@ -362,7 +362,7 @@ class MimicCog(commands.GroupCog, name="mimic"):
         async with interaction.channel.typing():
             lines += mimicChat(user1, user2)
             
-        self.sendMimicResponse(interaction, lines)
+        await self.sendMimicResponse(interaction, lines)
 
     @app_commands.command(
         name = "haiku",
@@ -373,7 +373,7 @@ class MimicCog(commands.GroupCog, name="mimic"):
         async with interaction.channel.typing():
             lines += mimicHaiku(user if user else interaction.user)
             
-        self.sendMimicResponse(interaction, lines)
+        await self.sendMimicResponse(interaction, lines)
 
 # Configure events
 @client.event
