@@ -5,13 +5,12 @@ from otherdave.util import config, constants
 ignoreDb = pickledb.load("./data/ignore.db", True)
 slideDb = pickledb.load("./data/slide.db", True)
 
-async def ignore(interaction, user, mins):
+def ignore(interaction, user, mins):
     ignoreTime = datetime.now() + timedelta(minutes=mins)
 
     if (interaction.user.id == user.id):
         ignoreDb.set(str(user.id), ignoreTime.isoformat())
-        await interaction.message.add_reaction(config.emotions["_zipit"])
-        return None
+        return config.emotions["_zipit"]
     else:
         author = interaction.user.name
         if (author != "Isaac" and author != "MercWorks"):

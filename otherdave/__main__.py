@@ -166,10 +166,9 @@ async def cmd_horoscope(interaction: discord.Interaction, variant: Optional[str]
     minutes = "How long they need to be ignored"
 )
 async def cmd_ignore(interaction: discord.Interaction, user: Optional[discord.User] = None, minutes: Optional[int] = 5):
+    selfIgnore = user is None
     user = user if user else interaction.user
-    response = await ignore(interaction, user, minutes)
-    if (response):
-        await interaction.response.send_message(response)
+    await interaction.response.send_message(ignore(interaction, user, minutes), ephemeral=selfIgnore)
 
 @client.tree.command(
     name = "inventory",
@@ -324,6 +323,14 @@ class MimicCog(commands.GroupCog, name="mimic"):
         self.client = client
         super().__init__()
 
+    async def sendMimicResponse(self, interaction: discord.Interaction, lines):
+        if (len(lines) == 0):
+            return
+
+        await interaction.response.send_message(lines[0], allowed_mentions=AllowedMentions(users=[otherotherdave]))
+        for line in lines[1:]:
+            await interaction.followup.channel.send(line, allowed_mentions=AllowedMentions(users=[otherotherdave]))
+
     @app_commands.command(
         name = "user",
         description = "Tries to talk like you or other users. Can fake a conversation."
@@ -333,8 +340,7 @@ class MimicCog(commands.GroupCog, name="mimic"):
         async with interaction.channel.typing():
             lines += mimicUser(user if user else interaction.user)
             
-        for line in lines:
-            await interaction.response.send_message(line, allowed_mentions=AllowedMentions(users=[otherotherdave]))
+        self.sendMimicResponse(interaction, lines)
 
     @app_commands.command(
         name = "combo",
@@ -345,8 +351,7 @@ class MimicCog(commands.GroupCog, name="mimic"):
         async with interaction.channel.typing():
             lines += mimicCombo(user1, user2)
             
-        for line in lines:
-            await interaction.response.send_message(line, allowed_mentions=AllowedMentions(users=[otherotherdave]))
+        self.sendMimicResponse(interaction, lines)
 
     @app_commands.command(
         name = "chat",
@@ -357,8 +362,7 @@ class MimicCog(commands.GroupCog, name="mimic"):
         async with interaction.channel.typing():
             lines += mimicChat(user1, user2)
             
-        for line in lines:
-            await interaction.response.send_message(line, allowed_mentions=AllowedMentions(users=[otherotherdave]))
+        self.sendMimicResponse(interaction, lines)
 
     @app_commands.command(
         name = "haiku",
@@ -369,8 +373,7 @@ class MimicCog(commands.GroupCog, name="mimic"):
         async with interaction.channel.typing():
             lines += mimicHaiku(user if user else interaction.user)
             
-        for line in lines:
-            await interaction.response.send_message(line, allowed_mentions=AllowedMentions(users=[otherotherdave]))
+        self.sendMimicResponse(interaction, lines)
 
 # Configure events
 @client.event
