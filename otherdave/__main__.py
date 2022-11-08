@@ -46,6 +46,13 @@ async def squawk():
 async def cmd_beach(interaction: discord.Interaction):
     await interaction.response.send_message(jabber.beach())
 
+@client.tree.context_menu(
+    name="*Daddy*"
+)
+@app_commands.checks.cooldown(1, 60)
+async def ctx_daddy(interaction: discord.Interaction, message: discord.Message):
+    await interaction.response.send_message(message.content + ", *daddy*")
+
 @client.tree.command(
     name = "dadjoke", 
     description="I tell dad jokes but I'm not a dad. Guess that makes me a faux pa.")
