@@ -329,7 +329,7 @@ class MimicCog(commands.GroupCog, name="mimic"):
 
         await interaction.response.send_message(lines[0], allowed_mentions=AllowedMentions(users=[otherotherdave]))
         for line in lines[1:]:
-            await interaction.followup.channel.send(line, allowed_mentions=AllowedMentions(users=[otherotherdave]))
+            await interaction.followup.send(line, allowed_mentions=AllowedMentions(users=[otherotherdave]))
 
     @app_commands.command(
         name = "user",
