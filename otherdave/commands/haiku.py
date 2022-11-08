@@ -158,9 +158,9 @@ def critique(debugSnippet, correctParams, saveSnippet, forgetSnippet):
     # Only one argument at a time
     args = [x for x in [debugSnippet, correctParams, saveSnippet, forgetSnippet] if x is not None]
 
-    if (args == 0):
+    if (len(args) == 0):
         return recall()
-    elif (args > 1):
+    elif (len(args) > 1):
         return constants.tooManyArgs
     elif(debugSnippet):
         return debug(debugSnippet)
