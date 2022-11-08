@@ -23,6 +23,7 @@ greedyMessage = "Noooooooo I only just got that! Get your own, you selfish greml
 noBucksMessage = "Hey, you're not <@" + config.daveid + "> <:lwys_todd_eyeburn:912451671181893632>\n\nGet your hands off my :sparkles:DaveBucks:sparkles:, you *capitalist swine*!"
 odBucksMessage = "No thanks, dad, all I need is your approval."
 daveDaveBucksMessage = "Isn't that a bit, uhhhhh, masturbatory?"
+daveWalletMessage = "Wallet? Buddy you're the **bank**."
 decimalMessage = "Whoa, you think I'm minting coinage here?"
 daveBucksResultMessage = "Alriiiight, {target} now has {daveBucks} DaveBucks! Way to goooo!"
 walletMessage = "Well heck, you've got {daveBucks} DaveBucks! Livin' *large*, buddy!"
@@ -41,6 +42,7 @@ emptyMemory = "*I don't remember*\n*any of your rad poems.*\n*Make one up instea
 forgetSuccess = "*Like fading sunset,*\n*those tired words now fade away.*\n*Eh...they weren't great.*"
 savedHaiku = "*Alright then, sounds good,*\n*I'll keep that one for later.*\n*Refrigerator.*"
 unknownCritique = "*What you're asking for -*\n*I don't know how to do it.*\n*So piss off, nerd! Yeah!*"
+tooManyArgs = "*I regret to say,*\n*you're asking me for too much.*\n*Don't be so greedy.*"
 
 # Ignore and Triggers response strings
 ignoreUsage = "Sorry, I don't understand. The correct usage is '!ignore <-me | @user> [minutes]'."
@@ -53,9 +55,11 @@ badKeywords = "I don't remember saying that."
 emptyBuffer = "I haven't said anything yet."
 emptyMemory = "Do I even know you people?"
 forgetSuccess = "Got it, I'll forget you said that."
+forgetYou = "Dude, I *always* forget what you people say."
 invalidArgs = "I need a user and some keywords to do that."
 notFound = "I don't remember anything they've said!"
 saveFailed = "Sorry, I don't remember that."
+saveSuccessful = "Got it, I'll save that for later."
 
 # Jabber response strings and resources
 notFound = "Buddy, I think you need !help."
@@ -72,3 +76,6 @@ lwysCast = ["fixit", "hattie", "oldie", "sophie", "todd", "tomo"]
 # Recommend response strings and resources
 spotifyColor = Colour(1947988)
 musicTemplate = "{listener} has listened to ::\n[{title}]({trackUrl}) on {album} by {artist}\n...{listens} time(s)! It must be {adverb} {description}!"
+
+# Other random constants
+tooMuchRespect = "Easy buddy, I can only respect so much at once."

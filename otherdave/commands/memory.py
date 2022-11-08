@@ -31,33 +31,27 @@ squawkProb = lambda x : (
     0.43326434481060
 )
 
-async def remember(ctx, args):
-    if(len(args) < 2):
-        return constants.invalidArgs
+async def remember(interaction, member, snippet):
+    async for msg in interaction.channel.history(limit=config.maxLookback):
+        if(msg.author.id == member.id and snippet in msg.content):
+            return await remember_msg(msg)
+
+    return constants.saveFailed
+
+
+async def remember_msg(msg):
+    if(memories.get(msg.author.id)):
+        memories.append(str(msg.author.id), [msg.content])
     else:
-        nick = re.sub("<@!*|>", "", args[0])
-        snippet = " ".join(args[1:])
+        memories.set(str(msg.author.id), [msg.content])
 
-        async for msg in ctx.channel.history(limit=config.maxLookback):
-            # Ignore commands
-            if(msg.content.startswith("!")):
-                continue
+    memories.append(constants.allQuotes, [[msg.author.id, msg.content]])
+    await msg.add_reaction(config.emotions["_memorymoji"])
+    return constants.saveSuccessful
 
-            if(str(msg.author.id) == nick and snippet in msg.content):
-                if(memories.get(nick)):
-                    memories.append(nick, [msg.content])
-                else:
-                    memories.set(nick, [msg.content])
-
-                memories.append(constants.allQuotes, [[nick, msg.content]])
-                await ctx.message.add_reaction(config.emotions["_memorymoji"])
-                return None
-
-        return constants.saveFailed
-
-def parrot(args = []):
-    if(len(args) > 0):
-        nick = re.sub("<@!*|>", "", args[0])
+def parrot(mention):
+    if(mention):
+        nick = re.sub("<@!*|>", "", mention)
         if(not memories.get(nick)):
             return constants.notFound
         rmem = random.choice(memories.get(nick))
@@ -104,14 +98,13 @@ async def toucan(client, lastMsgTime, quietTime):
         
         return await parrotChan.send(macaw)
 
-def forget(args):
+def forget(snippet):
     if(len(memCache) == 0):
         return constants.emptyBuffer
     
     memory = None
-    if(args):
-        keywords = " ".join(args)
-        memory = next((mem for mem in reversed(memCache) if keywords in mem[1]), None)
+    if(snippet):
+        memory = next((mem for mem in reversed(memCache) if snippet in mem[1]), None)
         if(memory):
             memCache.remove(memory)
         else:
@@ -125,3 +118,8 @@ def forget(args):
     # Because pickleDB doesn't support list element removal properly, dump manually
     memories.dump()
     return constants.forgetSuccess
+
+def forget_msg(message):
+    if (message.author != config.selfid):
+        return constants.forgetYou
+    return forget(message.content)

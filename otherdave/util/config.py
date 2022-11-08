@@ -16,6 +16,7 @@ selftag = "<@" + selfid + ">"
 bagsize = int(loadedConfig["bag_size"])
 userbagsize = int(loadedConfig["user_bag_size"])
 greedytime = int(loadedConfig["greedy_time"])
+guildid = int(loadedConfig["guild_id"])
 
 drunkdraw = loadedConfig["drunkdraw"]
 emotions = loadedConfig["emotions"]

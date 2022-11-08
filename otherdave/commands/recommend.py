@@ -54,11 +54,11 @@ def wishlist(user, game):
     if (not isinstance(game, activity.Game)):
         return
 
-def recommend(kind = "-music"):
-    if (not (kind in ["-music", "-games"])):
+def recommend(kind = "music"):
+    if (not (kind in ["music", "games"])):
         return Embed(description="I *recommend* you read the usage statement for this command.")
     
-    if (kind == "-music"):
+    if (kind == "music"):
         track = recs.dget("music", random.choice(list(recs.dkeys("music"))))
         trackListener = random.choice(list(track["listeners"]))
 
@@ -77,5 +77,5 @@ def recommend(kind = "-music"):
 
         return embed
 
-    if (kind == "-games"):
+    if (kind == "games"):
         return Embed(description="I *recommend* you wait until Isaac finishes writing this bit.")
