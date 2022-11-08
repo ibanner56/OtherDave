@@ -58,7 +58,7 @@ async def cmd_dad(interaction: discord.Interaction):
     description = "Disables direct messages from OtherDave, triggered by other users or otherwise."
 )
 async def cmd_dms(interaction: discord.Interaction, action: Literal["enable", "disable"]):
-    await interaction.response.send_message(dms(interaction.user.id, action))
+    await interaction.response.send_message(dms(interaction.user.id, action), ephemeral = True)
 
 @client.tree.command(
     name = "drop",
