@@ -199,6 +199,7 @@ async def cmd_lwys(interaction: discord.Interaction, cast: Optional[str] = ""):
 @client.tree.context_menu(
     name="Mock User"
 )
+@app_commands.checks.cooldown(1, 60)
 async def ctx_mock(interaction: discord.Interaction, message: discord.Message):
     await interaction.response.send_message(mock(message.content))
 
