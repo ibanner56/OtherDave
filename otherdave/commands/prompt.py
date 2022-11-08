@@ -6,9 +6,9 @@ def prompt(addParams, forgetParams):
     # Only one argument at a time
     args = [x for x in [addParams, forgetParams] if x is not None]
 
-    if(args == 0):
+    if(len(args) == 0):
         return prompter.make()
-    if (args > 1):
+    if (len(args) > 1):
         return "stupid command"
 
     addArgs = addParams.split() if addParams else None
