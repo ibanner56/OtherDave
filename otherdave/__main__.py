@@ -196,6 +196,12 @@ async def cmd_lwys(interaction: discord.Interaction, cast: Optional[str] = ""):
 
     await interaction.response.send_message(strip)
 
+@client.tree.context_menu(
+    name="Mock User"
+)
+async def ctx_mock(interaction: discord.Interaction, message: discord.Message):
+    await interaction.response.send_message(mock(message))
+
 @client.tree.command(
     name = "parrot",
     description = "Repeats a saved quote at random for you or for a specific user."
