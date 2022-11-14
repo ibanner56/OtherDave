@@ -117,6 +117,14 @@ def save(keywords):
     
     return constants.savedHaiku
 
+def save_hku(content):
+    parsedHaiku = parseHaiku(content, False)
+    if (parsedHaiku):
+        memories.set(str(uuid.uuid1()), parsedHaiku)
+        return constants.savedHaiku
+    else:
+        return constants.badMessage
+
 def recall():
     memkeys = list(memories.getall())
     if(len(memkeys) == 0):

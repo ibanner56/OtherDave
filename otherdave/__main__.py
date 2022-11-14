@@ -137,6 +137,13 @@ async def cmd_haiku(
             forgetSnippet
         ))
 
+@client.tree.context_menu(
+    name="Save Haiku"
+)
+async def ctx_haiku(interaction: discord.Interaction, message: discord.Message):
+    response = save_hku(message.content)
+    await interaction.response.send_message(response, ephemeral=True)
+
 @client.tree.command(
     name = "haunt",
     description = "Haunts a <@user> of your choosing, or yourself."
