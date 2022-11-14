@@ -35,6 +35,7 @@ useUsage = "Maybe try using `!help use` first, huh buddy?"
 
 # Haiku response strings
 badKeywords = "*The words that you seek,*\n*I simply don't remember.*\n*Did you spell them right?*"
+badMessage = "*That's not a haiku*\n*stupid, why are you wasting*\n*everybody's time?*"
 correctionSuccess = "*I've taken your word*\n*that this word was not quite right,*\n*but now it should be.*"
 correctionFailed = "*Corrections require*\n*a word and a whole number*\n*What'chu doin', fool?*"
 emptyBuffer = "*I don't understand -*\n*we haven't said anything.*\n*Try again later.*"
