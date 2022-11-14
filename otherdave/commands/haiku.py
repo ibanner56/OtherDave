@@ -117,6 +117,15 @@ def save(keywords):
     
     return constants.savedHaiku
 
+async def save_hku(message):
+    parsedHaiku = parseHaiku(message.content, False)
+    if (parsedHaiku):
+        memories.set(str(uuid.uuid1()), parsedHaiku)
+        await message.add_reaction(config.emotions["_haikumoji"])
+        return constants.savedHaiku
+    else:
+        return constants.badMessage
+
 def recall():
     memkeys = list(memories.getall())
     if(len(memkeys) == 0):
