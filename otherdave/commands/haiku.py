@@ -117,10 +117,11 @@ def save(keywords):
     
     return constants.savedHaiku
 
-def save_hku(content):
-    parsedHaiku = parseHaiku(content, False)
+async def save_hku(message):
+    parsedHaiku = parseHaiku(message.content, False)
     if (parsedHaiku):
         memories.set(str(uuid.uuid1()), parsedHaiku)
+        await message.add_reaction(config.emotions["_haikumoji"])
         return constants.savedHaiku
     else:
         return constants.badMessage

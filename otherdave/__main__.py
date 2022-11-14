@@ -141,7 +141,7 @@ async def cmd_haiku(
     name="Save Haiku"
 )
 async def ctx_haiku(interaction: discord.Interaction, message: discord.Message):
-    response = save_hku(message.content)
+    response = await save_hku(message)
     await interaction.response.send_message(response, ephemeral=True)
 
 @client.tree.command(
