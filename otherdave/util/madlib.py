@@ -198,3 +198,33 @@ class User(MadLibber):
             "ing_verb": lambda : random.choice(self.ing_verbs),
             "template" : lambda : random.choice(self.templates["use"])
         }
+
+class Relicer(MadLibber):
+    def __init__(self) -> None:
+        with open("./data/marketplace/coolguy_realname.json") as cgrnfile:
+            self.coolguys = json.load(cgrnfile)
+        with open("./data/marketplace/relic_adj.json") as radfile:
+            self.radjectives = json.load(radfile)
+        with open("./data/marketplace/relic_alig.json") as ralfile:
+            self.raligns = json.load(ralfile)
+        with open("./data/marketplace/relic_desc.json") as redfile:
+            self.rdescs = json.load(redfile)
+        with open("./data/marketplace/relic_site.json") as resfile:
+            self.rsites = json.load(resfile)
+        with open("./data/marketplace/relic_templates.json") as retfile:
+            self.templates = json.load(retfile)
+        with open("./data/marketplace/relics.json") as relfile:
+            self.relics = json.load(relfile)
+        with open("./data/marketplace/title.json") as tfile:
+            self.titles = json.load(tfile)    
+
+        self.actions = {
+            "coolguy_realname" : lambda : random.choice(self.coolguys),
+            "relic_adj" : lambda : random.choice(self.radjectives),
+            "relic_alig" : lambda : random.choice(self.raligns),
+            "relic_desc" : lambda : random.choice(self.rdescs),
+            "relic_site" : lambda : random.choice(self.rsites),
+            "relic" : lambda : random.choice(self.relics),
+            "title" : lambda : random.choice(self.titles),
+            "template" : lambda : random.choice(self.templates)
+        }
