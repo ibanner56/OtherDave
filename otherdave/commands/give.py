@@ -269,3 +269,40 @@ def inventory(author, target):
         inventoryString += "\n\naaaand **" + str(bag.dget(constants.daveBucksKey, userId)) + "** DaveBucks!"
 
     return inventoryString
+
+def checkout(author, thing: str, cost: int) -> str:
+    clientId = str(author.id)
+    if (not bag.dexists(constants.daveBucksKey, clientId)):
+        return constants.noMoneyMessage
+
+    wallet = bag.dpop(constants.daveBucksKey, clientId)
+
+    try:
+        subtotal = -1
+        if (isinstance(wallet, int)):
+            subtotal = wallet - cost
+        elif (isinstance(wallet, str)):
+            subtotal = random.choice(stringMischief)(wallet, -1 * cost)
+        else:
+            return constants.badMoneyMessage
+        
+        canAfford = (isinstance(subtotal, int) and subtotal > 0) or subtotal > "0"
+
+        if (canAfford):
+            bag.ladd(clientId, thing)
+            bag.dadd(constants.daveBucksKey, (clientId, wallet))
+            response = constants.purchaseSuccessfulMessage.format(thing)
+
+            if (bag.llen(clientId) > config.userbagsize):
+                oldThing = bag.lpop(clientId, 0)
+                response += constants.userfulMessage.format(thing = oldThing)
+
+            return response
+        else:
+            bag.dadd(constants.daveBucksKey, (clientId, wallet))
+            return constants.shortChangeMessage
+
+    except:
+        # Don't drop the money
+        bag.dadd(constants.daveBucksKey, (clientId, wallet))
+        raise

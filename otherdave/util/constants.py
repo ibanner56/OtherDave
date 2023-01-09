@@ -32,6 +32,10 @@ noDropMessage = "Uhhh, {who} can't drop **{thing}**, {who} don't have one..."
 emptyUseMessage = "But {whos} not carrying anything!"
 noUseMessage = "{who} can't use **{thing}**, silly, {who} don't have one."
 useUsage = "Maybe try using `!help use` first, huh buddy?"
+noMoneyMessage = "Hey pal, maybe try earning some cash first."
+badMoneyMessage = "We don't take that kind of cash around these parts."
+shortChangeMessage = "You can't afford that! You think I'm running a charity here?"
+purchaseSuccessfulMessage = "Score, no take backs! You've got yourself a new **{thing}**!"
 
 # Haiku response strings
 badKeywords = "*The words that you seek,*\n*I simply don't remember.*\n*Did you spell them right?*"
