@@ -316,6 +316,14 @@ async def cmd_respect(interaction: discord.Interaction, user: Optional[discord.M
     await interaction.response.send_message(respect(target))
 
 @client.tree.command(
+    name = "spend",
+    description = "Gets rid of all those pesky davebucks."
+)
+async def cmd_spend(interaction: discord.Interaction):
+    store = Store(customer=interaction.user)
+    await interaction.response.send_message(view = store)
+
+@client.tree.command(
     name = "use",
     description = "Uses an object in your inventory, or tells OtherDave to use an object in his."
 )
