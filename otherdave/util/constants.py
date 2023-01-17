@@ -18,7 +18,7 @@ thanksMessage = config.selftag + " is now carrying **{thing}**."
 thanksfulMessage = config.selftag + " dropped **{oldThing}** and is now carrying **{newThing}**."
 foundMessage = "Hey, I found **{thing}**!"
 foundfulMessage = "Hey, I found **{newThing}**! Guess I don't need **{oldThing}** any more."
-userfulMessage = "..\n\t*...it looks like you've dropped **{thing}** - I hope it wasn't important.*"
+userfulMessage = "\n\t*...it looks like you've dropped **{thing}** - I hope it wasn't important.*"
 greedyMessage = "Noooooooo I only just got that! Get your own, you selfish gremlin."
 noBucksMessage = "Hey, you're not <@" + config.daveid + "> <:lwys_todd_eyeburn:912451671181893632>\n\nGet your hands off my :sparkles:DaveBucks:sparkles:, you *capitalist swine*!"
 odBucksMessage = "No thanks, dad, all I need is your approval."
@@ -35,7 +35,7 @@ useUsage = "Maybe try using `!help use` first, huh buddy?"
 noMoneyMessage = "Hey pal, maybe try earning some cash first."
 badMoneyMessage = "We don't take that kind of cash around these parts."
 shortChangeMessage = "You can't afford that! You think I'm running a charity here?"
-purchaseSuccessfulMessage = "Score, no take backs! You've got yourself a new **{thing}**!"
+purchaseSuccessfulMessage = "Score, no take backs! You've got yourself a new **{thing}**, {user}!"
 
 # Haiku response strings
 badKeywords = "*The words that you seek,*\n*I simply don't remember.*\n*Did you spell them right?*"
@@ -84,3 +84,4 @@ musicTemplate = "{listener} has listened to ::\n[{title}]({trackUrl}) on {album}
 
 # Other random constants
 tooMuchRespect = "Easy buddy, I can only respect so much at once."
+storefrontMessage = "Step right up, steeeeep right up, it's time to turn the wheels of *capital!*\nToday, for your all your rampant and wanton consumption needs, you could have:"
