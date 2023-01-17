@@ -270,10 +270,10 @@ def inventory(author, target):
 
     return inventoryString
 
-def checkout(author, thing: str, cost: int) -> str:
+def checkout(author, thing: str, cost: int) -> tuple[bool, str]:
     clientId = str(author.id)
     if (not bag.dexists(constants.daveBucksKey, clientId)):
-        return constants.noMoneyMessage
+        return (False, constants.noMoneyMessage)
 
     wallet = bag.dpop(constants.daveBucksKey, clientId)
 
@@ -284,23 +284,23 @@ def checkout(author, thing: str, cost: int) -> str:
         elif (isinstance(wallet, str)):
             subtotal = random.choice(stringMischief)(wallet, -1 * cost)
         else:
-            return constants.badMoneyMessage
+            return (False, constants.badMoneyMessage)
         
-        canAfford = (isinstance(subtotal, int) and subtotal > 0) or subtotal > "0"
+        canAfford = (isinstance(subtotal, int) and subtotal > 0) or (isinstance(subtotal, str) and subtotal > "0")
 
         if (canAfford):
             bag.ladd(clientId, thing)
             bag.dadd(constants.daveBucksKey, (clientId, wallet))
-            response = constants.purchaseSuccessfulMessage.format(thing)
+            response = constants.purchaseSuccessfulMessage.format(thing = thing, user = author.mention)
 
             if (bag.llen(clientId) > config.userbagsize):
                 oldThing = bag.lpop(clientId, 0)
                 response += constants.userfulMessage.format(thing = oldThing)
 
-            return response
+            return (True, response)
         else:
             bag.dadd(constants.daveBucksKey, (clientId, wallet))
-            return constants.shortChangeMessage
+            return (False, constants.shortChangeMessage)
 
     except:
         # Don't drop the money
