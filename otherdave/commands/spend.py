@@ -1,4 +1,5 @@
 import discord
+import random
 from .give import checkout
 from typing import Optional
 from otherdave.util import Relicer, Thinger
@@ -19,7 +20,10 @@ class Store(discord.ui.View):
         button.disabled = True
         await interaction.response.edit_message(view=self)
 
-        thing = self.thinger.make()
+        # 1/10 chance for a relic
+        thing = random.choice([self.relicer, self.thinger, self.thinger, self.thinger, self.thinger, 
+            self.thinger, self.thinger, self.thinger, self.thinger, self.thinger]).make()
+
         thing = self.thinger.standardifyThing(thing)
         confirmation = checkout(self.customer, thing, 100)
         await self.webhook.send(confirmation[1], ephemeral = not confirmation[0])
@@ -29,7 +33,8 @@ class Store(discord.ui.View):
         button.disabled = True
         await interaction.response.edit_message(view=self)
 
-        thing = self.thinger.make()
+        # 1/5 chance for a relic
+        thing = random.choice([self.relicer, self.thinger, self.thinger, self.thinger, self.thinger]).make()
         thing = self.thinger.rarifyThing(thing)
         confirmation = checkout(self.customer, thing, 1000)
         await self.webhook.send(confirmation[1], ephemeral = not confirmation[0])
