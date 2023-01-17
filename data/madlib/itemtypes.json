@@ -1,12 +1,44 @@
-[
-    ":crossed_swords:",
-    ":shield:",
-    ":helmet_with_cross:",
-    ":alembic:",
-    ":hamburger:",
-    ":wine_glass:",
-    ":sparkles:",
-    ":accordion:",
-    ":key:",
-    ":urn:"
-]
+{
+    "allTypes": [
+        ":crossed_swords:",
+        ":shield:",
+        ":helmet_with_cross:",
+        ":hammer_pick:",
+        ":alembic:",
+        ":accordion:",
+        ":scroll:",
+        ":prayer_beads:",
+        ":sparkles:",
+        ":key:",
+        ":amphora:",
+        ":gem:",
+        ":hamburger:",
+        ":wine_glass:",
+        ":takeout_box:",
+        ":bread:"
+    ],
+    "foodTypes": [
+        ":hamburger:",
+        ":wine_glass:",
+        ":takeout_box:",
+        ":bread:"
+    ],
+    "standardTypes": [
+        ":crossed_swords:",
+        ":shield:",
+        ":helmet_with_cross:",
+        ":hammer_pick:"
+    ],
+    "rareTypes": [
+        ":alembic:",
+        ":accordion:",
+        ":scroll:",
+        ":prayer_beads:"
+    ],
+    "legendaryTypes": [
+        ":sparkles:",
+        ":key:",
+        ":amphora:",
+        ":gem:"
+    ]
+}

@@ -1,0 +1,15 @@
+[
+    "{{coolguy_realname}}'s {{relic_adj}} {{relic}}",
+    "{{relic_adj}} {{relic}} of the {{relic_desc}} {{relic_site}}",
+    "{{relic_adj}} {{relic}} of {{coolguy_realname}} the {{relic_alig}}",
+    "{{coolguy_realname}}'s {{relic}} of {{relic_site}}",
+    "{{relic_adj}} {{relic_alig}} {{relic}}, wielded by {{coolguy_realname}} {{title}}, of The {{relic_desc}} {{relic_site}}.",
+    "{{coolguy_realname}}'s {{relic_adj}} {{relic}} of {{title}}",
+    "{{coolguy_realname}} {{title}}'s {{relic_desc}} {{relic}}",
+    "{{relic_adj}} {{relic}} of {{coolguy_realname}}'s {{relic_site}}",
+    "{{relic_alig}} {{relic}} of {{coolguy_realname}}'s {{relic_site}}",
+    "{{relic}} of the {{relic_alig}} {{relic_site}}",
+    "An actual for real {{relic_adj}} {{relic_alig}} {{relic}}, from The Totally Real {{relic_desc}} {{relic_site}}",
+    "{{relic_adj}} {{relic}} of The {{relic_site}}",
+    "{{relic_alig}} {{relic}} of The {{relic_desc}} {{relic_site}}"
+]
