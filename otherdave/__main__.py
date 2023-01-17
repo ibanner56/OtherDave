@@ -320,8 +320,8 @@ async def cmd_respect(interaction: discord.Interaction, user: Optional[discord.M
     description = "Gets rid of all those pesky davebucks."
 )
 async def cmd_spend(interaction: discord.Interaction):
-    store = Store(customer=interaction.user)
-    await interaction.response.send_message(view = store)
+    store = Store(customer=interaction.user, webhook = interaction.followup)
+    await interaction.response.send_message(content = constants.storefrontMessage, view = store, ephemeral = True)
 
 @client.tree.command(
     name = "use",
