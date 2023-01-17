@@ -161,11 +161,27 @@ class Thinger(MadLibber):
             "noun" : lambda : random.choice(self.nouns),
             "ing_verb" : lambda : random.choice(self.ing_verbs),
             "template" : lambda : random.choice(self.templates["thing"]),
-            "type": lambda : random.choice(self.types)
+            "type": lambda : random.choice(self.types["allTypes"]),
+            "type_food": lambda : random.choice(self.types["foodTypes"]),
+            "type_standard": lambda : random.choice(self.types["standardTypes"]),
+            "type_rare": lambda : random.choice(self.types["rareTypes"]),
+            "type_legendary": lambda : random.choice(self.types["legendaryTypes"])
         }
 
     def typeThing(self, thing):
         return "(" + self.actions["type"]() + ") " + thing
+
+    def foodifyThing(self, thing):
+        return "(" + self.actions["type_food"]() + ") " + thing
+
+    def standardifyThing(self, thing):
+        return "(" + self.actions["type_standard"]() + ") " + thing
+
+    def rarifyThing(self, thing):
+        return "(" + self.actions["type_rare"]() + ") " + thing
+
+    def legendarifyThing(self, thing):
+        return "(" + self.actions["type_legendary"]() + ") " + thing
 
 class User(MadLibber):
     def __init__(self) -> None:
