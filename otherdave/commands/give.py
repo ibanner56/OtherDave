@@ -1,3 +1,4 @@
+import discord
 import inflect
 import random
 from datetime import *
@@ -16,7 +17,7 @@ if (not bag.exists(constants.daveBucksKey)):
 # Keep a list of recently acquired things in memory that he doesn't want to give away.
 newThings = {}
 
-def find():
+def find() -> None:
     thing = thinger.make()
     thing = infl.a(thing)
     thing = thinger.typeThing(thing)
@@ -33,7 +34,7 @@ def find():
     else:
         return constants.foundMessage.format(thing = thing)
 
-def give(author, target, thing = "something"):
+def give(author: discord.Member, target: discord.Member, thing: str = "something") -> str:
     lowerThing = thing.lower()
     if (lowerThing.endswith("davebuck")):
         thing += "s"
@@ -68,7 +69,7 @@ def give(author, target, thing = "something"):
     else:
         return constants.thanksMessage.format(thing = thing)
 
-def take(author, target, thing):
+def take(author: discord.Member, target: discord.Member, thing: str) -> str:
     targetKey = str(target.id)
 
     if (bag.llen(constants.inventoryKey) == 0):
@@ -114,7 +115,7 @@ def take(author, target, thing):
 
     return response
 
-def drop(target, thing):
+def drop(target: discord.Member, thing: str) -> str:
     who = "you" if target else "I"
     whose = "your" if target else "my"
 
@@ -137,11 +138,11 @@ def drop(target, thing):
     bag.lremvalue(targetKey, typedThing)
     return constants.dropMessage.format(who = who, whose = whose, thing = unflect.a(thing))
 
-def selfdrop():
+def selfdrop() -> str:
     thing = random.choice(bag.lgetall(constants.inventoryKey))
     return drop(None, thing)
 
-def use(target, thing = "something", who= "I", whos = "I'm", whose = "my"):
+def use(target: discord.Member, thing: str = "something", who: str = "I", whos: str = "I'm", whose: str = "my") -> str:
     userKey = target if target else constants.inventoryKey
 
     if (not bag.exists(userKey)):
@@ -175,13 +176,13 @@ def use(target, thing = "something", who= "I", whos = "I'm", whose = "my"):
         thing = unflectedthing, 
         a_thing = typedThing)
 
-def useCmd(author, my, thing):
+def useCmd(author: discord.Member, my: bool, thing: str) -> str:
     mention = constants.inventoryKey if not my else str(author.id)
     (who, whos, whose) = ("I", "I'm", "my") if not my else ("You", "you're", "your")
 
     return use(mention, thing, who, whos, whose)
 
-def davebucks(author, target, thing):
+def davebucks(author: discord.Member, target: discord.Member, thing: str) -> str:
     if (author.id != int(config.daveid)):
         return constants.noBucksMessage
     if (str(target.id) == config.selfid):
@@ -216,7 +217,7 @@ def davebucks(author, target, thing):
         target = target.mention, 
         daveBucks = bag.dget(constants.daveBucksKey, targetId))
     
-def wallet(author):
+def wallet(author: discord.Member) -> str:
     if (author.id == config.daveid):
         return constants.daveWalletMessage
     
@@ -227,7 +228,7 @@ def wallet(author):
     
     return constants.walletMessage.format(daveBucks = bag.dget(constants.daveBucksKey, authorId))
 
-def inventory(author, target):
+def inventory(author: discord.Member, target: discord.Member) -> str:
     userId = str(target.id) if target else config.selfid
 
     if (userId == config.selfid):
@@ -270,7 +271,7 @@ def inventory(author, target):
 
     return inventoryString
 
-def checkout(author, thing: str, cost: int) -> tuple[bool, str]:
+def checkout(author: discord.Member, thing: str, cost: int) -> tuple[bool, str]:
     clientId = str(author.id)
     if (not bag.dexists(constants.daveBucksKey, clientId)):
         return (False, constants.noMoneyMessage)

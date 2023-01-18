@@ -1,5 +1,5 @@
 # Some helpers for stringMischief down below
-def _byteWiseAdd(sthing, ithing):
+def _byteWiseAdd(sthing: str, ithing: int) -> bytes:
     sbytes = sthing.encode("utf-8")
     ibytes = ithing.to_bytes(max(len(sbytes), (ithing.bit_length() + 7) // 8), "big", signed=True)
     if (len(sbytes) < len(ibytes)):
@@ -7,15 +7,15 @@ def _byteWiseAdd(sthing, ithing):
         sbytes = padbytes + sbytes
     return bytes(list(map(lambda x, y: min(x + y, 255), sbytes, ibytes)))
 
-def _weirdIntAddAndReByte(sthing, ithing):
+def _weirdIntAddAndReByte(sthing: str, ithing: int) -> bytes:
     sVal = sum(sthing.encode("utf-8")) + ithing
     return sVal.to_bytes((sVal.bit_length() + 7) // 8, "big")
 
-def _dodgeControlBytes(byteVal):
-    byteVal = max(byteVal, 36)
-    if 127 <= byteVal <= 160:
+def _dodgeControlBytes(byteVal: bytes) -> int:
+    bint = max(int.from_bytes(byteVal, "big", signed=True), 36)
+    if 127 <= bint <= 160:
         return 161
-    return byteVal
+    return bint
 
 # A few insane ways to add an int to a string
 stringMischief = [

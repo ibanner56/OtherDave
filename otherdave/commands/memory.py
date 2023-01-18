@@ -1,3 +1,4 @@
+import discord
 import pickledb
 import random
 import re
@@ -31,7 +32,7 @@ squawkProb = lambda x : (
     0.43326434481060
 )
 
-async def remember(interaction, member, snippet):
+async def remember(interaction: discord.Interaction, member: discord.Member, snippet: str) -> str:
     async for msg in interaction.channel.history(limit=config.maxLookback):
         if(msg.author.id == member.id and snippet in msg.content):
             return await remember_msg(msg)
@@ -39,7 +40,7 @@ async def remember(interaction, member, snippet):
     return constants.saveFailed
 
 
-async def remember_msg(msg):
+async def remember_msg(msg: discord.Message) -> str:
     if(memories.get(msg.author.id)):
         memories.append(str(msg.author.id), [msg.content])
     else:
@@ -49,7 +50,7 @@ async def remember_msg(msg):
     await msg.add_reaction(config.emotions["_memorymoji"])
     return constants.saveSuccessful
 
-def parrot(mention):
+def parrot(mention: str) -> str:
     if(mention):
         nick = re.sub("<@!*|>", "", mention)
         if(not memories.get(nick)):
@@ -64,7 +65,7 @@ def parrot(mention):
         memCache.append([rmem[0], rmem[1]])
         return rmem[1]
 
-async def toucan(client, lastMsgTime, quietTime):
+async def toucan(client: discord.Client, lastMsgTime: datetime, quietTime: datetime) -> None:
     now = datetime.now()
     delta = (now - lastMsgTime).total_seconds()
     if(quietTime and now < quietTime):
@@ -98,7 +99,7 @@ async def toucan(client, lastMsgTime, quietTime):
         
         return await parrotChan.send(macaw)
 
-def forget(snippet):
+def forget(snippet: str) -> str:
     if(len(memCache) == 0):
         return constants.emptyBuffer
     
@@ -119,7 +120,7 @@ def forget(snippet):
     memories.dump()
     return constants.forgetSuccess
 
-def forget_msg(message):
+def forget_msg(message: discord.Message) -> str:
     if (message.author != config.selfid):
         return constants.forgetYou
     return forget(message.content)

@@ -1,3 +1,4 @@
+import discord
 import markovify
 import random
 import re
@@ -6,7 +7,7 @@ from otherdave.util import constants
 
 loads = {}
 
-def listen(message):
+def listen(message: str) -> None:
     if(len(message.content.split(" ")) < 4):
         return
 
@@ -26,10 +27,10 @@ def listen(message):
     if(user in loads):
         loads[user] += "\n" + content
 
-def mock(message):
+def mock(message: str) -> str:
     return "".join(random.choice([str.upper, str.lower])(c) for c in message)
 
-def lwys(args):
+def lwys(args: str) -> str:
     cast = ["stage"]
     if (args):
         for castMember in args:
@@ -58,7 +59,7 @@ def lwys(args):
 
     return '\n'.join(lines)
 
-def mimicUser(user):
+def mimicUser(user: discord.Member) -> str:
     userId = str(user.id)
 
     if (not userId in loads):
@@ -81,16 +82,16 @@ def mimicUser(user):
     
     return result
 
-def mimicCombo(user1, user2):
+def mimicCombo(user1: str, user2: str) -> str:
     if (not user1 in loads):
-        filename = "./data/markov/" + str(user1) + ".txt"
+        filename = "./data/markov/" + user1 + ".txt"
         try:
             with open(filename, "r", encoding="utf-8") as mfile:
                 loads[user1] = mfile.read()
         except OSError:
             return [constants.makeFailed]
     if (not user2 in loads):
-        filename = "./data/markov/" + str(user2) + ".txt"
+        filename = "./data/markov/" + user2 + ".txt"
         try:
             with open(filename, "r", encoding="utf-8") as mfile:
                 loads[user2] = mfile.read()
@@ -112,7 +113,7 @@ def mimicCombo(user1, user2):
     
     return result
 
-def mimicChat(user1, user2):
+def mimicChat(user1: discord.Member, user2: discord.Member) -> str:
     userId1 = str(user1.id)
     userId2 = str(user2.id)
 
@@ -147,7 +148,7 @@ def mimicChat(user1, user2):
 
     return result
 
-def mimicHaiku(user):
+def mimicHaiku(user: discord.Member) -> str:
     userId = str(user.id)
 
     if (not userId in loads):
