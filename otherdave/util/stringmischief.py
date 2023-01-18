@@ -12,10 +12,10 @@ def _weirdIntAddAndReByte(sthing: str, ithing: int) -> bytes:
     return sVal.to_bytes((sVal.bit_length() + 7) // 8, "big")
 
 def _dodgeControlBytes(byteVal: bytes) -> int:
-    byteVal = max(byteVal, 36)
-    if 127 <= byteVal <= 160:
+    bint = max(int.from_bytes(byteVal, "big", signed=True), 36)
+    if 127 <= bint <= 160:
         return 161
-    return int.from_bytes(byteVal, "big", signed=True)
+    return bint
 
 # A few insane ways to add an int to a string
 stringMischief = [
