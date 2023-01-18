@@ -28,7 +28,16 @@
         "sievert",
         "pascal",
         "degree",
-        "radian"
+        "radian",
+        "roentgen",
+        "cup",
+        "minute",
+        "day",
+        "tablespoon",
+        "teaspoon",
+        "millimeter",
+        "milligram",
+        "liter"
     ],
     "units": [
         "inches",
@@ -61,6 +70,15 @@
         "sieverts",
         "pascals",
         "degrees",
-        "radians"
+        "radians",
+        "roentgens",
+        "cups",
+        "minutes",
+        "days",
+        "tablespoons",
+        "teaspoons",
+        "millimeters",
+        "milligrams",
+        "liters"
     ]
 }
