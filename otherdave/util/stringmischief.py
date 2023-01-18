@@ -15,7 +15,7 @@ def _dodgeControlBytes(byteVal: bytes) -> int:
     byteVal = max(byteVal, 36)
     if 127 <= byteVal <= 160:
         return 161
-    return byteVal
+    return int.from_bytes(byteVal, "big", signed=True)
 
 # A few insane ways to add an int to a string
 stringMischief = [
