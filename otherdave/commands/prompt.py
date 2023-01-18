@@ -2,7 +2,7 @@ from otherdave.util.madlib import Prompter
 
 prompter = Prompter()
 
-def prompt(addParams, forgetParams):
+def prompt(addParams: str, forgetParams: str) -> str:
     # Only one argument at a time
     args = [x for x in [addParams, forgetParams] if x is not None]
 

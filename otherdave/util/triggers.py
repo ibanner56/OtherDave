@@ -22,7 +22,7 @@ commonConversions = [
     lambda x: x * 3.78514,
 ]
 
-async def react(message):
+async def react(message: discord.Message) -> None:
     for emotion in config.emotions:
         if(emotion in message.content.lower()):
             emoji = config.emotions[emotion]
@@ -34,7 +34,7 @@ async def react(message):
                 # Deploy random banjo
                 await message.add_reaction(config.emotions["_banjo"])
 
-def grump(interaction, action):
+def grump(interaction: discord.Interaction, action: str) -> str:
     if (action == "enable"):
         grumps.set(str(interaction.user.id), False)
         return config.emotions["_teacher"]
@@ -46,7 +46,7 @@ def grump(interaction, action):
 
     return None
     
-async def pedant(message):
+async def pedant(message: discord.Message) -> None:
     if (grumps.get(str(message.author.id))):
         return
 
@@ -66,7 +66,7 @@ async def pedant(message):
 
     await converter(message, content)
 
-async def converter(message, content):
+async def converter(message: discord.Message, content: str) -> None:
     content = content.split(" ")
 
     for i in range(0, len(content)):

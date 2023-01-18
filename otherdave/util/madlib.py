@@ -6,7 +6,7 @@ import re
 infl = inflect.engine()
 
 class MadLibber():
-    def make(self, template = None):
+    def make(self, template: str = None) -> str:
         if(template is None):
             template = self.actions["template"]()
 
@@ -32,7 +32,7 @@ class MadLibber():
         return result.strip()
 
 class Complimenter(MadLibber):
-    def __init__(self):
+    def __init__(self) -> None:
         with open("./data/madlib/adjectives.json") as adf:
             self.adjectives = json.load(adf)
         with open("./data/madlib/amounts.json") as amf:
@@ -58,7 +58,7 @@ class Complimenter(MadLibber):
         }
 
 class Horoscoper(MadLibber):
-    def __init__(self):
+    def __init__(self) -> None:
         with open("./data/madlib/adjectives.json") as adf:
             self.adjectives = json.load(adf)
         with open("./data/madlib/amounts.json") as amf:
@@ -93,14 +93,14 @@ class Horoscoper(MadLibber):
             "planet" : lambda : random.choice(self.planets)
         }
     
-    def get_variants(self):
+    def get_variants(self) -> list[str]:
         return self.templates["horoscope"].keys()
     
-    def make_horoscope(self, variant):
+    def make_horoscope(self, variant: str) -> str:
         return self.make(random.choice(self.templates["horoscope"][variant]))
 
 class Prompter(MadLibber):
-    def __init__(self):
+    def __init__(self) -> None:
         with open("./data/prompt/adjectives.json") as adf:
             self.adjectives = json.load(adf)
         with open("./data/prompt/nouns.json") as nf:
@@ -112,23 +112,23 @@ class Prompter(MadLibber):
             "template" : lambda : r"{{adjective}} {{noun}}"
         }
 
-    def addNoun(self, noun):
+    def addNoun(self, noun: str) -> None:
         self.nouns.append(noun)
         with open("./data/prompt/nouns.json", "w") as nf:
             json.dump(self.nouns, nf)
 
-    def remNoun(self, noun):
+    def remNoun(self, noun: str) -> None:
         if(noun in self.nouns):
             self.nouns.remove(noun)
             with open("./data/prompt/nouns.json", "w") as nf:
                 json.dump(self.nouns, nf)
 
-    def addAdjective(self, adjective):
+    def addAdjective(self, adjective: str) -> None:
         self.adjectives.append(adjective)
         with open("./data/prompt/adjectives.json", "w") as adf:
             json.dump(self.adjectives, adf)
 
-    def remAdjective(self, adjective):
+    def remAdjective(self, adjective: str) -> None:
         if(adjective in self.adjectives):
             self.adjectives.remove(adjective)
             with open("./data/prompt/adjectives.json", "w") as adf:
@@ -168,19 +168,19 @@ class Thinger(MadLibber):
             "type_legendary": lambda : random.choice(self.types["legendaryTypes"])
         }
 
-    def typeThing(self, thing):
+    def typeThing(self, thing: str) -> str:
         return "(" + self.actions["type"]() + ") " + thing
 
-    def foodifyThing(self, thing):
+    def foodifyThing(self, thing: str) -> str:
         return "(" + self.actions["type_food"]() + ") " + thing
 
-    def standardifyThing(self, thing):
+    def standardifyThing(self, thing: str) -> str:
         return "(" + self.actions["type_standard"]() + ") " + thing
 
-    def rarifyThing(self, thing):
+    def rarifyThing(self, thing: str) -> str:
         return "(" + self.actions["type_rare"]() + ") " + thing
 
-    def legendarifyThing(self, thing):
+    def legendarifyThing(self, thing: str) -> str:
         return "(" + self.actions["type_legendary"]() + ") " + thing
 
 class User(MadLibber):

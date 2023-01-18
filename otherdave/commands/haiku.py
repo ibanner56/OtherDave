@@ -14,11 +14,11 @@ memories = pickledb.load("./data/haikus.db", True)
 lastCache = deque(maxlen=config.cacheLength)
 memCache = deque(maxlen=config.cacheLength)
 
-def flushCache():
+def flushCache() -> None:
     lastCache.clear()
     memCache.clear()
 
-def syllableCount(word):
+def syllableCount(word: str) -> int:
     # Check the Moby project first because robots are bad at english.
 	# If it's not in the dictionary, ask Zoltar.
     if(masterSyllables.get(word)):
@@ -28,7 +28,7 @@ def syllableCount(word):
     else:
         return textstat.syllable_count(word)
 
-def parseHaiku(text, debug):
+def parseHaiku(text: str, debug: bool) -> str:
     words = re.split("\s", text)
     count = 0
     lines = [False, False]
@@ -94,7 +94,7 @@ def parseHaiku(text, debug):
     else:
         return None
 
-def correct(word, syllables):
+def correct(word: str, syllables: int) -> bool:
     try:
         syllables = int(syllables)
         masterSyllables.set(word, syllables)
@@ -102,7 +102,7 @@ def correct(word, syllables):
     except ValueError:
         return False
 
-def save(keywords):
+def save(keywords: str) -> str:
     if(len(lastCache) == 0):
         return constants.emptyBuffer
     if(keywords):
@@ -117,7 +117,7 @@ def save(keywords):
     
     return constants.savedHaiku
 
-async def save_hku(message):
+async def save_hku(message: str) -> str:
     parsedHaiku = parseHaiku(message.content, False)
     if (parsedHaiku):
         memories.set(str(uuid.uuid1()), parsedHaiku)
@@ -126,7 +126,7 @@ async def save_hku(message):
     else:
         return constants.badMessage
 
-def recall():
+def recall() -> str:
     memkeys = list(memories.getall())
     if(len(memkeys) == 0):
         return constants.emptyMemory
@@ -136,7 +136,7 @@ def recall():
 
     return rmem
 
-def forget(keywords):
+def forget(keywords: str) -> str:
     if(len(memCache) == 0):
         return constants.emptyBuffer
     if(keywords):
@@ -151,19 +151,19 @@ def forget(keywords):
     
     return constants.forgetSuccess
 
-def debug(poem):
+def debug(poem: str) -> str:
     if(poem):
         return parseHaiku(poem, True)
     else:
         last = lastCache[-1].replace("*", "").replace("\n", " ")
         return parseHaiku(last, True)
 
-async def detect(message):
+async def detect(message: str) -> str:
     haiku = parseHaiku(message.content, False)
     if(haiku != None):
         await message.channel.send(haiku)
 
-def critique(debugSnippet, correctParams, saveSnippet, forgetSnippet):
+def critique(debugSnippet: str, correctParams: str, saveSnippet: str, forgetSnippet: str) -> str:
     # Only one argument at a time
     args = [x for x in [debugSnippet, correctParams, saveSnippet, forgetSnippet] if x is not None]
 

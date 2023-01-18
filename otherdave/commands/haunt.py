@@ -3,7 +3,7 @@ import random
 from otherdave.commands.ignore import canDm
 from otherdave.util import config
 
-async def haunt(interaction, user):
+async def haunt(interaction: discord.Interaction, user: discord.Member) -> None:
     target = user or interaction.author
     if (canDm(target.id)):
         channel = await target.create_dm()

@@ -1,7 +1,8 @@
+import discord
 import json
 import pickledb
 import random
-from discord import activity, Embed
+from discord import Embed
 from otherdave.util import constants
 
 adjectives = json.load(open("./data/madlib/adjectives.json"))
@@ -21,8 +22,8 @@ if (not recs.get("games")):
     recs.dcreate("games")
 
 
-def playlist(user, song):
-    if (not isinstance(song, activity.Spotify)):
+def playlist(user: discord.Member, song: discord.Activity) -> None:
+    if (not isinstance(song, discord.Spotify)):
         return
     
     if (not recs.dexists("music", song.track_id)):
@@ -50,11 +51,11 @@ def playlist(user, song):
 
     recs.dump()
 
-def wishlist(user, game):
-    if (not isinstance(game, activity.Game)):
+def wishlist(user: discord.Member, game: discord.Activity) -> None:
+    if (not isinstance(game, discord.Game)):
         return
 
-def recommend(kind = "music"):
+def recommend(kind: str = "music") -> discord.Embed:
     if (not (kind in ["music", "games"])):
         return Embed(description="I *recommend* you read the usage statement for this command.")
     

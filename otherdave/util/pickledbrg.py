@@ -4,7 +4,7 @@ import re
 pickledb = pickledb
 
 # Extend lget to handle regex values
-def lgetrg(self, key, value):
+def lgetrg(self, key: str, value: str) -> str:
     if (not self.exists(key)):
         return None
 
@@ -16,7 +16,7 @@ def lgetrg(self, key, value):
 
     return None
 
-def lexistsrg(self, key, value):
+def lexistsrg(self, key: str, value: str) -> bool:
     return lgetrg(self, key, value) != None
 
 # set back the extension methods

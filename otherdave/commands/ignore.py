@@ -1,3 +1,4 @@
+import discord
 import pickledb
 from datetime import *
 from otherdave.util import config, constants
@@ -5,7 +6,7 @@ from otherdave.util import config, constants
 ignoreDb = pickledb.load("./data/ignore.db", True)
 slideDb = pickledb.load("./data/slide.db", True)
 
-def ignore(interaction, user, mins):
+def ignore(interaction: discord.Interaction, user: discord.Member, mins: int) -> str:
     ignoreTime = datetime.now() + timedelta(minutes=mins)
 
     if (interaction.user.id == user.id):
@@ -19,13 +20,13 @@ def ignore(interaction, user, mins):
         ignoreDb.set(user.id, ignoreTime.isoformat())
         return f"Got it, I'll ignore {user.mention} for {mins} minutes. They must have been *naughty!*"
 
-def ignoreBandit(mins):
+def ignoreBandit(mins: int) -> str:
     bandit = "442747712400654337"
     ignoreTime = datetime.now() + timedelta(minutes=mins)
     ignoreDb.set(bandit, ignoreTime.isoformat())
     return f"Got it, I'll ignore <@!{bandit}> for {mins} minutes. They must have been *naughty!*"
 
-def dms(userId, flag):
+def dms(userId: int, flag: str) -> str:
     userId = str(userId)
     if (flag == "enable"):
         if (slideDb.get(userId)):
@@ -37,10 +38,10 @@ def dms(userId, flag):
     else:
         return constants.dmsUsage
 
-def callerNotIgnored(interaction):
+def callerNotIgnored(interaction: discord.Interaction) -> bool:
     return not shouldIgnore(interaction.user.id)
 
-def shouldIgnore(userId):
+def shouldIgnore(userId: int) -> bool:
     userId = str(userId)
     timeStr = ignoreDb.get(userId)
     if (timeStr):
@@ -51,6 +52,6 @@ def shouldIgnore(userId):
         return True
     return False
 
-def canDm(userId):
+def canDm(userId: int) -> bool:
     userId = str(userId)
     return slideDb.get(userId) != True
