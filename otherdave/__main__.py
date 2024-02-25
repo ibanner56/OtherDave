@@ -324,6 +324,23 @@ async def cmd_spend(interaction: discord.Interaction) -> None:
     await interaction.response.send_message(content = constants.storefrontMessage, view = store, ephemeral = True)
 
 @client.tree.command(
+    name = "sync",
+    description = "Only Isaac can touch me there."
+)
+async def cmd_sync(interaction: discord.Interaction) -> None:
+    if (interaction.user.id == config.isaacid):
+        # Sync command tree
+        global synced
+        if (not synced):
+            await client.tree.sync()
+            synced = True
+            await interaction.response.send_message("Oooh that felt good, thanks.")
+        else:
+            await interaction.response.send_message("I'm already synced, thanks.")
+    else:
+        await interaction.response.send_message("Ew, no thanks.")
+
+@client.tree.command(
     name = "use",
     description = "Uses an object in your inventory, or tells OtherDave to use an object in his."
 )
@@ -413,12 +430,11 @@ async def on_ready() -> None:
     # Sync command tree
     global synced
     if (not synced):
-        client.tree.copy_global_to(guild=discord.Object(id = config.guildid))
-        await client.tree.sync(guild=discord.Object(id = config.guildid))
+        await client.tree.sync()
         synced = True
 
     global otherotherdave
-    otherotherdave = await client.fetch_user(194865073943085056)
+    otherotherdave = await client.fetch_user(config.daveid)
 
     logger.debug("Logged in as {0.user}".format(client))
     await dlog(client, "Hi, I'm OtherDave and I'm BACK FOR BUSINESS.")
