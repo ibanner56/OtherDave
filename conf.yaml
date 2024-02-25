@@ -12,11 +12,12 @@ max_lookback: 100
 parrot_channel: 1200077320292147220
 parrot_interval: 1800
 dave_id: 194865073943085056
+isaac_id: 190531602084790273
 self_id: 355497099762073600
 bag_size: 10
 user_bag_size: 4
 greedy_time: 1800
-guild_id: 1200077320292147220
+guild_id: 328946766747533314
 
 drunkdraw:
   locales:

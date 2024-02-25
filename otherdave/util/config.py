@@ -11,6 +11,7 @@ maxLookback = int(loadedConfig["max_lookback"])
 parrotChan = loadedConfig["parrot_channel"]
 parrotInterval = loadedConfig["parrot_interval"]
 daveid = loadedConfig["dave_id"]
+isaacid = loadedConfig["isaac_id"]
 selfid = loadedConfig["self_id"]
 selftag = "<@" + selfid + ">"
 bagsize = int(loadedConfig["bag_size"])
