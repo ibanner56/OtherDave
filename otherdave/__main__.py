@@ -328,7 +328,7 @@ async def cmd_spend(interaction: discord.Interaction) -> None:
     description = "Only Isaac can touch me there."
 )
 async def cmd_sync(interaction: discord.Interaction) -> None:
-    if (interaction.user.id == config.isaacid):
+    if (interaction.user.id == int(config.isaacid)):
         # Sync command tree
         global synced
         if (not synced):
@@ -426,12 +426,6 @@ class MimicCog(commands.GroupCog, name="mimic"):
 async def on_ready() -> None:
     # Add command groups
     await client.add_cog(MimicCog(client))
-
-    # Sync command tree
-    global synced
-    if (not synced):
-        await client.tree.sync()
-        synced = True
 
     global otherotherdave
     otherotherdave = await client.fetch_user(config.daveid)
