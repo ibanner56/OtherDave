@@ -65,7 +65,8 @@ async def cmd_dad(interaction: discord.Interaction) -> None:
     name = "die",
     description = "Rollin' stones."
 )
-async def cmd_die(interaction: discord.Interaction, sides: int)
+@app_commands.check(callerNotIgnored)
+async def cmd_die(interaction: discord.Interaction, sides: int):
     roll = 0
     if (interaction.user.id == 442747712400654337):
         roll = random.random() * sides
