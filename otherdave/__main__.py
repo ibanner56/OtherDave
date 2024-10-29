@@ -5,6 +5,7 @@ from discord import AllowedMentions, activity, app_commands
 from discord.ext import tasks, commands
 from otherdave.commands import *
 from otherdave.util import *
+import random
 from typing import Literal, Optional
 
 # Configure client
@@ -59,6 +60,18 @@ async def ctx_daddy(interaction: discord.Interaction, message: discord.Message) 
 @app_commands.check(callerNotIgnored)
 async def cmd_dad(interaction: discord.Interaction) -> None:
     await interaction.response.send_message(jabber.dad())
+
+@client.tree.command(
+    name = "die",
+    description = "Rollin' stones."
+)
+async def cmd_die(interaction: discord.Interaction, sides: int)
+    roll = 0
+    if (interaction.user.id == 442747712400654337):
+        roll = random.random() * sides
+    else:
+        roll = random.randint(1, sides)
+    await interaction.response.send_message("Uhhhhhh, " + str(roll) + "?")
 
 @client.tree.command(
     name = "dms",
